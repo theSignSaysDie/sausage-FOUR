@@ -4,8 +4,10 @@ const path = require('node:path');
 require('dotenv').config();
 const lookup = require('./utils/lookup');
 
+// Initialize client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+// Load commands
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
@@ -17,6 +19,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+// Load event listeners
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -30,6 +33,8 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(process.env.DISCORD_TOKEN);
-
+// Load troll call
 lookup.loadTrollCall();
+
+// Login!
+client.login(process.env.DISCORD_TOKEN);
