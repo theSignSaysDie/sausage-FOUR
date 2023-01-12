@@ -1,3 +1,6 @@
+const { EmbedBuilder } = require('discord.js');
+const { versionNum, lastUpdated } = require('../utils/info');
+
 function capitalize(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -11,7 +14,13 @@ function camelize(str) {
 		.replace(/\s+/g, '');
 }
 
+function getDefaultEmbed() {
+	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated}  |   Do /help for more commands` });
+}
+
+
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
+	getDefaultEmbed: getDefaultEmbed,
 };
