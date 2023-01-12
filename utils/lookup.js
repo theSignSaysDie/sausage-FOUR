@@ -59,7 +59,7 @@ async function loadTrollCall() {
 	const end = new Date();
 	const time = (end - start) / 1000;
 	console.log(`Troll Call updated @ ${new Date().toLocaleString()}! (${time}s)`);
-	return time;
+	return [trollFirstNameDict, trollFullNameDict];
 }
 
 function getDocLink(id) {
@@ -71,6 +71,6 @@ module.exports = {
 	fetchSQL: fetchSQL,
 	loadTrollCall: loadTrollCall,
 	getDocLink: getDocLink,
-	trollFullNameDict: {},
-	trollFirstNameDict: {},
+	trollFullNameDict: trollFullNameDict,
+	trollFirstNameDict: trollFirstNameDict,
 };
