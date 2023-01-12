@@ -14,7 +14,7 @@ module.exports = {
 			option.setName('key')
 				.setDescription('Key of entry you want to edit')
 				.setRequired(true),
-		),
+		).setDefaultMemberPermissions(0),
 	async execute(interaction) {
 		const table = camelize(interaction.options.getString('table'));
 		const key = camelize(interaction.options.getString('key'));

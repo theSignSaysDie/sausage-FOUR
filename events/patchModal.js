@@ -7,7 +7,6 @@ module.exports = {
 		if (!interaction.isModalSubmit()) return;
 		const id = interaction.customId;
 		if (id.startsWith('patchModal_')) {
-			console.log(id);
 			const details = id.replace('patchModal_', '').split('_');
 			const [table, key, column] = details;
 			const updatedText = interaction.fields.getTextInputValue(`patchTextInput_${table}_${key}_${column}`);
