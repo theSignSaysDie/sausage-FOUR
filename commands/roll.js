@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { formatRoll, modStr } = require('../utils/dice');
+const { formatRoll, modStr, getRollColor } = require('../utils/dice');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roll')
@@ -37,11 +37,13 @@ module.exports = {
 
 		const talentName = ['godawful', 'inept', '', 'talented', 'legendary'];
 		const metagamerModifier = (dice == 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
-		const diceString = (talent == 0 && modifier == 0 && dice == 8) ? '' : ` (${dice == 2 ? '' : talentName[talent + 2]}${dice == 2 ? '' : ' ' + modStr(modifier)}${metagamerModifier})`;
+		const diceString = (talent == 0 && modifier == 0 && dice == 8) ? '' : ` (${dice == 2 ? '' : talentName[talent + 2]}${(talent != 0 && modifier != 0) ? ' ' : ''}${dice == 2 ? '' : modStr(modifier)}${metagamerModifier})`;
+		const rollInfo = formatRoll(dice, talent, modifier);
 		const embed = new EmbedBuilder()
 			.setTitle(`**__${description}__**${diceString}`)
-			.setDescription(`🎲 ${formatRoll(dice, talent, modifier)}`);
+			.setDescription(`🎲 ${rollInfo.text}`)
+			.setColor(getRollColor(rollInfo));
 		await interaction.reply({ embeds: [embed] });
-		// await interaction.reply(`**__${description}__**${diceString}:\n🎲 ${formatRoll(dice, talent, modifier)}`);
+
 	},
 };
