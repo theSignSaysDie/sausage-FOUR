@@ -26,11 +26,10 @@ module.exports = {
 				.setDescription(`**${move.tags}**\n${move.text}`)
 				.setColor(colorDict[move.color])
 				.setURL(getDocLink(docDict[move.doc]));
-			await interaction.reply({ embeds: [embed] });
 		} else {
 			console.log(`No information found for ${name}.`);
 			embed.setDescription(`Sorry, I couldn't find anything for '${name}'.`);
-			await interaction.reply({ embeds: [embed] });
 		}
+		await interaction.reply({ embeds: [embed] });
 	},
 };
