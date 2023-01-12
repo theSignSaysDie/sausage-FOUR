@@ -24,3 +24,17 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 		console.error('An error occurred wihle refreshing commands:', error);
 	}
 })();
+/*
+(async () => {
+	try {
+		console.log(`Started deleting ${commands.length} application (/) commands GLOBALLY.`);
+		const data = await rest.put(
+			Routes.applicationCommands(process.env.APP_ID),
+			{ body: [] },
+		);
+		console.log(`Successfully deleted ${data.length} application (/) commands GLOBALLY`);
+	} catch (error) {
+		console.error('An error occurred wihle deleting commands:', error);
+	}
+})();
+*/
