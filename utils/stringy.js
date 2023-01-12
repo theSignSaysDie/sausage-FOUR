@@ -15,7 +15,7 @@ function camelize(str) {
 }
 
 function getDefaultEmbed() {
-	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated}  |   Do /help for more commands` });
+	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated.toLocaleString('en-US', { dateStyle: 'short' })}  |   Do /help for more commands` });
 }
 
 

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { versionNum, colorDict } = require('../utils/info');
+const { versionNum, colorDict, lastUpdated } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('version')
@@ -10,7 +10,7 @@ module.exports = {
 			.setTitle(`SAUSAGE ${versionNum}`)
 			.setColor(colorDict.SAUSAGE_UPDATE)
 			.setDescription(`
-				**LAST UPDATE:** December 15th, 2021 @ 19:45 EST
+				**LAST UPDATE:** ${lastUpdated.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZoneName: 'short' }).replace('at', '@')}
 
                 **AUTHORS**: Neo, Meme
 

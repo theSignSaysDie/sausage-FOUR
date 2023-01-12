@@ -153,7 +153,7 @@ const fanmadeLinks = [
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.0.0',
-	lastUpdated: '01/12/2023',
+	lastUpdated: new Date('January 12, 2023 14:28 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
