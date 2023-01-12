@@ -5,7 +5,7 @@ require('dotenv').config();
 const lookup = require('./utils/lookup');
 
 // Initialize client
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 // Load commands
 client.commands = new Collection();
