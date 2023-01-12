@@ -12,8 +12,7 @@ module.exports = {
 		} else if (text.startsWith('they hit the fucking pentagon')) {
 			messageContent = 'there\'s been a second plane.';
 		} else if (text.startsWith('i love you sausage')) {
-			messageContent =
-			rollDice(100)[0] == 69 ? 'fuck you bitch' : 'i love you too!';
+			messageContent = rollDice(100)[0] == 69 ? 'fuck you bitch' : 'i love you too!';
 		} else if (text.startsWith('im pitch for you')) {
 			messageContent = ':slight_smile: <:shootem:568194854212075529>';
 		} else if (text.startsWith('good evening sausage')) {
@@ -24,6 +23,14 @@ module.exports = {
 			messageContent = 'booba!';
 		} else if (text.startsWith('goodnight sausage')) {
 			messageContent = 'goodnight friend!';
+		} else if (text.startsWith('slaps your ass')) {
+			messageContent = '<:wow:825094548950351882> Wow!';
+		} else if (text.startsWith('touches your boob')) {
+			messageContent = '<:wow:825094548950351882>';
+		} else if (text.startsWith('get them sausage')) {
+			messageContent = '<:shootem:568194854212075529>';
+		} else if (text.startsWith('thank you sausage')) {
+			messageContent = 'You\'re welcome!';
 		} else if (text == 'sausage') {
 			messageContent = 'Ribbit.';
 		} else if (
@@ -45,8 +52,14 @@ module.exports = {
 			} else {
 				messageContent = 'Good morning friend!';
 			}
+			messageContent = rollDice(100)[0] == 69 ? 'fuck you bitch' : messageContent;
 		} else if (
 			text.startsWith('sausage my beloved') &&
+			interaction.author.id === '245242305852866561'
+		) {
+			messageContent = 'honey my beloved';
+		} else if (
+			text.startsWith('ily sausage') &&
 			interaction.author.id === '655478445794525185'
 		) {
 			messageContent = 'honey my beloved';
