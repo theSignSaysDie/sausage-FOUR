@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { colorDict } = require('../utils/info');
 module.exports = {
@@ -6,13 +6,43 @@ module.exports = {
 		.setName('tipjar')
 		.setDescription('Tip the devs!'),
 	async execute(interaction) {
+		const rowNeo = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setLabel('Neo\'s Paypal')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://paypal.me/ashenGemstone'),
+				new ButtonBuilder()
+					.setLabel('Neo\'s Ko-Fi')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://ko-fi.com/neonova'),
+			);
+		const rowErika = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setLabel('Erika\'s Paypal')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://paypal.me/am326'),
+				new ButtonBuilder()
+					.setLabel('Erika\'s Ko-Fi')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://ko-fi.com/am3_26'),
+			);
+		const rowMeme = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setLabel('Meme\'s Paypal')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://paypal.me/DTAngres'),
+				new ButtonBuilder()
+					.setLabel('meme\'s Ko-Fi')
+					.setStyle(ButtonStyle.Link)
+					.setURL('https://ko-fi.com/mememagician'),
+			);
 		const embed = getDefaultEmbed()
 			.setTitle('TIP JAR')
 			.setColor(colorDict.SAUSAGE_UPDATE)
-			.setDescription(`› **Neo**'s Paypal can be found here: <http://paypal.me/ashenGemstone>\n
-                        › **Neo**'s Ko-Fi is found here: <https://ko-fi.com/neonova>\n\n
-                        › You can buy **Erika** coffee here: <https://ko-fi.com/am3_26> ☕\n
-                          or maybe just straight up send me some money? <http://paypal.me/am326>`);
-		await interaction.reply({ embeds: [embed] });
+			.setDescription('Hello and welcome to the Developers Tip Jar! Do not feel obligated to donate - but if you do, we appreciate it, because keeping Sausage up and running is wholly volunteer work!');
+		await interaction.reply({ embeds: [embed], components: [rowNeo, rowErika, rowMeme], ephemeral: true });
 	},
 };
