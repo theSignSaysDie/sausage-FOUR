@@ -152,6 +152,7 @@ const fanmadeLinks = [
 
 module.exports = {
 	CHAR_LIMIT: 4000,
+	versionNum: 'v3.0.0',
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
