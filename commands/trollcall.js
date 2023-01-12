@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { getDefaultEmbed } = require('../utils/stringy');
 const { fetchSQL } = require('../utils/lookup');
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
 			interaction.reply({ content:docLink, ephemeral: true });
 		} else {
 			console.log(`No information found for ${username}.`);
-			const embed = new EmbedBuilder()
+			const embed = new getDefaultEmbed()
 				.setDescription(`Sorry, I couldn't find anything for '${username}'.`);
 			await interaction.reply({ embeds: [embed], ephemeral: true });
 		}

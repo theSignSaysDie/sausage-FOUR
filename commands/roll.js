@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { getDefaultEmbed } = require('../utils/stringy');
 const { formatRoll, modStr, getRollColor } = require('../utils/dice');
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -39,7 +40,7 @@ module.exports = {
 		const metagamerModifier = (dice == 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
 		const diceString = (talent == 0 && modifier == 0 && dice == 8) ? '' : ` (${dice == 2 ? '' : talentName[talent + 2]}${(talent != 0 && modifier != 0) ? ' ' : ''}${dice == 2 ? '' : modStr(modifier)}${metagamerModifier})`;
 		const rollInfo = formatRoll(dice, talent, modifier);
-		const embed = new EmbedBuilder()
+		const embed = getDefaultEmbed()
 			.setTitle(`**__${description}__**${diceString}`)
 			.setDescription(`🎲 ${rollInfo.text}`)
 			.setColor(getRollColor(rollInfo));

@@ -1,11 +1,12 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { getDefaultEmbed } = require('../utils/stringy');
 const { colorDict } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('tipjar')
 		.setDescription('Tip the devs!'),
 	async execute(interaction) {
-		const embed = new EmbedBuilder()
+		const embed = getDefaultEmbed()
 			.setTitle('TIP JAR')
 			.setColor(colorDict.SAUSAGE_UPDATE)
 			.setDescription(`› **Neo**'s Paypal can be found here: <http://paypal.me/ashenGemstone>\n

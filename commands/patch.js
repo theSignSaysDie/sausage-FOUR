@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { fetchSQL } = require('../utils/lookup');
-const { camelize } = require('../utils/stringy');
+const { camelize, getDefaultEmbed } = require('../utils/stringy');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -42,7 +42,7 @@ module.exports = {
 				await interaction.reply({ content: `Sorry, I couldn't find anything for key '${key}' in table '${table}'. Check your spelling and try again!`, ephemeral: true });
 			}
 		} else {
-			const embed = new EmbedBuilder()
+			const embed = getDefaultEmbed()
 				.setDescription(`Sorry, I couldn't find anything for table '${table}'. Check your spelling and try again!`);
 			await interaction.reply({ embeds: [embed], ephemeral: true });
 		}

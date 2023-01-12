@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const { fetchSQL, getDocLink } = require('../utils/lookup');
-const { camelize } = require('../utils/stringy');
+const { camelize, getDefaultEmbed } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict } = require('../utils/info');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
 		const name = interaction.options.getString('name');
 		const query = `SELECT * FROM \`moves\` WHERE \`key\`="${camelize(name)}";`;
 		const queryResult = await fetchSQL(query);
-		const embed = new EmbedBuilder();
+		const embed = getDefaultEmbed();
 		if (queryResult.length) {
 			const move = queryResult[0];
 			if (move.text.length > CHAR_LIMIT) {

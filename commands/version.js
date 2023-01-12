@@ -1,11 +1,12 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { getDefaultEmbed } = require('../utils/stringy');
 const { versionNum, colorDict } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('version')
 		.setDescription('Check the current version of Sausage'),
 	async execute(interaction) {
-		const embed = new EmbedBuilder()
+		const embed = getDefaultEmbed()
 			.setTitle(`SAUSAGE ${versionNum}`)
 			.setColor(colorDict.SAUSAGE_UPDATE)
 			.setDescription(`

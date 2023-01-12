@@ -1,11 +1,12 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
+const { getDefaultEmbed } = require('../utils/stringy');
 const { colorDict } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rules')
 		.setDescription('Review the server rules'),
 	async execute(interaction) {
-		const embed = new EmbedBuilder()
+		const embed = getDefaultEmbed()
 			.setColor(colorDict.SAUSAGE_UPDATE)
 			.setDescription(`
 			RULES\n\n
