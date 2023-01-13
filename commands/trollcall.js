@@ -19,7 +19,7 @@ module.exports = {
 
 		if (queryResult.length) {
 			const docLink = queryResult[0].docLink;
-			interaction.reply({ content:docLink, ephemeral: true });
+			await interaction.reply({ content:docLink, ephemeral: true });
 		} else {
 			console.log(`No information found for ${username}.`);
 			const embed = new getDefaultEmbed()
