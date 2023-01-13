@@ -62,22 +62,17 @@ async function loadTrollCall() {
 	return [trollFirstNameDict, trollFullNameDict];
 }
 
-async function loadTableNames() {
-	return await fetchSQL(`SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA="${process.env.SQL_DB}"`);
-}
-
 function getDocLink(id) {
 	return `https://docs.google.com/document/d/${id}`;
 }
 
-const tableNames = [];
+const tableNames = ['hazards', 'sylladex', 'downtime', 'emotions', 'effects', 'afflictions', 'moves', 'prosthetics', 'tags', 'monster', 'lusus_features', 'troll_call', 'weapons', 'hivecrafting', 'vehicles'];
 
 module.exports = {
 	con: con,
 	fetchSQL: fetchSQL,
 	loadTrollCall: loadTrollCall,
 	getDocLink: getDocLink,
-	loadTableNames: loadTableNames,
 	trollFullNameDict: trollFullNameDict,
 	trollFirstNameDict: trollFirstNameDict,
 	tableNames: tableNames,
