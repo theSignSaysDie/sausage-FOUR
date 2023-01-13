@@ -33,8 +33,9 @@ for (const file of eventFiles) {
 	}
 }
 
-// Load troll call
-lookup.loadTrollCall();
+// Load troll call and other resources
+lookup.trollFirstNameDict, lookup.trollFullNameDict = lookup.loadTrollCall();
+lookup.tableNames = lookup.loadTableNames();
 
 // Login!
 client.login(process.env.DISCORD_TOKEN);
