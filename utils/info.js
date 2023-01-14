@@ -129,7 +129,11 @@ const docDict = {
 	TEMPLATE_NPC: '1zdwZZeSdKHOLuaDxU_vxMnxFR86CvVHdD88_OHaruzo',
 	RAID_BOSS: '1dBHa4_PpRaBeye9QrQZH1U4lXTLjGbiqkpRJu6592ps',
 	UNIVERSAL: '1wk2LG4tJqxv6He-R4EPBzYbfxKMxGGhwzEzCmsGev6Y',
-	PERFECTLY_GENERIC: '',
+	NADS: '1exSy8dqDVvMLgBKX5-5xcvlwNoLAKcF9h-964sfMheU',
+	KOB: '1jJ7dUZyeVBOhre8hcETkNjRCqkl-dS7zNKlBxVMdu60',
+	QUADRANT: '1JvWTVMUcCme5j7PPrsJCDkYHImlxxKdH8vBuk_hTuyg',
+	TEARM_STRIFE: '1pcDDyiHJpwEFkaCTsvzI3b1KHA341hjdj9hrFynpU5o',
+	PERFECTLY_GENERIC: '1_ekvclk77Zc1akQBAAb00z07h8mklSs-zZFjgIahVws',
 };
 
 const fanmadeLinks = [

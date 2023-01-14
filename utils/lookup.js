@@ -70,7 +70,7 @@ function getDocLink(id) {
 	return `https://docs.google.com/document/d/${id}`;
 }
 
-const tableNames = ['hazards', 'sylladex', 'downtime', 'emotions', 'effects', 'afflictions', 'moves', 'prosthetics', 'tags', 'monster', 'lusus_features', 'troll_call', 'weapons', 'hivecrafting', 'vehicles'];
+const tableNames = ['hazard', 'sylladex', 'downtime', 'emotion', 'effect', 'affliction', 'move', 'prosthetic', 'tag', 'monster', 'lusus', 'troll_call', 'weapon', 'hivecrafting', 'vehicle'];
 
 module.exports = {
 	con: con,

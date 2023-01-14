@@ -14,7 +14,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		const name = interaction.options.getString('name');
-		const query = `SELECT * FROM \`moves\` WHERE \`key\`="${camelize(name)}";`;
+		const query = `SELECT * FROM \`move\` WHERE \`key\`="${camelize(name)}";`;
 		const queryResult = await fetchSQL(query);
 		const embed = getDefaultEmbed();
 		if (queryResult.length) {
