@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { fetchSQL } = require('../utils/lookup');
+const { fetchSQL, sanitizeForQuery } = require('../utils/lookup');
 const { camelize } = require('../utils/stringy');
 
 module.exports = {
@@ -21,9 +21,9 @@ module.exports = {
 					key = camelize(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`));
 					values.push(key);
 				}
-				values.push(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`));
+				values.push(sanitizeForQuery(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`)));
 			}
-			query = `INSERT INTO \`${table}\` VALUES (${values.map(x => (`'${x}'`)).join(', ')});`;
+			query = `INSERT INTO \`${table}\` VALUES (${values.map(x => (`"${x}"`)).join(', ')});`;
 			await fetchSQL(query);
 			await interaction.reply({ content:`Added entry \`${key}\` in table \`${table}\` to new value.`, ephemeral: true });
 		}

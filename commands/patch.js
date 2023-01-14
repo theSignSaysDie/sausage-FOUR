@@ -110,11 +110,10 @@ module.exports = {
 		} else if (interaction.options.getSubcommand() === 'drop') {
 			const table = camelize(interaction.options.getString('table'));
 			let key = camelize(interaction.options.getString('key'));
-			const query = `SELECT \`key\` FROM ${table} WHERE \`key\` = '${key}';`;
+			const query = `SELECT \`key\` FROM ${table} WHERE \`key\` = "${key}";`;
 			const queryResult = await fetchSQL(query);
 			if (queryResult.length) {
 				key = queryResult[0]['key'];
-				console.log('-------------------', queryResult);
 				const modal = new ModalBuilder()
 					.setCustomId(`patchDropModal_${table}_${key}`)
 					.setTitle(`Delete ${table} : ${key}`);
@@ -127,7 +126,6 @@ module.exports = {
 					.setRequired(true);
 				actionRow.addComponents(textBox);
 				modal.addComponents(actionRow);
-				console.log(key);
 				await interaction.showModal(modal);
 			} else {
 				await interaction.reply({ content: `Sorry, I couldn't find anything for key '${key}' in table '${table}'. Check your spelling and try again!`, ephemeral: true });

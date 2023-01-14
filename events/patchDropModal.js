@@ -12,7 +12,7 @@ module.exports = {
 			const [table, key] = details;
 			const confirmText = interaction.fields.getTextInputValue(`patchDropTextInput_${table}_${key}`);
 			if (confirmText == key) {
-				const query = `DELETE FROM \`${table}\` WHERE \`key\` = '${key}'`;
+				const query = `DELETE FROM \`${table}\` WHERE \`key\` = "${key}"`;
 				await fetchSQL(query);
 				await interaction.reply({ content:`Removed entry \`${key}\` in table \`${table}\`.`, ephemeral: true });
 			} else {

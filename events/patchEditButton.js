@@ -13,7 +13,7 @@ module.exports = {
 			const modal = new ModalBuilder()
 				.setCustomId(`patchEditModal_${table}_${key}_${column}`)
 				.setTitle(`Edit ${column} for ${key}`);
-			const query = `SELECT \`${column}\` from \`${table}\` where \`key\` = '${key}'`;
+			const query = `SELECT \`${column}\` from \`${table}\` where \`key\` = "${key}"`;
 			const queryResult = await fetchSQL(query);
 			const initialText = queryResult[0][column];
 			if (initialText.length > CHAR_LIMIT) {

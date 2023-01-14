@@ -28,6 +28,10 @@ const fetchSQL = (query) => {
 	});
 };
 
+function sanitizeForQuery(string) {
+	return string.replace(/'/g, '\\\'');
+}
+
 async function loadTrollCall() {
 	const start = new Date();
 	console.log('Loading Troll Call...');
@@ -71,6 +75,7 @@ const tableNames = ['hazards', 'sylladex', 'downtime', 'emotions', 'effects', 'a
 module.exports = {
 	con: con,
 	fetchSQL: fetchSQL,
+	sanitizeForQuery: sanitizeForQuery,
 	loadTrollCall: loadTrollCall,
 	getDocLink: getDocLink,
 	trollFullNameDict: trollFullNameDict,

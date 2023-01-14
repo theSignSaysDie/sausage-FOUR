@@ -27,7 +27,6 @@ module.exports = {
 				.setColor(colorDict[move.color])
 				.setURL(getDocLink(docDict[move.doc]));
 		} else {
-			console.log(`No information found for ${name}.`);
 			embed.setDescription(`Sorry, I couldn't find anything for '${name}'.`);
 		}
 		await interaction.reply({ embeds: [embed] });
