@@ -7,11 +7,11 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isButton()) return;
 		const id = interaction.customId;
-		if (id.startsWith('patchButton_')) {
-			const details = id.replace('patchButton_', '').split('_');
+		if (id.startsWith('patchEditButton_')) {
+			const details = id.replace('patchEditButton_', '').split('_');
 			const [table, key, column] = details;
 			const modal = new ModalBuilder()
-				.setCustomId(`patchModal_${table}_${key}_${column}`)
+				.setCustomId(`patchEditModal_${table}_${key}_${column}`)
 				.setTitle(`Edit ${column} for ${key}`);
 			const query = `SELECT \`${column}\` from \`${table}\` where \`key\` = '${key}'`;
 			const queryResult = await fetchSQL(query);
@@ -20,7 +20,7 @@ module.exports = {
 				await interaction.reply({ content: 'Sorry! Due to Discord\'s API limitations, I can\'t provide this information to you. Please contact another dev to request changes. Apologies for the inconvenience.', ephemeral: true });
 			} else {
 				const textBox = new TextInputBuilder()
-					.setCustomId(`patchTextInput_${table}_${key}_${column}`)
+					.setCustomId(`patchEditTextInput_${table}_${key}_${column}`)
 					.setLabel('Item text for editing')
 					.setStyle(TextInputStyle.Paragraph)
 					.setPlaceholder('You\'re gonna leave this blank? On god?')
