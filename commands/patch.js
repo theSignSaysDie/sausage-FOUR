@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-const { fetchSQL, tableNames } = require('../utils/lookup');
+const { fetchSQL } = require('../utils/db');
 const { camelize } = require('../utils/stringy');
+const { tableNames } = require('../utils/info');
 
 module.exports = {
 	data: new SlashCommandBuilder()

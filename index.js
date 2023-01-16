@@ -2,7 +2,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 require('dotenv').config();
-const lookup = require('./utils/lookup');
+const db = require('./utils/db');
 
 // Initialize client
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
@@ -34,7 +34,7 @@ for (const file of eventFiles) {
 }
 
 // Load troll call and other resources
-lookup.trollFirstNameDict, lookup.trollFullNameDict = lookup.loadTrollCall();
+db.trollFirstNameDict, db.trollFullNameDict = db.loadTrollCall();
 
 // Login!
 client.login(process.env.DISCORD_TOKEN);

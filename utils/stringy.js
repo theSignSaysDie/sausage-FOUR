@@ -20,14 +20,17 @@ function camelize(str) {
 		.replace(/\s+/g, '');
 }
 
-
 function getDefaultEmbed() {
 	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated.toLocaleString('en-US', { dateStyle: 'short' })}  |   Do /help for more commands` });
 }
 
+function blankUndefined(thing, prefix = '', suffix = '') {
+	return thing === undefined ? '' : `${prefix}${thing}${suffix}`;
+}
 
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
+	blankUndefined: blankUndefined,
 };

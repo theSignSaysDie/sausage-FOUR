@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { fetchSQL } = require('../utils/lookup');
+const { fetchSQL } = require('../utils/db');
 
 module.exports = {
 	data: new SlashCommandBuilder()

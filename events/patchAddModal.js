@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { fetchSQL, sanitizeForQuery } = require('../utils/lookup');
+const { fetchSQL, sanitizeForQuery } = require('../utils/db');
 const { camelize } = require('../utils/stringy');
 
 module.exports = {

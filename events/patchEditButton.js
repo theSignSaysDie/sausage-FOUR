@@ -1,5 +1,5 @@
 const { Events, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js');
-const { fetchSQL } = require('../utils/lookup');
+const { fetchSQL } = require('../utils/db');
 const { CHAR_LIMIT } = require('../utils/info');
 
 module.exports = {

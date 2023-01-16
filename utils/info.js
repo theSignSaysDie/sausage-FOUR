@@ -111,17 +111,17 @@ const docDict = {
 	HERO_MODE: '1L9OUQ92tjuuAwLzGeCpzc4qR97vGIaGGPZX1ZUhjBms',
 	QUAD: '1JvWTVMUcCme5j7PPrsJCDkYHImlxxKdH8vBuk_hTuyg',
 	DOWNTIME: '1nSrifxsHwf2yEJ_LovUNr6Bv-A4fKfzZM2v32tGMOuk',
-	CUSTODIAN: '1FKxzL8jBgIQomVAFaRqriZLce-R4aRNEBQ-Vtkeldq4',
+	LUSUS: '1FKxzL8jBgIQomVAFaRqriZLce-R4aRNEBQ-Vtkeldq4',
 	MONSTER: '1Whwq7ojyvDg50uZuQJS78mAh2RqZN5NHiFBhduJHDe8',
 	RAIDBOSSES: '1dBHa4_PpRaBeye9QrQZH1U4lXTLjGbiqkpRJu6592ps',
 	HAZARD: '1b9fifDxrlLnYN5Q7aw_PePq7LX8Xqxb_OB8indG04nw',
 	AFFLICTION: '1vCfAGp7yjKReHNuMB0BX8Bl57inLdXHIejxqRylmj9I',
-	SYLLADICE: '1X5Dwf99hfHR51O2A-3-15A20L2oqsLNTt4DkNY7IlTg',
+	SYLLADEX: '1X5Dwf99hfHR51O2A-3-15A20L2oqsLNTt4DkNY7IlTg',
 	PROSTHETIC: '1ZuMFIP395PEegyIaowcRiB_o73-R3GTmxmUJXCcDUWA',
 	FASHION: '1fn33SU6a1q8GvmvOyVZ14G43FiaeyYdm4Gj9NnzlS4I',
 	VEHICLE: '1aMPzlLWXkrCarVHubGU5B5yRjOn7d9TVR6Yk-U6cqBs',
 	WEAPON: '16wmz_rGeTTxLE4iuJRzI_yyZOW88pLoBmt5fFGJp95Y',
-	HIVE: '1vz_ydLE5NkPMbV_U5Stvzf5a4LrY5OJWmxk9NTlEoSY',
+	HIVECRAFTING: '1vz_ydLE5NkPMbV_U5Stvzf5a4LrY5OJWmxk9NTlEoSY',
 	TAG: '1jHTFk8n2MKpAbvpWzxZbZ-XBDu6tnHbJzFbLVNW1z0Y',
 	STATUS: '19baxL--fUlTDFFN9UdDycKwQiDYDqDtsT8hym4YllmI',
 	EMOTION: '1ZerAA3p5JibOVWzrWzRNQdJH0nlWEyqbw68nF89ugWg',
@@ -134,6 +134,8 @@ const docDict = {
 	QUADRANT: '1JvWTVMUcCme5j7PPrsJCDkYHImlxxKdH8vBuk_hTuyg',
 	TEARM_STRIFE: '1pcDDyiHJpwEFkaCTsvzI3b1KHA341hjdj9hrFynpU5o',
 	PERFECTLY_GENERIC: '1_ekvclk77Zc1akQBAAb00z07h8mklSs-zZFjgIahVws',
+	ABSTRATA: '16wmz_rGeTTxLE4iuJRzI_yyZOW88pLoBmt5fFGJp95Y',
+	EFFECT: '19baxL--fUlTDFFN9UdDycKwQiDYDqDtsT8hym4YllmI',
 };
 
 const fanmadeLinks = [
@@ -153,6 +155,10 @@ const fanmadeLinks = [
 	'https://docs.google.com/document/d/1gq8z7gtfsAGI0-B0b3-PHz0JFokheneQ1YtNy7XQGU4/edit',
 ];
 
+const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'troll_call', 'vehicle'];
+const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle'];
+
+console.log(lookupTableNames);
 
 module.exports = {
 	CHAR_LIMIT: 4000,
@@ -161,4 +167,6 @@ module.exports = {
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
+	tableNames: tableNames,
+	lookupTableNames: lookupTableNames,
 };

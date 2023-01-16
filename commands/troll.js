@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { trollFirstNameDict, trollFullNameDict } = require('../utils/lookup');
+const { trollFirstNameDict, trollFullNameDict } = require('../utils/db');
 
 module.exports = {
 	data: new SlashCommandBuilder()

@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { fetchSQL } = require('../utils/lookup');
+const { fetchSQL } = require('../utils/db');
 
 module.exports = {
 	name: Events.InteractionCreate,

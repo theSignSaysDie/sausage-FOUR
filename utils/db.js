@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-// const fs = require('node:fs');
 
 const doc = new GoogleSpreadsheet(process.env.TROLL_CALL_DOC_ID);
 
@@ -70,8 +69,6 @@ function getDocLink(id) {
 	return `https://docs.google.com/document/d/${id}`;
 }
 
-const tableNames = ['hazard', 'sylladex', 'downtime', 'emotion', 'effect', 'affliction', 'move', 'prosthetic', 'tag', 'monster', 'lusus', 'troll_call', 'weapon', 'hivecrafting', 'vehicle'];
-
 module.exports = {
 	con: con,
 	fetchSQL: fetchSQL,
@@ -80,5 +77,4 @@ module.exports = {
 	getDocLink: getDocLink,
 	trollFullNameDict: trollFullNameDict,
 	trollFirstNameDict: trollFirstNameDict,
-	tableNames: tableNames,
 };
