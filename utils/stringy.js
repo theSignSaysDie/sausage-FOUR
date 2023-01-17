@@ -28,9 +28,14 @@ function blankUndefined(thing, prefix = '', suffix = '') {
 	return thing === undefined ? '' : `${prefix}${thing}${suffix}`;
 }
 
+function dictList(stringArr) {
+	return stringArr.map((item) => ({ name: item, value: item }));
+}
+
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
 	blankUndefined: blankUndefined,
+	dictList : dictList,
 };

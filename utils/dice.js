@@ -1,9 +1,13 @@
 const { colorDict } = require('../utils/info');
 
+function roll1ToX(diceType) {
+	return Math.floor(Math.random() * diceType) + 1;
+}
+
 function rollDice(diceType, amt = 1, talent = 0) {
 	const result = [];
 	for (let i = 0; i < amt + Math.abs(talent); i++) {
-		const roll = Math.floor(Math.random() * diceType) + 1;
+		const roll = roll1ToX(diceType);
 		result.push(roll);
 	}
 	return result;
@@ -81,4 +85,5 @@ module.exports = {
 	modStr: modStr,
 	formatRoll: formatRoll,
 	getRollColor: getRollColor,
+	roll1ToX: roll1ToX,
 };
