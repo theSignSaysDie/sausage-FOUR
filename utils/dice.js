@@ -65,7 +65,7 @@ function formatRoll(diceType, talent, modifier) {
 	const extraDie = diceType === 10 ? rollDice(6, 1, 0)[0] : 0;
 
 	totalSum += extraDie + modifier * (diceType !== 2);
-	return { weird: diceType !== 8, min: min, max: max, sum: totalSum, text: `(${stringNums.join(', ')}${diceType === 10 ? modStr(extraDie, true) : ''})${diceType === 2 ? '' : modStr(modifier, true)} = ${totalSum}` };
+	return { weird: diceType !== 8, min: min, max: max, sum: totalSum, text: `(${stringNums.join(', ')}${diceType === 10 ? modStr(extraDie, true) : ''})${diceType === 2 ? '' : modStr(modifier, true)}\n**Total**: ${totalSum}` };
 }
 
 function getRollColor(rollResult) {

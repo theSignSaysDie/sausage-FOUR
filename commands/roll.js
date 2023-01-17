@@ -41,8 +41,8 @@ module.exports = {
 		const diceString = (talent === 0 && modifier === 0 && dice === 8) ? '' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
 		const rollInfo = formatRoll(dice, talent, modifier);
 		const embed = getDefaultEmbed()
-			.setTitle(`**__${description}__**${diceString}`)
-			.setDescription(`🎲 ${rollInfo.text}`)
+			.setTitle(`**${description}**`)
+			.setDescription(`${diceString}\n\n🎲 ${rollInfo.text}`)
 			.setColor(getRollColor(rollInfo));
 		await interaction.reply({ embeds: [embed] });
 
