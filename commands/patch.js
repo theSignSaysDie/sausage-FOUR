@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { fetchSQL } = require('../utils/db');
-const { camelize } = require('../utils/stringy');
+const { camelize, dictList } = require('../utils/stringy');
 const { tableNames } = require('../utils/info');
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
 						.setDescription('Table you want to add an entry to')
 						.setRequired(true)
 						.setChoices(
-							...tableNames.map(x => ({ name: x, value: x })),
+							...dictList(tableNames),
 						),
 				),
 		).addSubcommand(subcommand =>
@@ -30,7 +30,7 @@ module.exports = {
 						.setDescription('Table whose entry you want to edit')
 						.setRequired(true)
 						.setChoices(
-							...tableNames.map(x => ({ name: x, value: x })),
+							...dictList(tableNames),
 						),
 				).addStringOption(option =>
 					option
@@ -48,7 +48,7 @@ module.exports = {
 						.setDescription('Table whose entry you want to remove')
 						.setRequired(true)
 						.setChoices(
-							...tableNames.map(x => ({ name: x, value: x })),
+							...dictList(tableNames),
 						),
 				).addStringOption(option =>
 					option

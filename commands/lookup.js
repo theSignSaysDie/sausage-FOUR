@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fetchSQL, getDocLink } = require('../utils/db');
-const { camelize, getDefaultEmbed, blankUndefined } = require('../utils/stringy');
+const { camelize, getDefaultEmbed, blankUndefined, dictList } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict, lookupTableNames } = require('../utils/info');
 
 const lookupSlashCommand =
@@ -13,7 +13,7 @@ const lookupSlashCommand =
 				.setDescription('Select the category you want to look into')
 				.setRequired(true)
 				.setChoices(
-					...lookupTableNames.map((item) => ({ name: item, value: item })),
+					...dictList(lookupTableNames),
 				),
 		).addStringOption(option =>
 			option
