@@ -17,7 +17,7 @@ module.exports = {
 			for (const item of queryResult) {
 				const label = item['Field'];
 				if (label === 'key') continue;
-				if (label == 'title') {
+				if (label === 'title') {
 					key = camelize(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`));
 					values.push(key);
 				}

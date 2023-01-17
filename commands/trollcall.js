@@ -14,7 +14,7 @@ module.exports = {
 	async execute(interaction) {
 		const username = interaction.options.getUser('username');
 		console.log(Object.keys(username));
-		const query = `SELECT \`docLink\` FROM \`troll_call\` WHERE \`userID\`="${username.id}";`;
+		const query = `SELECT \`docLink\` FROM \`trollcall\` WHERE \`userID\`="${username.id}";`;
 		const queryResult = await fetchSQL(query);
 
 		if (queryResult.length) {
