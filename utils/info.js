@@ -153,6 +153,7 @@ const fanmadeLinks = [
 	'https://docs.google.com/spreadsheets/d/1K5ETHwd6n9WbQlGKi6-M54Q-_qlI2SzfgI2Gm1aOay0/edit?usp=sharing',
 	'https://mspaintadventures.fandom.com/wiki/Troll_language',
 	'https://docs.google.com/document/d/1gq8z7gtfsAGI0-B0b3-PHz0JFokheneQ1YtNy7XQGU4/edit',
+	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
 ];
 
 const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle'];

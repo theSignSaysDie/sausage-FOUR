@@ -24,6 +24,7 @@ module.exports = {
 					{ name: 'Serverstuck Terminology',	value: 11 },
 					{ name: 'Troll Terminology', value: 12 },
 					{ name: 'IC Whitelist for Trolls (Upkept by Kids)',	value: 13 },
+					{ name: 'Serverstuck Thread Archive Directory', value: 14 },
 				),
 		),
 	async execute(interaction) {
