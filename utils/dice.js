@@ -70,6 +70,7 @@ function formatRoll(diceType, talent, modifier) {
 
 function getRollColor(rollResult) {
 	let result = colorDict.BOT;
+	if (rollResult.sum < 0) result = colorDict.RUST;
 	if (rollResult.sum >= 0) result = colorDict.BRONZE;
 	if (rollResult.sum >= 8) result = colorDict.GOLD;
 	if (rollResult.sum >= 11) result = colorDict.OLIVE;

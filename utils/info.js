@@ -164,7 +164,7 @@ console.log(lookupTableNames);
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.0.0',
-	lastUpdated: new Date('January 17, 2023 12:42 PST'),
+	lastUpdated: new Date('January 17, 2023 14:54 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
