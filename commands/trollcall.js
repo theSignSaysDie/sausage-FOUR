@@ -19,7 +19,6 @@ module.exports = {
 		const username = interaction.options.getUser('username');
 		let public = interaction.options.getBoolean('public');
 		if (public === undefined) public = false;
-		console.log(interaction.options.getBoolean('public'), '|', !public);
 		const query = `SELECT \`docLink\` FROM \`trollcall\` WHERE \`userID\`="${username.id}";`;
 		const queryResult = await fetchSQL(query);
 		if (queryResult.length) {
