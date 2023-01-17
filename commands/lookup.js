@@ -45,8 +45,9 @@ module.exports = {
 			let result = [];
 			let justStarted = true;
 			for (const term in terms) {
+				const t = terms[term];
 				// eslint-disable-next-line no-useless-escape
-				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` REGEXP "[^\\\\w]${terms[term]}";`;
+				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }";`;
 				queryResult = await fetchSQL(query);
 				if (queryResult.length) {
 					if (result.length === 0) {
@@ -68,9 +69,9 @@ module.exports = {
 				}
 			}
 			if (result.length === 0) {
-				embed.setDescription(`Sorry, I couldn't find anything for the tag '${key}'.`);
+				embed.setDescription(`Sorry, I couldn't find anything for the tag${terms.length > 1 ? 's' : ''} '${key}'.`);
 			} else {
-				embed.setTitle(`List of moves with tags similar to ${terms.join(', ')}`)
+				embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
 					.setDescription(`${result.map((x) => titleCase(x)).join(', ')}`)
 					.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
 			}
