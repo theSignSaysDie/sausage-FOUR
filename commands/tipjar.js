@@ -35,7 +35,7 @@ module.exports = {
 					.setStyle(ButtonStyle.Link)
 					.setURL('https://paypal.me/DTAngres'),
 				new ButtonBuilder()
-					.setLabel('meme\'s Ko-Fi')
+					.setLabel('Meme\'s Ko-Fi')
 					.setStyle(ButtonStyle.Link)
 					.setURL('https://ko-fi.com/mememagician'),
 			);
