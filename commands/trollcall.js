@@ -7,19 +7,24 @@ module.exports = {
 		.setName('trollcall')
 		.setDescription('Retrieve a user\'s troll call')
 		.addUserOption(option =>
-			option.setName('username')
+			option
+				.setName('username')
 				.setDescription('The name of the user whose troll call you want')
 				.setRequired(true),
-		),
+		).addBooleanOption(option =>
+			option
+				.setName('public')
+				.setDescription('Post for everyone else (default: false)')),
 	async execute(interaction) {
 		const username = interaction.options.getUser('username');
-		console.log(Object.keys(username));
+		let public = interaction.options.getBoolean('public');
+		if (public === undefined) public = false;
+		console.log(interaction.options.getBoolean('public'), '|', !public);
 		const query = `SELECT \`docLink\` FROM \`trollcall\` WHERE \`userID\`="${username.id}";`;
 		const queryResult = await fetchSQL(query);
-
 		if (queryResult.length) {
 			const docLink = queryResult[0].docLink;
-			await interaction.reply({ content:docLink, ephemeral: true });
+			await interaction.reply({ content:docLink, ephemeral: !public });
 		} else {
 			console.log(`No information found for ${username}.`);
 			const embed = new getDefaultEmbed()
