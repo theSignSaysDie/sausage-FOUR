@@ -37,5 +37,6 @@ module.exports = {
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
 	blankUndefined: blankUndefined,
+	titleCase: titleCase,
 	dictList : dictList,
 };

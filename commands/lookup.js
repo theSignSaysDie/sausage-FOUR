@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fetchSQL, getDocLink } = require('../utils/db');
-const { camelize, getDefaultEmbed, blankUndefined, dictList } = require('../utils/stringy');
+const { camelize, titleCase, getDefaultEmbed, blankUndefined, dictList } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict, lookupTableNames } = require('../utils/info');
 
 const lookupSlashCommand =
@@ -27,8 +27,8 @@ module.exports = {
 	async execute(interaction) {
 		const key = interaction.options.getString('key');
 		const targetTable = interaction.options.getString('category');
-		const query = `SELECT * FROM \`${targetTable}\` WHERE \`key\`="${camelize(key)}";`;
-		const queryResult = await fetchSQL(query);
+		let query = `SELECT * FROM \`${targetTable}\` WHERE \`key\`="${camelize(key)}";`;
+		let queryResult = await fetchSQL(query);
 		const embed = getDefaultEmbed();
 		if (queryResult.length) {
 			const entry = queryResult[0];
@@ -39,6 +39,21 @@ module.exports = {
 				.setDescription(`${blankUndefined(entry.cost, '**', '**\n')}${blankUndefined(entry.wealth_level, '**', '**\n')}${blankUndefined(entry.tags, '**', '**\n')}${entry.text}`)
 				.setColor(colorDict[targetTable === 'move' ? entry.color : 'OTHER'])
 				.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict[targetTable.toUpperCase()] : docDict[entry.doc]));
+		} else if (targetTable === 'move') {
+			// eslint-disable-next-line no-useless-escape
+			query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` REGEXP "[^\\\\w]${key}";`;
+			queryResult = await fetchSQL(query);
+			if (queryResult.length) {
+				const result = [];
+				for (const item in queryResult) {
+					result.push(queryResult[item].title);
+				}
+				embed.setTitle(`List of moves with tags similar to ${key}`)
+					.setDescription(`${result.map((x) => titleCase(x)).join(', ')}`)
+					.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
+			} else {
+				embed.setDescription(`Sorry, I couldn't find any tag like '${key}'.`);
+			}
 		} else {
 			embed.setDescription(`Sorry, I couldn't find anything for '${key}'.`);
 		}
