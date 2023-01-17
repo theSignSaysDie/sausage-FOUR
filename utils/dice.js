@@ -26,7 +26,7 @@ function markForSum(arr, num, talent) {
 }
 
 function modStr(num, spacey = false) {
-	return num ? `${spacey ? ' ' : ''}${num != 0 ? (num > 0 ? '+' : '-') : ''}${spacey ? ' ' : ''}${Math.abs(num)}` : '';
+	return num ? `${spacey ? ' ' : ''}${num !== 0 ? (num > 0 ? '+' : '-') : ''}${spacey ? ' ' : ''}${Math.abs(num)}` : '';
 }
 
 function formatRoll(diceType, talent, modifier) {
@@ -41,11 +41,11 @@ function formatRoll(diceType, talent, modifier) {
 	let max = false;
 	let min = false;
 	const testValue = diceType + modifier;
-	if (diceType == 8) {
-		if (totalSum == 16 || testValue >= 20) {
+	if (diceType === 8) {
+		if (totalSum === 16 || testValue >= 20) {
 			max = true;
 		}
-		if (totalSum + modifier == 2 || testValue < 0) {
+		if (totalSum + modifier === 2 || testValue < 0) {
 			min = true;
 		}
 	}
@@ -53,19 +53,19 @@ function formatRoll(diceType, talent, modifier) {
 	const stringNums = [];
 	for (let i = 0; i < numArr.length; i++) {
 		let item = `${numArr[i]}`;
-		if (numArr[i] == 1 || numArr[i] == diceType) {
+		if (numArr[i] === 1 || numArr[i] === diceType) {
 			item = `**${item}**`;
 		}
-		if (indices[i] == 0) {
+		if (indices[i] === 0) {
 			item = `~~${item}~~`;
 		}
 		stringNums.push(item);
 	}
 
-	const extraDie = diceType == 10 ? rollDice(6, 1, 0)[0] : 0;
+	const extraDie = diceType === 10 ? rollDice(6, 1, 0)[0] : 0;
 
-	totalSum += extraDie + modifier * (diceType != 2);
-	return { weird: diceType != 8, min: min, max: max, sum: totalSum, text: `(${stringNums.join(', ')}${diceType == 10 ? modStr(extraDie, true) : ''})${diceType == 2 ? '' : modStr(modifier, true)} = ${totalSum}` };
+	totalSum += extraDie + modifier * (diceType !== 2);
+	return { weird: diceType !== 8, min: min, max: max, sum: totalSum, text: `(${stringNums.join(', ')}${diceType === 10 ? modStr(extraDie, true) : ''})${diceType === 2 ? '' : modStr(modifier, true)} = ${totalSum}` };
 }
 
 function getRollColor(rollResult) {
