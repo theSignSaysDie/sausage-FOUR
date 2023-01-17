@@ -40,19 +40,39 @@ module.exports = {
 				.setColor(colorDict[targetTable === 'move' ? entry.color : 'OTHER'])
 				.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict[targetTable.toUpperCase()] : docDict[entry.doc]));
 		} else if (targetTable === 'move') {
-			// eslint-disable-next-line no-useless-escape
-			query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` REGEXP "[^\\\\w]${key}";`;
-			queryResult = await fetchSQL(query);
-			if (queryResult.length) {
-				const result = [];
-				for (const item in queryResult) {
-					result.push(queryResult[item].title);
+			const terms = key.split(' ');
+			console.log('124235675', terms);
+			let result = [];
+			let justStarted = true;
+			for (const term in terms) {
+				// eslint-disable-next-line no-useless-escape
+				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` REGEXP "[^\\\\w]${terms[term]}";`;
+				queryResult = await fetchSQL(query);
+				if (queryResult.length) {
+					if (result.length === 0) {
+						if (justStarted) {
+							for (const item in queryResult) {
+								result.push(queryResult[item].title);
+							}
+							justStarted = false;
+						} else {
+							break;
+						}
+					} else {
+						result = result.filter((el) => queryResult.map(x => x.title).includes(el));
+					}
+
+				} else {
+					result = [];
+					break;
 				}
-				embed.setTitle(`List of moves with tags similar to ${key}`)
+			}
+			if (result.length === 0) {
+				embed.setDescription(`Sorry, I couldn't find anything for the tag '${key}'.`);
+			} else {
+				embed.setTitle(`List of moves with tags similar to ${terms.join(', ')}`)
 					.setDescription(`${result.map((x) => titleCase(x)).join(', ')}`)
 					.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
-			} else {
-				embed.setDescription(`Sorry, I couldn't find any tag like '${key}'.`);
 			}
 		} else {
 			embed.setDescription(`Sorry, I couldn't find anything for '${key}'.`);
