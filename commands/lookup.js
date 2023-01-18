@@ -41,42 +41,30 @@ module.exports = {
 				.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict[targetTable.toUpperCase()] : docDict[entry.doc]));
 		} else if (targetTable === 'move') {
 			const terms = key.split(' ');
-			console.log('124235675', terms);
-			let result = [];
-			let justStarted = true;
+			const clauses = [];
 			for (const term in terms) {
 				const t = terms[term];
+				if (t.indexOf('|') >= 0) {
+					const subTerms = [];
+					const splitTerms = t.split('|');
+					for (const st in splitTerms) {
+						subTerms.push(`\`tags\` ${splitTerms[st].startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${splitTerms[st].startsWith('!') ? splitTerms[st].substring(1) : splitTerms[st] }"`);
+					}
+					clauses.push(`(${subTerms.join(' OR ')})`);
+				} else {
+					clauses.push(`\`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }"`);
+				}
 				// eslint-disable-next-line no-useless-escape
-				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE \`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }";`;
+				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
 				queryResult = await fetchSQL(query);
 				if (queryResult.length) {
-					if (result.length === 0) {
-						if (justStarted) {
-							for (const item in queryResult) {
-								result.push(queryResult[item].title);
-							}
-							justStarted = false;
-						} else {
-							break;
-						}
-					} else {
-						result = result.filter((el) => queryResult.map(x => x.title).includes(el));
-					}
-
+					embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
+						.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
+						.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
 				} else {
-					result = [];
-					break;
+					embed.setDescription(`Sorry, I couldn't find anything for '${key}'.`);
 				}
 			}
-			if (result.length === 0) {
-				embed.setDescription(`Sorry, I couldn't find anything for the tag${terms.length > 1 ? 's' : ''} '${key}'.`);
-			} else {
-				embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
-					.setDescription(`${result.map((x) => titleCase(x)).join(', ')}`)
-					.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
-			}
-		} else {
-			embed.setDescription(`Sorry, I couldn't find anything for '${key}'.`);
 		}
 		await interaction.reply({ embeds: [embed] });
 	},
