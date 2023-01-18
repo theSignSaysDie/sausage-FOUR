@@ -33,7 +33,7 @@ module.exports = {
 		if (queryResult.length) {
 			const entry = queryResult[0];
 			if (entry.text.length > CHAR_LIMIT) {
-				entry.text = `\nSorry! Due to Discord's embed character limit, I can't render ${targetTable}.${key} here. Use the doc link above to access the move text! Apologies for the inconvenience.`;
+				entry.text = `\nSorry! Due to Discord's embed character limit, I can't render \`${targetTable}.${key}\` here. Use the doc link above to access the move text! Apologies for the inconvenience.`;
 			}
 			embed.setTitle(entry.title)
 				.setDescription(`${blankUndefined(entry.cost, '**', '**\n')}${blankUndefined(entry.wealth_level, '**', '**\n')}${blankUndefined(entry.tags, '**', '**\n')}${entry.text}`)
@@ -58,11 +58,16 @@ module.exports = {
 				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
 				queryResult = await fetchSQL(query);
 				if (queryResult.length) {
-					embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
-						.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
-						.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
+					const finalString = `${queryResult.map((x) => titleCase(x.title)).join(', ')}`;
+					if (finalString.length > CHAR_LIMIT) {
+						embed.setDescription(`Sorry! Due to Discord's embed limitations, I can't show you all the moves that satisfy the criteria \`${key}\`. Consider narrowing your search. Apologies for the inconvenience.`);
+					} else {
+						embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
+							.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
+							.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
+					}
 				} else {
-					embed.setDescription(`Sorry, I couldn't find anything for '${key}'.`);
+					embed.setDescription(`Sorry, I couldn't find anything for \`${key}\`.`);
 				}
 			}
 		}
