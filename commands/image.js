@@ -14,7 +14,7 @@ module.exports = {
 					.setDescription('image category')
 					.setRequired(true)
 					.addChoices(
-						...dictList(['tuffy', 'marzika', 'pet']),
+						...dictList(fs.readdirSync('./img/')),
 					),
 		),
 	async execute(interaction) {
