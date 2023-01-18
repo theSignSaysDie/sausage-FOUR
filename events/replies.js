@@ -12,7 +12,7 @@ module.exports = {
 		} else if (text.startsWith('they hit the fucking pentagon')) {
 			messageContent = 'there\'s been a second plane.';
 		} else if (text.startsWith('i love you sausage')) {
-			messageContent = rollDice(100)[0] == 69 ? 'fuck you bitch' : 'i love you too!';
+			messageContent = rollDice(100)[0] === 69 ? 'fuck you bitch' : 'i love you too!';
 		} else if (text.startsWith('im pitch for you')) {
 			messageContent = ':slight_smile: <:shootem:568194854212075529>';
 		} else if (text.startsWith('good evening sausage')) {
@@ -31,7 +31,7 @@ module.exports = {
 			messageContent = '<:shootem:568194854212075529>';
 		} else if (text.startsWith('thank you sausage')) {
 			messageContent = 'You\'re welcome!';
-		} else if (text == 'sausage') {
+		} else if (text === 'sausage') {
 			messageContent = 'Ribbit.';
 		} else if (
 			text.startsWith('gm') &&
@@ -52,7 +52,7 @@ module.exports = {
 			} else {
 				messageContent = 'Good morning friend!';
 			}
-			messageContent = rollDice(100)[0] == 69 ? 'fuck you bitch' : messageContent;
+			messageContent = rollDice(100)[0] === 69 ? 'fuck you bitch' : messageContent;
 		} else if (
 			text.startsWith('sausage my beloved') &&
 			interaction.author.id === '245242305852866561'
