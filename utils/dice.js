@@ -1,7 +1,10 @@
 const { colorDict } = require('../utils/info');
+const { RNG } = require('../utils/prng');
+
+const random = RNG();
 
 function roll1ToX(diceType) {
-	return Math.floor(Math.random() * diceType) + 1;
+	return Math.floor(random() * diceType) + 1;
 }
 
 function rollDice(diceType, amt = 1, talent = 0) {
