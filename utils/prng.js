@@ -1,5 +1,4 @@
 /* eslint-disable no-inline-comments */
-// From http://baagoe.com/en/RandomMusings/javascript/
 
 // From http://baagoe.com/en/RandomMusings/javascript/
 // Johannes Baagøe <baagoe@baagoe.com>, 2010
