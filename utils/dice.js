@@ -71,6 +71,30 @@ function formatRoll(diceType, talent, modifier) {
 	return { weird: diceType !== 8, min: min, max: max, sum: totalSum, text: `(${stringNums.join(', ')}${diceType === 10 ? modStr(extraDie, true) : ''})${diceType === 2 ? '' : modStr(modifier, true)}\n**Total**: ${totalSum}` };
 }
 
+function formatRawRoll(amt, size, keeps, mod) {
+	const numArr = rollDice(size, amt);
+	const indices = markForSum(numArr, keeps === 0 ? amt : Math.abs(keeps), keeps);
+	let totalSum = 0;
+	for (let i = 0; i < numArr.length; i++) {
+		totalSum += numArr[i] * indices[i];
+	}
+
+	const stringNums = [];
+	for (let i = 0; i < numArr.length; i++) {
+		let item = `${numArr[i]}`;
+		if (numArr[i] === 1 || numArr[i] === size) {
+			item = `**${item}**`;
+		}
+		if (indices[i] === 0) {
+			item = `~~${item}~~`;
+		}
+		stringNums.push(item);
+	}
+
+	totalSum += mod;
+	return { sum: totalSum, text: `(${stringNums.join(', ')})${modStr(mod, true)}\n**Total**: ${totalSum}` };
+}
+
 function getRollColor(rollResult) {
 	let result = colorDict.BOT;
 	if (rollResult.sum < 0) result = colorDict.RUST;
@@ -88,6 +112,7 @@ module.exports = {
 	rollDice: rollDice,
 	modStr: modStr,
 	formatRoll: formatRoll,
+	formatRawRoll: formatRawRoll,
 	getRollColor: getRollColor,
 	roll1ToX: roll1ToX,
 };

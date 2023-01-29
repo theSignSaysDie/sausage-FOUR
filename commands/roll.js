@@ -1,11 +1,14 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { formatRoll, modStr, getRollColor } = require('../utils/dice');
+const { formatRoll, modStr, getRollColor, formatRawRoll } = require('../utils/dice');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roll')
 		.setDescription('Roll some dice')
-		.addIntegerOption(option =>
+		.addStringOption(option =>
+			option.setName('raw')
+				.setDescription('Enter a manual diceroll'),
+		).addIntegerOption(option =>
 			option.setName('talent')
 				.setDescription('Specify Talent (default normal)')
 				.addChoices(
@@ -31,20 +34,49 @@ module.exports = {
 					{ name: '8d2', value: 2 }),
 		),
 	async execute(interaction) {
-		const dice = interaction.options.getInteger('dice') || 8;
-		const modifier = interaction.options.getInteger('modifier') || 0;
-		const talent = interaction.options.getInteger('talent') || 0;
-		const description = interaction.options.getString('description') || 'Roll result';
+		const raw = interaction.options.getString('raw');
+		if (raw) {
+			let m;
+			const regex = /(\d+)?d(\d+)(?:k([lh])(\d+))?(?:([+-])(\d+))?/;
+			if ((m = regex.exec(raw)) !== null) {
+				const amt = +(m[1] ?? 1);
+				const size = +m[2];
+				const keeps = m[3] ? (m[3] === 'h' ? +m[4] : -m[4]) : 0;
+				if (Math.abs(keeps) > amt) {
+					await interaction.reply({ content: `I'm sorry! I couldn't parse the roll \`${raw}\` because you're trying to keep more dice than you're rolling. Please double-check your spelling and try again.`, ephemeral: true });
+					return;
+				}
+				if (m[3] && keeps === 0) {
+					await interaction.reply({ content: '...Why are you keeping zero dice? Please try again.', ephemeral: true });
+					return;
+				}
+				const mod = m[5] ? eval(`${m[5]}${m[6]}`) : 0;
+				const rollInfo = formatRawRoll(amt, size, keeps, mod);
+				const description = interaction.options.getString('description') || 'Roll result';
+				const embed = getDefaultEmbed()
+					.setTitle(`**${description}**`)
+					.setDescription(`${m[0]}\n\n🎲 ${rollInfo.text}`)
+					.setColor(0xc3c3c3);
+				await interaction.reply({ embeds: [embed] });
+			} else {
+				await interaction.reply({ content: `I'm sorry! I couldn't parse the roll \`${raw}\`. Please double-check your spelling and try again.`, ephemeral: true });
+			}
+		} else {
 
-		const talentName = ['godawful', 'inept', '', 'talented', 'legendary'];
-		const metagamerModifier = (dice === 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
-		const diceString = (talent === 0 && modifier === 0 && dice === 8) ? '' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
-		const rollInfo = formatRoll(dice, talent, modifier);
-		const embed = getDefaultEmbed()
-			.setTitle(`**${description}**`)
-			.setDescription(`${diceString}\n\n🎲 ${rollInfo.text}`)
-			.setColor(getRollColor(rollInfo));
-		await interaction.reply({ embeds: [embed] });
+			const dice = interaction.options.getInteger('dice') || 8;
+			const modifier = interaction.options.getInteger('modifier') || 0;
+			const talent = interaction.options.getInteger('talent') || 0;
+			const description = interaction.options.getString('description') || 'Roll result';
 
+			const talentName = ['godawful', 'inept', '', 'talented', 'legendary'];
+			const metagamerModifier = (dice === 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
+			const diceString = (talent === 0 && modifier === 0 && dice === 8) ? '' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
+			const rollInfo = formatRoll(dice, talent, modifier);
+			const embed = getDefaultEmbed()
+				.setTitle(`**${description}**`)
+				.setDescription(`${diceString}\n\n🎲 ${rollInfo.text}`)
+				.setColor(getRollColor(rollInfo));
+			await interaction.reply({ embeds: [embed] });
+		}
 	},
 };
