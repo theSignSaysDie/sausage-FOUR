@@ -170,4 +170,5 @@ module.exports = {
 	fanmadeLinks: fanmadeLinks,
 	tableNames: tableNames,
 	lookupTableNames: lookupTableNames,
+	starterTypes: ['intro', 'post', 'outro'],
 };
