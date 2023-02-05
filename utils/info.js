@@ -159,16 +159,17 @@ const fanmadeLinks = [
 const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle'];
 const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle'];
 
-console.log(lookupTableNames);
+const birthdays = [];
 
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.0.0',
-	lastUpdated: new Date('January 29, 2023 14:34 PST'),
+	lastUpdated: new Date('February 5, 2023 14:32 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
 	tableNames: tableNames,
 	lookupTableNames: lookupTableNames,
 	starterTypes: ['intro', 'post', 'outro'],
+	birthdays: birthdays,
 };
