@@ -163,6 +163,94 @@ const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emoti
 
 const birthdays = [];
 
+const helpText = {
+	'default':
+`> Use \`/help <command>\` on any command with an * to learn more about it.
+
+**Roleplay**
+\`/fanmade <document>\` - Fetch a link to a fanmade document
+\`/lookup\`* - Look up game information
+\`/pinglist\`* - Manage and invoke pinglists
+\`/roll\`* - Roll dice for S&S (and anything else)
+\`/rules\` - Read the server rules
+\`/starter\`* - Manage your trollcial post templates on mobile
+\`/troll <name>\` - Look up a troll in the server troll call
+\`/trollcall <user>\` - Look up a user's specific troll call
+
+**Utilities**
+\`/choose\`* - Randomly pick from a list of choices
+\`/help <command>\` - Fetch additional help for complex* commands
+\`/image <category>\` - Fetch a random image from a specific category
+\`/invite\` - Fetch an invite link for Sausage
+\`/version\` - Read Sausage version information
+
+**Fun**
+\`/breakdance\` - Do a little dance
+\`/reminder\` - Remember to do the thing
+\`/tipjar\` - Tip the devs!`,
+
+	'lookup':
+`\`/lookup <category> <key>\`
+Valid categories are given in the dropdown menu and cover a vast swath of S&S reference documents.
+
+By default, this command prints out the text of the requested key in a neatly formatted embed.
+
+When using the \`move\` category, you may additionally request a listing of move titles with specific tags.
+Here are some examples:
+> \`rust passive\` - returns all [Passive][Rust] moves
+> \`rust | time\` - returns all [Rust] OR [Time] moves
+> \`rust !basic\` - returns all [Rust] moves which are NOT [Basic]`,
+
+	'pinglist':
+`\`/pinglist (create|invoke|delete) <name>\`
+
+\`/pinglist create <name>\` - Creates a pinglist with the given name and posts a join/leave menu in the channel you posted in
+\`/pinglist invoke <name>\` - Invokes the pinglist with the given name, pinging everyone on the list and posting a join/leave menu
+\`/pinglist delete <name>\` - Upon successful confirmation, unsubscribes all pinglist members and deletes the pinglist from Sausage
+`,
+
+	'roll':
+`\`/roll [talent] [modifier] [description] [dice]\`
+- \`talent\` may be any one of [normal, talented, legendary, inept, godawful]
+- \`modifier\` may be any integer, positive or negative
+- \`description\` can be any text you want to describe the roll
+- \`dice\` supports custom dice added by the Lime Metagamer move \`ALL THE DICE\`.
+
+\`/roll [raw]\` 
+- Parses dice like Avrae
+
+All options for this command are optional. If no options are specified, Sausage will roll a flat \`2d8\` with no description.`,
+
+	'starter':
+`\`/starter (add|edit|remove|intro|post|outro) <name>\`
+
+\`/starter add <name>\` - Adds intro, post, and outro trollcial templates for you to fill out for your troll
+\`/starter edit <name>\` - Lets you edit your intro, post, and outro templates.
+\`/starter remove <name>\` - Upon successful confirmation, deletes your troll's trollcial templates from Sausage
+\`/starter intro <name>\` - Receive an ephemeral message with your troll's trollcial intro to copy/paste
+\`/starter post <name>\` - Receive an ephemeral message with your troll's trollcial post template to copy/paste
+\`/starter outro <name>\` - Receive an ephemeral message with your troll's trollcial outro to copy/paste`,
+
+	'choose':
+`\`/choose <choices>\`
+- \`choices\` can be a list separated by \`;/, \` characters. 
+Any of these can be present in a list; however, \`;\` will be prioritized over \`/\`, \`/\` will be prioritized over \`,\`, and \`,\` will be prioritized over spaces.
+
+Ex.
+> \`/choose Strawberry Chocolate Vanilla\`
+> \`/choose Strawberry, Chocolate, Vanilla Swirl\`
+> \`/choose Strawberry/Chocolate/Vanilla, Caramel Blast\`
+> \`/choose Strawberry; Chocolate, or a similar flavor; Vanilla/Vanilla equivalent\``,
+
+	'help':
+`Command syntax:
+- \`<option>\` - This option is **required**.
+- \`[option]\` - This option are *optional*.
+- \`(choice1|choice2|choice3)\` - You **must** pick a choice from this list.
+- \`[choice1|choice2|choice3]\` - You *may* pick a choice from this list, or leave it blank.
+- \`text\` - Type this text verbatim.`,
+};
+
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v4.0.0',
@@ -174,4 +262,5 @@ module.exports = {
 	lookupTableNames: lookupTableNames,
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
+	helpText: helpText,
 };

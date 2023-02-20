@@ -24,6 +24,12 @@ function getDefaultEmbed() {
 	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated.toLocaleString('en-US', { dateStyle: 'short' })}  |   Do /help for more commands` });
 }
 
+function getHelpEmbed(information) {
+	return getDefaultEmbed()
+		.setDescription(information);
+
+}
+
 function blankUndefined(thing, prefix = '', suffix = '') {
 	return thing === undefined ? '' : `${prefix}${thing}${suffix}`;
 }
@@ -36,6 +42,7 @@ module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
+	getHelpEmbed: getHelpEmbed,
 	blankUndefined: blankUndefined,
 	titleCase: titleCase,
 	dictList : dictList,
