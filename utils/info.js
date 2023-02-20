@@ -165,8 +165,8 @@ const birthdays = [];
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.0.0',
-	lastUpdated: new Date('February 5, 2023 14:32 PST'),
+	versionNum: 'v4.0.0',
+	lastUpdated: new Date('February 19, 2023 19:22 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
