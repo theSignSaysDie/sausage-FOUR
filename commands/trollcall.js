@@ -19,8 +19,8 @@ module.exports = {
 		const username = interaction.options.getUser('username');
 		let public = interaction.options.getBoolean('public');
 		if (public === undefined) public = false;
-		const query = `SELECT \`docLink\` FROM \`trollcall\` WHERE \`userID\`="${username.id}";`;
-		const queryResult = await fetchSQL(query);
+		const query = 'SELECT `docLink` FROM `trollcall` WHERE `userID`=?;';
+		const queryResult = await fetchSQL(query, [username.id]);
 		if (queryResult.length) {
 			const docLink = queryResult[0].docLink;
 			await interaction.reply({ content:docLink, ephemeral: !public });

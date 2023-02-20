@@ -14,8 +14,8 @@ module.exports = {
 			let updatedText, query;
 			for (let i = 0; i < 3; i++) {
 				updatedText = interaction.fields.getTextInputValue(`${id}_${starterTypes[i]}`);
-				query = `UPDATE \`starter\` SET \`content\` = '${updatedText}' WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}' AND \`type\` = '${starterTypes[i]}'`;
-				await fetchSQL(query);
+				query = 'UPDATE `starter` SET `content` = ? WHERE `snowflake` = ? AND `name` = ? AND `type` = ?';
+				await fetchSQL(query, [updatedText, user, name, starterTypes[i]]);
 			}
 			await interaction.reply({ content: `Succesfully updated text for ${titleCase(name)}!`, ephemeral: true });
 		}

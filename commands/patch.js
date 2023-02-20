@@ -60,8 +60,8 @@ module.exports = {
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'add') {
 			const table = camelize(interaction.options.getString('table'));
-			const query = `SHOW COLUMNS FROM \`${table}\``;
-			const queryResult = await fetchSQL(query);
+			const query = 'SHOW COLUMNS FROM ??';
+			const queryResult = await fetchSQL(query, [table]);
 			const modal = new ModalBuilder()
 				.setCustomId(`patchAddModal_${table}`)
 				.setTitle(`Enter new entry for ${table}`);
@@ -88,11 +88,11 @@ module.exports = {
 		} else if (interaction.options.getSubcommand() === 'edit') {
 			const table = camelize(interaction.options.getString('table'));
 			const key = camelize(interaction.options.getString('key'));
-			let query = `SELECT 1 FROM ${table} WHERE \`key\` = '${key}';`;
-			let queryResult = await fetchSQL(query);
+			let query = 'SELECT 1 FROM ?? WHERE `key` = ?;';
+			let queryResult = await fetchSQL(query, [table, key]);
 			if (queryResult.length) {
-				query = `SHOW COLUMNS FROM \`${table}\``;
-				queryResult = await fetchSQL(query);
+				query = 'SHOW COLUMNS FROM ??';
+				queryResult = await fetchSQL(query, [table]);
 				const buttons = new ActionRowBuilder();
 				for (const item of queryResult) {
 					const label = item['Field'];
@@ -111,8 +111,8 @@ module.exports = {
 		} else if (interaction.options.getSubcommand() === 'drop') {
 			const table = camelize(interaction.options.getString('table'));
 			let key = camelize(interaction.options.getString('key'));
-			const query = `SELECT \`key\` FROM ${table} WHERE \`key\` = "${key}";`;
-			const queryResult = await fetchSQL(query);
+			const query = 'SELECT `key` FROM ?? WHERE `key` = ?;';
+			const queryResult = await fetchSQL(query, [table, key]);
 			if (queryResult.length) {
 				key = queryResult[0]['key'];
 				const modal = new ModalBuilder()

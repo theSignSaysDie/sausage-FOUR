@@ -10,8 +10,8 @@ module.exports = {
 		if (id.startsWith('patchAddModal_')) {
 			const details = id.replace('patchAddModal_', '').split('_');
 			const [table] = details;
-			let query = `SHOW COLUMNS FROM \`${table}\``;
-			const queryResult = await fetchSQL(query);
+			let query = 'SHOW COLUMNS FROM ??';
+			const queryResult = await fetchSQL(query, [table]);
 			const values = [];
 			let key;
 			for (const item of queryResult) {
@@ -23,8 +23,8 @@ module.exports = {
 				}
 				values.push(sanitizeForQuery(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`)));
 			}
-			query = `INSERT INTO \`${table}\` VALUES (${values.map(x => (`"${x}"`)).join(', ')});`;
-			await fetchSQL(query);
+			query = 'INSERT INTO ?? VALUES (?);';
+			await fetchSQL(query, [table, values]);
 			await interaction.reply({ content:`Added entry \`${key}\` in table \`${table}\` to new value.`, ephemeral: true });
 		}
 		return;

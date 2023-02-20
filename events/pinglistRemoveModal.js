@@ -13,8 +13,8 @@ module.exports = {
 			const confirm = interaction.fields.getTextInputValue(`pinglist_remove_confirm_${name}`);
 			let query;
 			if (confirm.toLowerCase() === name) {
-				query = `DELETE FROM \`pinglist\` WHERE \`name\` = '${name}'`;
-				await fetchSQL(query);
+				query = 'DELETE FROM `pinglist` WHERE `name` = ?';
+				await fetchSQL(query, [name]);
 				await interaction.reply({ content: `Successfully removed pinglist for ${titleCase(name)}!`, ephemeral: true });
 			} else {
 				await interaction.reply({ content: 'Sorry, the confirmation prompt failed. Removal canceled.', ephemeral: true });

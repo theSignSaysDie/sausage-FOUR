@@ -15,8 +15,8 @@ module.exports = {
 			console.log(confirm, name);
 			if (confirm.toLowerCase() === name) {
 
-				query = `DELETE FROM \`starter\` WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}'`;
-				await fetchSQL(query);
+				query = 'DELETE FROM `starter` WHERE `snowflake` = ? AND `name` = ?';
+				await fetchSQL(query, [user, name]);
 				await interaction.reply({ content: `Succesfully removed text for ${titleCase(name)}!`, ephemeral: true });
 			} else {
 				await interaction.reply({ content: 'Sorry, the confirmation prompt failed. Removal canceled.', ephemeral: true });

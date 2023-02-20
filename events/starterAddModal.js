@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { fetchSQL, sanitizeForQuery } = require('../utils/db');
+const { fetchSQL } = require('../utils/db');
 const { titleCase } = require('../utils/stringy');
 const { starterTypes } = require('../utils/info');
 
@@ -14,8 +14,8 @@ module.exports = {
 			let updatedText, query;
 			for (let i = 0; i < 3; i++) {
 				updatedText = interaction.fields.getTextInputValue(`${id}_${starterTypes[i]}`);
-				query = `INSERT INTO \`starter\` VALUES ('${sanitizeForQuery(user)}', '${sanitizeForQuery(name)}', '${sanitizeForQuery(starterTypes[i])}', '${sanitizeForQuery(updatedText)}')`;
-				await fetchSQL(query);
+				query = 'INSERT INTO `starter` VALUES (?, ?, ?, ?)';
+				await fetchSQL(query, [user, name, starterTypes[i], updatedText]);
 			}
 			await interaction.reply({ content: `Succesfully added text for ${titleCase(name)}!`, ephemeral: true });
 		}

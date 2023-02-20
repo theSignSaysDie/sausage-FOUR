@@ -12,11 +12,12 @@ const con = mysql.createPool({
 	database: process.env.SQL_DB,
 	user: process.env.SQL_USER,
 	password: process.env.SQL_PW,
+	multipleStatements: false,
 });
 
-const fetchSQL = (query) => {
+const fetchSQL = (query, params = []) => {
 	return new Promise((resolve, reject) => {
-		con.query(query, (err, elements) => {
+		con.query(query, params, (err, elements) => {
 			if (err) {
 				console.log(`Big fuckup while processing ${query}`, err);
 				return reject(err);

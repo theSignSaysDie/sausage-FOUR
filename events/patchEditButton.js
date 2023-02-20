@@ -13,8 +13,8 @@ module.exports = {
 			const modal = new ModalBuilder()
 				.setCustomId(`patchEditModal_${table}_${key}_${column}`)
 				.setTitle(`Edit ${column} for ${key}`);
-			const query = `SELECT \`${column}\` from \`${table}\` where \`key\` = "${key}"`;
-			const queryResult = await fetchSQL(query);
+			const query = 'SELECT ?? FROM ?? where `key` = ?';
+			const queryResult = await fetchSQL(query, [column, table, key]);
 			const initialText = queryResult[0][column];
 			if (initialText.length > CHAR_LIMIT) {
 				await interaction.reply({ content: 'Sorry! Due to Discord\'s API limitations, I can\'t provide this information to you. Please contact another dev to request changes. Apologies for the inconvenience.', ephemeral: true });

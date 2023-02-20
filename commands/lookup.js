@@ -27,8 +27,8 @@ module.exports = {
 	async execute(interaction) {
 		const key = interaction.options.getString('key');
 		const targetTable = interaction.options.getString('category');
-		let query = `SELECT * FROM \`${targetTable}\` WHERE \`key\`="${camelize(key)}";`;
-		let queryResult = await fetchSQL(query);
+		let query = 'SELECT * FROM ?? WHERE `key` = ?;';
+		let queryResult = await fetchSQL(query, [targetTable, camelize(key)]);
 		const embed = getDefaultEmbed();
 		if (queryResult.length) {
 			const entry = queryResult[0];

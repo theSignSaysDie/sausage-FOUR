@@ -28,8 +28,8 @@ module.exports = {
 		const name = interaction.options.getString('name').replace(/[^ a-zA-Z?]/, '').toLowerCase();
 		// Security check
 		const user = interaction.user.id;
-		let query = `SELECT * FROM \`starter\` WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}'`;
-		let result = await fetchSQL(query);
+		let query = 'SELECT * FROM `starter` WHERE `snowflake` = ? AND `name` = ?';
+		let result = await fetchSQL(query, [user, name]);
 		if (!result.length && op !== 'add') {
 			await interaction.reply({ content: `Sorry, there doesn't seem to be anything in your name for '${name}'. Check your spelling and try again.`, ephemeral: true });
 		} else if (['add', 'edit', 'remove'].indexOf(op) >= 0) {
@@ -39,8 +39,8 @@ module.exports = {
 				.setTitle(`${titleCase(op)} messages for ${titleCase(name)}`);
 			if (op === 'add' || op === 'edit') {
 				if (op === 'add') {
-					query = `SELECT \`content\` FROM \`starter\` WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}'`;
-					result = await fetchSQL(query);
+					query = 'SELECT `content` FROM `starter` WHERE `snowflake` = ? AND `name` = ?';
+					result = await fetchSQL(query, [user, name]);
 					console.log(result);
 					if (result.length) {
 						await interaction.reply({ content: `It seems you already have the alias '${name}'! Use \`/starter edit ${name}\` to change these messages instead.`, ephemeral: true });
@@ -48,10 +48,10 @@ module.exports = {
 					}
 				}
 				for (let i = 0; i < 3; i++) {
-					query = `SELECT \`content\` FROM \`starter\` WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}' AND \`type\` = '${starterTypes[i]}'`;
+					query = 'SELECT `content` FROM `starter` WHERE `snowflake` = ? AND `name` = ? AND `type` = ?';
 					let text = '';
 					if (op === 'edit') {
-						result = await fetchSQL(query);
+						result = await fetchSQL(query, [user, name, starterTypes[i]]);
 						text = result[0].content;
 					}
 					modal.addComponents(
@@ -80,8 +80,8 @@ module.exports = {
 				await interaction.showModal(modal);
 			}
 		} else {
-			query = `SELECT \`content\` FROM \`starter\` WHERE \`snowflake\` = '${user}' AND \`name\` = '${name}' AND \`type\` = '${op}'`;
-			result = await fetchSQL(query);
+			query = 'SELECT `content` FROM `starter` WHERE `snowflake` = ? AND `name` = ? AND `type` = ?';
+			result = await fetchSQL(query, [user, name, op]);
 			await interaction.reply({ content: `\`\`\`\n${result[0].content}\n\`\`\``, ephemeral: true });
 		}
 	},

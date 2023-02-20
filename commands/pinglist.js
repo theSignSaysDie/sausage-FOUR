@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, ButtonBuilder, ButtonStyle, TextInputStyle } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { fetchSQL, sanitizeForQuery } = require('../utils/db');
+const { fetchSQL } = require('../utils/db');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -48,8 +48,8 @@ module.exports = {
 		result = await fetchSQL(query);
 		if (!result.length) {
 			if (operation === 'create') {
-				query = `INSERT INTO \`pinglist\` VALUES ('${sanitizeForQuery(user)}', 'author', '${sanitizeForQuery(name)}')`;
-				await fetchSQL(query);
+				query = 'INSERT INTO `pinglist` VALUES (?, \'author\', ?)';
+				await fetchSQL(query, [user, name]);
 				await interaction.reply({ embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` **created**!`)], components: pinglistMessageContents });
 			} else {
 				await interaction.reply({ content: `You don't seem to have a pinglist under the name '${name}'! Check your spelling and try again.`, ephemeral: true });
@@ -57,8 +57,8 @@ module.exports = {
 		} else if (operation === 'create') {
 			await interaction.reply({ content: `It seems like you already have a pinglist named '${name}'!`, ephemeral: true });
 		} else if (operation === 'invoke') {
-			query = `SELECT \`snowflake\` FROM \`pinglist\` WHERE \`record\` = 'subscriber' AND \`name\` = '${name}';`;
-			result = await fetchSQL(query);
+			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
+			result = await fetchSQL(query, [name]);
 			const userList = result.map(x => `<@${x.snowflake}>`).join(' ');
 			await interaction.reply({ content: userList, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
 		} else {
