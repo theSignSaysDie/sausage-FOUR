@@ -11,10 +11,12 @@ module.exports = {
 				new ButtonBuilder()
 					.setLabel('Neo\'s Paypal')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('⌨️')
 					.setURL('https://paypal.me/ashenGemstone'),
 				new ButtonBuilder()
 					.setLabel('Neo\'s Ko-Fi')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('⌨️')
 					.setURL('https://ko-fi.com/neonova'),
 			);
 		const rowErika = new ActionRowBuilder()
@@ -22,10 +24,12 @@ module.exports = {
 				new ButtonBuilder()
 					.setLabel('Erika\'s Paypal')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('🍎')
 					.setURL('https://paypal.me/am326'),
 				new ButtonBuilder()
 					.setLabel('Erika\'s Ko-Fi')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('🍎')
 					.setURL('https://ko-fi.com/am3_26'),
 			);
 		const rowMeme = new ActionRowBuilder()
@@ -33,10 +37,12 @@ module.exports = {
 				new ButtonBuilder()
 					.setLabel('Meme\'s Paypal')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('✨')
 					.setURL('https://paypal.me/DTAngres'),
 				new ButtonBuilder()
 					.setLabel('Meme\'s Ko-Fi')
 					.setStyle(ButtonStyle.Link)
+					.setEmoji('✨')
 					.setURL('https://ko-fi.com/mememagician'),
 			);
 		const embed = getDefaultEmbed()
