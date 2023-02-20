@@ -22,10 +22,10 @@ module.exports = {
 		}
 		for (const s in delimiters) {
 			if (choiceString.indexOf(delimiters[s]) !== -1) {
-				choices = choiceString.split(delimiters[s]);
+				choices = choiceString.split(delimiters[s]).map(x => x.trim());
 				break;
 			}
 		}
-		await interaction.reply({ content: `Choice selected: \`${choices[roll1ToX(choices.length) - 1].trim()}\``, ephemeral: true });
+		await interaction.reply({ content: `Choices: \n${choices.map(x => `- \`${x}\``).join('\n')}\n\nChoice selected: \`${choices[roll1ToX(choices.length) - 1].trim()}\``, ephemeral: true });
 	},
 };
