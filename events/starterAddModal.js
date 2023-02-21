@@ -13,7 +13,7 @@ module.exports = {
 			const [user, name] = details;
 			let updatedText, query;
 			for (let i = 0; i < 3; i++) {
-				updatedText = interaction.fields.getTextInputValue(`${id}_${starterTypes[i]}`);
+				updatedText = interaction.fields.getTextInputValue(`${id}_${starterTypes[i]}`).replace('`', '');
 				query = 'INSERT INTO `starter` VALUES (?, ?, ?, ?)';
 				await fetchSQL(query, [user, name, starterTypes[i], updatedText]);
 			}
