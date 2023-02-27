@@ -9,7 +9,7 @@ module.exports = {
 			option
 				.setName('target')
 				.setDescription('Who\'s it gonna be?'),
-		).setDefaultMemberPermissions(0),
+		),
 	async execute(interaction) {
 		const target = interaction.options.getUser('target');
 		birthdays.push(target.id);
