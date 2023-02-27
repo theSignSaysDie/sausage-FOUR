@@ -198,8 +198,9 @@ By default, this command prints out the text of the requested key in a neatly fo
 When using the \`move\` category, you may additionally request a listing of move titles with specific tags.
 Here are some examples:
 > \`rust passive\` - returns all [Passive][Rust] moves
-> \`rust | time\` - returns all [Rust] OR [Time] moves
-> \`rust !basic\` - returns all [Rust] moves which are NOT [Basic]`,
+> \`rust|time\` - returns all [Rust] OR [Time] moves
+> \`rust !basic\` - returns all [Rust] moves which are NOT [Basic]
+> \`rust basic|advanced\` - returns all [Rust] moves which are either [Basic] or [Advanced]`,
 
 	'pinglist':
 `\`/pinglist (create|invoke|delete) <name>\`
