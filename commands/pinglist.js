@@ -14,6 +14,8 @@ module.exports = {
 				.addChoices(
 					{ name: 'create', value: 'create' },
 					{ name: 'invoke', value: 'invoke' },
+					{ name: 'assess', value: 'assess' },
+					{ name: 'rename', value: 'rename' },
 					{ name: 'delete', value: 'delete' },
 				),
 		).addStringOption(option =>
@@ -61,14 +63,34 @@ module.exports = {
 			result = await fetchSQL(query, [name]);
 			const userList = result.map(x => `<@${x.snowflake}>`).join(' ');
 			await interaction.reply({ content: userList, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
-		} else {
+		} else if (operation === 'assess') {
+			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
+			result = await fetchSQL(query, [name]);
+			const userList = result.map(x => `<@${x.snowflake}>`).join(', ');
+			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userList}`, ephemeral: true });
+		} else if (operation === 'rename') {
 			const modal = new ModalBuilder()
-				.setCustomId(`pinglist_remove_${name}`)
-				.setTitle(`Remove pinglist '${name}'`);
+				.setCustomId(`pinglist_rename_${name}_${user}`)
+				.setTitle(`Rename pinglist ${name}`);
 			modal.addComponents(
 				new ActionRowBuilder().addComponents(
 					new TextInputBuilder()
-						.setCustomId(`pinglist_remove_confirm_${name}`)
+						.setCustomId(`pinglist_rename_newName_${name}_${user}`)
+						.setLabel('Specify a new name for the pinglist')
+						.setPlaceholder(name)
+						.setStyle(TextInputStyle.Short)
+						.setRequired(true),
+				),
+			);
+			await interaction.showModal(modal);
+		} else {
+			const modal = new ModalBuilder()
+				.setCustomId(`pinglist_delete_${name}_${user}`)
+				.setTitle(`Delete pinglist '${name}'`);
+			modal.addComponents(
+				new ActionRowBuilder().addComponents(
+					new TextInputBuilder()
+						.setCustomId(`pinglist_delete_confirm_${name}_${user}`)
 						.setLabel('WARNING: IRREVOCABLE ACTION')
 						.setPlaceholder(`Type '${name}' verbatim to confirm deletion`)
 						.setStyle(TextInputStyle.Short)
