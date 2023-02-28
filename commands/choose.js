@@ -12,9 +12,16 @@ module.exports = {
 					.setName('choices')
 					.setDescription('What you\'re picking from')
 					.setRequired(true),
+		).addBooleanOption(
+			option =>
+				option
+					.setName('secret')
+					.setDescription('Wanna be sneaky?')
+					.setRequired(false),
 		),
 	async execute(interaction) {
 		const choiceString = interaction.options.getString('choices');
+		const secrecy = interaction.options.getBoolean('secret') ?? false;
 		let choices;
 		if (choiceString.indexOf(' ') === -1) {
 			await interaction.reply({ content: 'dude.', ephemeral: true });
@@ -26,6 +33,6 @@ module.exports = {
 				break;
 			}
 		}
-		await interaction.reply({ content: `Choices: \n${choices.map(x => `- \`${x}\``).join('\n')}\n\nChoice selected: \`${choices[roll1ToX(choices.length) - 1].trim()}\``, ephemeral: true });
+		await interaction.reply({ content: `Choices: \n${choices.map(x => `- \`${x}\``).join('\n')}\n\nChoice selected: \`${choices[roll1ToX(choices.length) - 1].trim()}\``, ephemeral: secrecy });
 	},
 };
