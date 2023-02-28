@@ -70,6 +70,8 @@ module.exports = {
 					embed.setDescription(`Sorry, I couldn't find anything for \`${key}\`.`);
 				}
 			}
+		} else {
+			embed.setDescription(`Sorry, I couldn't find anything matching \`${key}\`. Double check your spelling and try again.`);
 		}
 		await interaction.reply({ embeds: [embed] });
 	},
