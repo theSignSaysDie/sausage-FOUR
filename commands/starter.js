@@ -11,12 +11,12 @@ module.exports = {
 			option.setName('option')
 				.setDescription('Which operation do you want to perform?')
 				.addChoices(
-					{ name: 'add', value: 'add' },
-					{ name: 'edit', value: 'edit' },
-					{ name: 'remove', value: 'remove' },
 					{ name: 'intro', value: 'intro' },
 					{ name: 'post', value: 'post' },
 					{ name: 'outro', value: 'outro' },
+					{ name: 'add', value: 'add' },
+					{ name: 'edit', value: 'edit' },
+					{ name: 'remove', value: 'remove' },
 				).setRequired(true),
 		).addStringOption(option =>
 			option.setName('name')
