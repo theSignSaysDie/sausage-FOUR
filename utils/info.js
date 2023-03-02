@@ -254,8 +254,8 @@ Ex.
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.1.6',
-	lastUpdated: new Date('March 2, 2023 10:36 PST'),
+	versionNum: 'v3.1.7',
+	lastUpdated: new Date('March 2, 2023 13:53 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
