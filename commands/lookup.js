@@ -54,7 +54,6 @@ module.exports = {
 				} else {
 					clauses.push(`\`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }"`);
 				}
-				// eslint-disable-next-line no-useless-escape
 				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
 				queryResult = await fetchSQL(query);
 				if (queryResult.length) {
