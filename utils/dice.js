@@ -43,12 +43,11 @@ function formatRoll(diceType, talent, modifier) {
 	}
 	let max = false;
 	let min = false;
-	const testValue = diceType + modifier;
 	if (diceType === 8) {
 		if (totalSum === 16 || totalSum + modifier >= 20) {
 			max = true;
 		}
-		if (totalSum + modifier === 2 || testValue < 0) {
+		if (totalSum === 2 || totalSum + modifier < 0) {
 			min = true;
 		}
 	}
