@@ -18,10 +18,17 @@ module.exports = {
 					.setName('secret')
 					.setDescription('Wanna be sneaky?')
 					.setRequired(false),
+		).addIntegerOption(
+			option =>
+				option
+					.setName('pick')
+					.setDescription('How many choices?')
+					.setRequired(false),
 		),
 	async execute(interaction) {
 		const choiceString = interaction.options.getString('choices');
 		const secrecy = interaction.options.getBoolean('secret') ?? false;
+		const pick = interaction.options.getInteger('pick') ?? 1;
 		let choices;
 		if (choiceString.indexOf(' ') === -1) {
 			await interaction.reply({ content: 'dude.', ephemeral: true });
@@ -33,6 +40,24 @@ module.exports = {
 				break;
 			}
 		}
-		await interaction.reply({ content: `Choices: \n${choices.map(x => `- \`${x}\``).join('\n')}\n\nChoice selected: \`${choices[roll1ToX(choices.length) - 1].trim()}\``, ephemeral: secrecy });
+
+		if (choices.length <= pick) {
+			await interaction.reply({ content: `You can't pick ${pick} choices from a list ${choices.length} elements long.`, ephemeral: true });
+			return;
+		} else if (pick <= 0) {
+			await interaction.reply({ content: `You can't pick ${pick} choices from a list.`, ephemeral: true });
+		}
+
+		const choiceList = choices.map(x => `- \`${x}\``).join('\n');
+
+		const result = [];
+		while (pick > result.length) {
+			const select = roll1ToX(choices.length) - 1;
+			console.log(select);
+			result.push(choices[select].trim());
+			choices.splice(select, 1);
+		}
+
+		await interaction.reply({ content: `Choices: \n${choiceList}\n\nChoice${ pick !== 1 ? 's' : '' } selected: \`${result.join(', ')}\``, ephemeral: secrecy });
 	},
 };
