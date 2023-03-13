@@ -3,6 +3,17 @@ const { fetchSQL, getDocLink } = require('../utils/db');
 const { camelize, titleCase, getDefaultEmbed, blankUndefined, dictList } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict, lookupTableNames } = require('../utils/info');
 
+function renderMove(embed, entry, key) {
+	if (entry.text.length > CHAR_LIMIT) {
+		entry.text = `\nSorry! Due to Discord's embed character limit, I can't render \`move.${key}\` here. Use the doc link above to access the move text! Apologies for the inconvenience.`;
+	}
+	embed.setTitle(entry.title)
+		.setDescription(`${blankUndefined(entry.cost, '**', '**\n')}${blankUndefined(entry.wealth_level, '**', '**\n')}${blankUndefined(entry.tags, '**', '**\n')}${entry.text}`)
+		.setColor(colorDict[entry.color])
+		.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict['MOVE'] : docDict[entry.doc]));
+	return embed;
+}
+
 const lookupSlashCommand =
 	new SlashCommandBuilder()
 		.setName('lookup')
@@ -29,17 +40,12 @@ module.exports = {
 		const targetTable = interaction.options.getString('category');
 		let query = 'SELECT * FROM ?? WHERE `key` = ?;';
 		let queryResult = await fetchSQL(query, [targetTable, camelize(key)]);
-		const embed = getDefaultEmbed();
+		let embed = getDefaultEmbed();
 		if (queryResult.length) {
 			const entry = queryResult[0];
-			if (entry.text.length > CHAR_LIMIT) {
-				entry.text = `\nSorry! Due to Discord's embed character limit, I can't render \`${targetTable}.${key}\` here. Use the doc link above to access the move text! Apologies for the inconvenience.`;
-			}
-			embed.setTitle(entry.title)
-				.setDescription(`${blankUndefined(entry.cost, '**', '**\n')}${blankUndefined(entry.wealth_level, '**', '**\n')}${blankUndefined(entry.tags, '**', '**\n')}${entry.text}`)
-				.setColor(colorDict[targetTable === 'move' ? entry.color : 'OTHER'])
-				.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict[targetTable.toUpperCase()] : docDict[entry.doc]));
+			embed = renderMove(embed, entry, key);
 		} else if (targetTable === 'move') {
+			console.log('GHAGHS');
 			const terms = key.split(' ');
 			const clauses = [];
 			for (const term in terms) {
@@ -60,6 +66,12 @@ module.exports = {
 					const finalString = `${queryResult.map((x) => titleCase(x.title)).join(', ')}`;
 					if (finalString.length > CHAR_LIMIT) {
 						embed.setDescription(`Sorry! Due to Discord's embed limitations, I can't show you all the moves that satisfy the criteria \`${key}\`. Consider narrowing your search. Apologies for the inconvenience.`);
+					} else if (queryResult.length === 1) {
+						const title = queryResult[0].title;
+						query = 'SELECT * FROM ?? WHERE `title` = ?;';
+						queryResult = await fetchSQL(query, ['move', title]);
+						const entry = queryResult[0];
+						embed = renderMove(embed, entry, key);
 					} else {
 						embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
 							.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
