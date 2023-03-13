@@ -23,10 +23,15 @@ module.exports = {
 			const details = id.replace('pinglist_rename_', '').split('_');
 			const [name, user] = details;
 			const newName = interaction.fields.getTextInputValue(`pinglist_rename_newName_${name}_${user}`);
-			const query = 'UPDATE `pinglist` SET `name` = ? WHERE `name` = ? and `snowflake` = ?';
-			await fetchSQL(query, [newName, name, user]);
-			await interaction.reply({ content: `Renamed pinglist \`${name}\` to \`${newName}\`.`, ephemeral: true });
+			let query = 'SELECT * FROM `pinglist` WHERE `name` = ?';
+			const queryResult = await fetchSQL(query, [newName]);
+			if (queryResult.length) {
+				await interaction.reply({ content: 'Sorry, a pinglist under that name already exists in the system. Please select another name.\n(If this presents a major inconvenience, ping Meme.)', ephemeral: true });
+			} else {
+				query = 'UPDATE `pinglist` SET `name` = ? WHERE `name` = ?';
+				await fetchSQL(query, [newName, name, user]);
+				await interaction.reply({ content: `Renamed pinglist \`${name}\` to \`${newName}\`.`, ephemeral: true });
+			}
 		}
-		return;
 	},
 };

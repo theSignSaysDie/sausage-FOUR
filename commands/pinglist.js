@@ -50,9 +50,15 @@ module.exports = {
 		result = await fetchSQL(query);
 		if (!result.length) {
 			if (operation === 'create') {
-				query = 'INSERT INTO `pinglist` VALUES (?, \'author\', ?)';
-				await fetchSQL(query, [user, name]);
-				await interaction.reply({ embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` **created**!`)], components: pinglistMessageContents });
+				query = 'SELECT * FROM `pinglist` WHERE `name` = ?';
+				const queryResult = await fetchSQL(query, [name]);
+				if (queryResult.length) {
+					await interaction.reply({ content: 'Sorry, a pinglist under that name already exists in the system. Please select another name.\n(If this presents a major inconvenience, ping Meme.)', ephemeral: true });
+				} else {
+					query = 'INSERT INTO `pinglist` VALUES (?, \'author\', ?)';
+					await fetchSQL(query, [user, name]);
+					await interaction.reply({ embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` **created**!`)], components: pinglistMessageContents });
+				}
 			} else {
 				await interaction.reply({ content: `You don't seem to have a pinglist under the name '${name}'! Check your spelling and try again.`, ephemeral: true });
 			}
