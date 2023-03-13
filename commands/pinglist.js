@@ -62,7 +62,9 @@ module.exports = {
 			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
 			result = await fetchSQL(query, [name]);
 			const userList = result.map(x => `<@${x.snowflake}>`).join(' ');
-			await interaction.reply({ content: userList, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
+			const announcement = `Ping by ${interaction.member.displayName}!`;
+			console.log('glghajgk');
+			await interaction.reply({ content: `${announcement}\n\n======\n\n${userList}`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
 		} else if (operation === 'assess') {
 			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
 			result = await fetchSQL(query, [name]);
