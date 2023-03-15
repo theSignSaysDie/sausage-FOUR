@@ -244,6 +244,10 @@ Ex.
 > \`/choose Strawberry/Chocolate/Vanilla, Caramel Blast\`
 > \`/choose Strawberry; Chocolate, or a similar flavor; Vanilla/Vanilla equivalent\``,
 
+	'anon-note':
+`
+Just this! No other arguments. A modal will pop up where you can type your message and submit it! If it doesn't work, ping Meme.
+`,
 	'help':
 `Command syntax:
 - \`<option>\` - This option is **required**.
@@ -256,7 +260,7 @@ Ex.
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.2.5',
-	lastUpdated: new Date('March 14, 2023 0:41 PST'),
+	lastUpdated: new Date('March 14, 2023 22:52 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
