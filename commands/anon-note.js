@@ -4,6 +4,7 @@ module.exports = {
 		.setName('anon-note')
 		.setDescription('Report an issue anonymously'),
 	async execute(interaction) {
+		console.log('AGGGAGAGGAGA');
 		try {
 			console.log(interaction.user.nickname);
 			console.log('Fetching guild...');
