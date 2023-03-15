@@ -11,6 +11,7 @@ module.exports = {
 				.setName('command')
 				.setDescription('Fetch specific command documentation')
 				.addChoices(
+					{ name: 'anon-note', value: 'anon-note' },
 					{ name: 'lookup', value: 'lookup' },
 					{ name: 'pinglist', value: 'pinglist' },
 					{ name: 'roll', value: 'roll' },
