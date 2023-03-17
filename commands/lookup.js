@@ -60,26 +60,26 @@ module.exports = {
 				} else {
 					clauses.push(`\`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }"`);
 				}
-				query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
-				queryResult = await fetchSQL(query);
-				if (queryResult.length) {
-					const finalString = `${queryResult.map((x) => titleCase(x.title)).join(', ')}`;
-					if (finalString.length > CHAR_LIMIT) {
-						embed.setDescription(`Sorry! Due to Discord's embed limitations, I can't show you all the moves that satisfy the criteria \`${key}\`. Consider narrowing your search. Apologies for the inconvenience.`);
-					} else if (queryResult.length === 1) {
-						const title = queryResult[0].title;
-						query = 'SELECT * FROM ?? WHERE `title` = ?;';
-						queryResult = await fetchSQL(query, ['move', title]);
-						const entry = queryResult[0];
-						embed = renderMove(embed, entry, key);
-					} else {
-						embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
-							.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
-							.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
-					}
+			}
+			query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
+			queryResult = await fetchSQL(query);
+			if (queryResult.length) {
+				const finalString = `${queryResult.map((x) => titleCase(x.title)).join(', ')}`;
+				if (finalString.length > CHAR_LIMIT) {
+					embed.setDescription(`Sorry! Due to Discord's embed limitations, I can't show you all the moves that satisfy the criteria \`${key}\`. Consider narrowing your search. Apologies for the inconvenience.`);
+				} else if (queryResult.length === 1) {
+					const title = queryResult[0].title;
+					query = 'SELECT * FROM ?? WHERE `title` = ?;';
+					queryResult = await fetchSQL(query, ['move', title]);
+					const entry = queryResult[0];
+					embed = renderMove(embed, entry, key);
 				} else {
-					embed.setDescription(`Sorry, I couldn't find anything for \`${key}\`.`);
+					embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
+						.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
+						.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
 				}
+			} else {
+				embed.setDescription(`Sorry, I couldn't find anything for \`${key}\`.`);
 			}
 		} else {
 			embed.setDescription(`Sorry, I couldn't find anything matching \`${key}\`. Double check your spelling and try again.`);
