@@ -43,7 +43,13 @@ module.exports = {
 		let embed = getDefaultEmbed();
 		if (queryResult.length) {
 			const entry = queryResult[0];
-			embed = renderMove(embed, entry, key);
+			if (targetTable === 'move') {
+				embed = renderMove(embed, entry, key);
+			} else {
+				embed.setTitle(entry.title)
+					.setDescription(entry.text)
+					.setURL(getDocLink(docDict[targetTable.toUpperCase()]));
+			}
 		} else if (targetTable === 'move') {
 			console.log('GHAGHS');
 			const terms = key.split(' ');
