@@ -34,30 +34,43 @@ module.exports = {
 			await interaction.reply({ content: 'dude.', ephemeral: true });
 			return;
 		}
+		const choiceList = [];
+		const displayList = [];
 		for (const s in delimiters) {
 			if (choiceString.indexOf(delimiters[s]) !== -1) {
 				choices = choiceString.split(delimiters[s]).map(x => x.trim());
+				// Choices.map(x => `- \`${x}\``).join('\n');
+				for (let i = 0; i < choices.length; i++) {
+					const match = /:(\d+)/.exec(choices[i]);
+					if (match) {
+						const processedString = choices[i].substring(0, choices[i].length - match[0].length);
+						displayList.push(`- \`${processedString}\` (${match[1]})`);
+						for (let j = 0; j < parseInt(match[1]); j++) {
+							choiceList.push(processedString);
+						}
+					} else {
+						displayList.push(`- \`${choices[i]}\``);
+						choiceList.push(choices[i]);
+					}
+				}
 				break;
 			}
 		}
 
-		if (choices.length <= pick) {
+		if (choiceList.length <= pick) {
 			await interaction.reply({ content: `You can't pick ${pick} choices from a list ${choices.length} elements long.`, ephemeral: true });
 			return;
 		} else if (pick <= 0) {
 			await interaction.reply({ content: `You can't pick ${pick} choices from a list.`, ephemeral: true });
 		}
 
-		const choiceList = choices.map(x => `- \`${x}\``).join('\n');
-
 		const result = [];
 		while (pick > result.length) {
-			const select = roll1ToX(choices.length) - 1;
-			console.log(select);
-			result.push(choices[select].trim());
-			choices.splice(select, 1);
+			const select = roll1ToX(choiceList.length) - 1;
+			result.push(choiceList[select].trim());
+			choiceList.splice(select, 1);
 		}
 
-		await interaction.reply({ content: `Choices: \n${choiceList}\n\nChoice${ pick !== 1 ? 's' : '' } selected: \`${result.join(', ')}\``, ephemeral: secrecy });
+		await interaction.reply({ content: `Choices: \n${displayList.join('\n')}\n\nChoice${ pick !== 1 ? 's' : '' } selected: \`${result.join(', ')}\``, ephemeral: secrecy });
 	},
 };
