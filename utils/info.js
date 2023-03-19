@@ -242,7 +242,8 @@ Ex.
 > \`/choose Strawberry Chocolate Vanilla\`
 > \`/choose Strawberry, Chocolate, Vanilla Swirl\`
 > \`/choose Strawberry/Chocolate/Vanilla, Caramel Blast\`
-> \`/choose Strawberry; Chocolate, or a similar flavor; Vanilla/Vanilla equivalent\``,
+> \`/choose Strawberry; Chocolate, or a similar flavor; Vanilla/Vanilla equivalent\`
+> \`/choose Strawberry:2 Chocolate:3 Vanilla\` (for choice weights)`,
 
 	'anon-note':
 `
