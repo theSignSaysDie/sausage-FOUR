@@ -46,9 +46,15 @@ module.exports = {
 			if (targetTable === 'move') {
 				embed = renderMove(embed, entry, key);
 			} else {
+				const tableKey = targetTable.toUpperCase();
 				embed.setTitle(entry.title)
-					.setDescription(entry.text)
-					.setURL(getDocLink(docDict[targetTable.toUpperCase()]));
+					.setDescription(entry.text);
+				if (entry.doc) {
+					embed.setURL(getDocLink(docDict[entry.doc]));
+				} else {
+					embed.setURL(getDocLink(docDict[tableKey]));
+				}
+
 			}
 		} else if (targetTable === 'move') {
 			console.log('GHAGHS');
