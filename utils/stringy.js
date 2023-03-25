@@ -46,4 +46,5 @@ module.exports = {
 	blankUndefined: blankUndefined,
 	titleCase: titleCase,
 	dictList : dictList,
+	dictListFromDict : dictListFromDict,
 };

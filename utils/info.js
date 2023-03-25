@@ -135,7 +135,7 @@ const docDict = {
 	NADS: '1exSy8dqDVvMLgBKX5-5xcvlwNoLAKcF9h-964sfMheU',
 	KOB: '1jJ7dUZyeVBOhre8hcETkNjRCqkl-dS7zNKlBxVMdu60',
 	QUADRANT: '1JvWTVMUcCme5j7PPrsJCDkYHImlxxKdH8vBuk_hTuyg',
-	TEARM_STRIFE: '1pcDDyiHJpwEFkaCTsvzI3b1KHA341hjdj9hrFynpU5o',
+	TEAM_STRIFE: '1pcDDyiHJpwEFkaCTsvzI3b1KHA341hjdj9hrFynpU5o',
 	PERFECTLY_GENERIC: '1_ekvclk77Zc1akQBAAb00z07h8mklSs-zZFjgIahVws',
 	ABSTRATA: '16wmz_rGeTTxLE4iuJRzI_yyZOW88pLoBmt5fFGJp95Y',
 	EFFECT: '19baxL--fUlTDFFN9UdDycKwQiDYDqDtsT8hym4YllmI',
@@ -256,12 +256,16 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 - \`(choice1|choice2|choice3)\` - You **must** pick a choice from this list.
 - \`[choice1|choice2|choice3]\` - You *may* pick a choice from this list, or leave it blank.
 - \`text\` - Type this text verbatim.`,
+	'doc':
+`Command syntax:
+- \`/doc\` - Retrieve list of all system document IDs
+- \`/doc <docName>\` - Retrieve the document under that ID`,
 };
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.2.6a',
-	lastUpdated: new Date('March 20, 2023 10:53 PST'),
+	versionNum: 'v3.3.0',
+	lastUpdated: new Date('March 25, 2023 15:17 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,

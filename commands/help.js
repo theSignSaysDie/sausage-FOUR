@@ -12,12 +12,13 @@ module.exports = {
 				.setDescription('Fetch specific command documentation')
 				.addChoices(
 					{ name: 'anon-note', value: 'anon-note' },
+					{ name: 'choose', value: 'choose' },
+					{ name: 'doc', value: 'doc' },
+					{ name: 'help', value: 'help' },
 					{ name: 'lookup', value: 'lookup' },
 					{ name: 'pinglist', value: 'pinglist' },
 					{ name: 'roll', value: 'roll' },
 					{ name: 'starter', value: 'starter' },
-					{ name: 'choose', value: 'choose' },
-					{ name: 'help', value: 'help' },
 				).setRequired(false),
 		),
 	async execute(interaction) {
