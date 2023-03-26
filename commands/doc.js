@@ -13,10 +13,10 @@ module.exports = {
 				.setRequired(false),
 		),
 	async execute(interaction) {
-		const choice = interaction.options.getString('document') ?? null;
+		const choice = (interaction.options.getString('document') ?? '').toUpperCase();
 		const embed = getDefaultEmbed();
 		const validChoices = Object.keys(docDict);
-		if (choice) {
+		if (choice !== '') {
 			if (validChoices.indexOf(choice) > -1) {
 				await interaction.reply({ content: getDocLink(docDict[choice]) });
 			} else {
