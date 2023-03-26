@@ -10,7 +10,7 @@ const colorDict = {
 	INDIGO: 0x5e5ce2,
 	PURPLE: 0x9e4be9,
 	VIOLET: 0xb736bb,
-	FUSCHIA: 0xf13896,
+	FUCHSIA: 0xf13896,
 	BREATH: 0x47dff9,
 	LIFE: 0x90eb34,
 	LIGHT: 0xf6fa4e,
@@ -48,7 +48,7 @@ const docDict = {
 	INDIGO: '1-wzVuWZjtfoV1fVrQOj5ZdLBdWNQrxb7V0YHnIcorMg',
 	PURPLE: '16RIH87fHGoeoTIEcfJwcSCiAuVPRWvolt_2QDuH4pFQ',
 	VIOLET: '1Takp27Ui58wU446DcSmNYreNSZxuOC2hWYJILMTxZU4',
-	FUSCHIA: '1X7GB0micWDDS33VX6qBdOPjz6h0dw8vTIgDenPjpe3I',
+	FUCHSIA: '1X7GB0micWDDS33VX6qBdOPjz6h0dw8vTIgDenPjpe3I',
 	KID: '1eS0e5O6pYcPWH790uyszB4phST9m1sFEABPfg97AuMk',
 	PROSPIT: '1pBeHPaN4FGXgGpPPf5hdy_uJ6DFaxNn9XajRBc8TGMc',
 	DERSE: '1785P9AG-dtSwBXifxc34BfjLQGCX6mAZe6w3Den00m4',
@@ -265,8 +265,8 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.3.0',
-	lastUpdated: new Date('March 25, 2023 15:17 PST'),
+	versionNum: 'v3.3.1',
+	lastUpdated: new Date('March 26, 2023 09:42 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
