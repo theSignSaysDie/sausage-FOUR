@@ -1,16 +1,16 @@
 const colorDict = {
-	RUST: 0xa00103,
-	BRONZE: 0xa25203,
-	GOLD: 0xcfcd00,
-	LIME: 0x6ace00,
-	OLIVE: 0x517600,
-	JADE: 0x009358,
-	TEAL: 0x009294,
-	CERULEAN: 0x004182,
-	INDIGO: 0x000082,
-	PURPLE: 0x460984,
-	VIOLET: 0x7e1a7d,
-	FUCHSIA: 0x99004d,
+	RUST: 0xe24b4b,
+	BRONZE: 0xd38232,
+	GOLD: 0xb8b823,
+	LIME: 0x64b614,
+	OLIVE: 0x109c57,
+	JADE: 0x109c57,
+	TEAL: 0x27c2c2,
+	CERULEAN: 0x076899,
+	INDIGO: 0x5e5ce2,
+	PURPLE: 0x9e4be9,
+	VIOLET: 0xb736bb,
+	FUSCHIA: 0xf13896,
 	BREATH: 0x47dff9,
 	LIFE: 0x90eb34,
 	LIGHT: 0xf6fa4e,
@@ -33,6 +33,7 @@ const colorDict = {
 	ORGANIZATIONS: 0xff0100,
 	KID: 0x7bafde,
 };
+
 
 const docDict = {
 	SNS: '1s00GvbGKS6gW3Dl1K1qMk3TSMQ1x-o-jnYhq_PODBks',
