@@ -8,10 +8,14 @@ module.exports = {
 		const id = interaction.customId;
 		const user = interaction.user.id;
 		if (id.startsWith('pinglist_join_')) {
+			console.log('Someone\'s joining...');
 			const details = id.replace('pinglist_join_', '').split('_');
+			console.log('Splitting done.');
 			const [name] = details;
+			console.log('Details done.');
 			let query = 'SELECT * FROM `pinglist` WHERE `name` = ? AND `record` = \'author\' AND `snowflake` = ?';
 			let result = await fetchSQL(query, [name, user]);
+			console.log('Query done.');
 			if (result.length) {
 				await interaction.reply({ content: 'Wouldn\'t you already be there for that, though?', ephemeral: true });
 			} else {
