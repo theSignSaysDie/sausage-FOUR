@@ -10,25 +10,29 @@ module.exports = {
 			option
 				.setName('username')
 				.setDescription('The name of the user whose troll call you want')
-				.setRequired(true),
+				.setRequired(false),
 		).addBooleanOption(option =>
 			option
 				.setName('public')
 				.setDescription('Post for everyone else (default: false)')),
 	async execute(interaction) {
 		const username = interaction.options.getUser('username');
-		let public = interaction.options.getBoolean('public');
-		if (public === undefined) public = false;
-		const query = 'SELECT `docLink` FROM `trollcall` WHERE `userID`=?;';
-		const queryResult = await fetchSQL(query, [username.id]);
-		if (queryResult.length) {
-			const docLink = queryResult[0].docLink;
-			await interaction.reply({ content:docLink, ephemeral: !public });
+		if (username) {
+			let public = interaction.options.getBoolean('public');
+			if (public === undefined) public = false;
+			const query = 'SELECT `docLink` FROM `trollcall` WHERE `userID`=?;';
+			const queryResult = await fetchSQL(query, [username.id]);
+			if (queryResult.length) {
+				const docLink = queryResult[0].docLink;
+				await interaction.reply({ content:docLink, ephemeral: !public });
+			} else {
+				console.log(`No information found for ${username}.`);
+				const embed = new getDefaultEmbed()
+					.setDescription(`Sorry, I couldn't find anything for '${username}'.`);
+				await interaction.reply({ embeds: [embed], ephemeral: true });
+			}
 		} else {
-			console.log(`No information found for ${username}.`);
-			const embed = new getDefaultEmbed()
-				.setDescription(`Sorry, I couldn't find anything for '${username}'.`);
-			await interaction.reply({ embeds: [embed], ephemeral: true });
+			await interaction.reply('https://docs.google.com/spreadsheets/d/1PPxsKHUmNCVvd4VCGHA835ySUlWVu7OJTXz1SjSsIaI/edit#gid=0');
 		}
 	},
 };
