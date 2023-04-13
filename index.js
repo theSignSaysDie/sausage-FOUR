@@ -34,7 +34,7 @@ for (const file of eventFiles) {
 }
 
 // Load troll call and other resources
-db.trollFirstNameDict, db.trollFullNameDict = db.loadTrollCall();
+db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
 
 // Login!
 client.login(process.env.DISCORD_TOKEN);

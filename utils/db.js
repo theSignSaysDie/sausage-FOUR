@@ -5,6 +5,7 @@ const doc = new GoogleSpreadsheet(process.env.TROLL_CALL_DOC_ID);
 
 const trollFullNameDict = {};
 const trollFirstNameDict = {};
+const trollTitleDict = {};
 
 const con = mysql.createPool({
 	connectionLimit: 8,
@@ -40,13 +41,15 @@ async function loadTrollCall() {
 		private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
 	});
 	await doc.loadInfo();
-	const sheet = doc.sheetsByIndex[0];
-	await sheet.loadCells();
+
+	// Alterniabound trolls
+	const alterniaSheet = doc.sheetsByIndex[0];
+	await alterniaSheet.loadCells();
 	for (const troll in trollFullNameDict) if (Object.prototype.hasOwnProperty.call(trollFullNameDict, troll)) delete trollFullNameDict[troll];
 	for (const troll2 in trollFirstNameDict) if (Object.prototype.hasOwnProperty.call(trollFirstNameDict, troll2)) delete trollFirstNameDict[troll2];
-	for (let col = 0; col < sheet.columnCount; col++) {
-		for (let row = 1; row < sheet.rowCount; row++) {
-			const cell = sheet.getCell(row, col);
+	for (let col = 0; col < alterniaSheet.columnCount; col++) {
+		for (let row = 1; row < alterniaSheet.rowCount; row++) {
+			const cell = alterniaSheet.getCell(row, col);
 			if (typeof cell.hyperlink !== 'undefined') {
 				const cellName = cell.value.toString().toLowerCase();
 				trollFullNameDict[cellName] = cell.hyperlink;
@@ -60,10 +63,27 @@ async function loadTrollCall() {
 			}
 		}
 	}
+
+	// Spacebound trolls
+	const spaceSheet = doc.sheetsByIndex[4];
+	await spaceSheet.loadCells();
+	for (const troll in trollTitleDict) if (Object.prototype.hasOwnProperty.call(trollTitleDict, troll)) delete trollTitleDict[troll];
+	for (let col = 0; col < spaceSheet.columnCount; col++) {
+		for (let row = 1; row < spaceSheet.rowCount; row++) {
+			const cell = spaceSheet.getCell(row, col);
+			if (typeof cell.hyperlink !== 'undefined') {
+				const cellName = cell.value.toString().toLowerCase();
+				const title = cellName.substring(4);
+				console.log(title);
+				trollTitleDict[title] = cell.hyperlink;
+			}
+		}
+	}
+
 	const end = new Date();
 	const time = (end - start) / 1000;
 	console.log(`Troll Call updated @ ${new Date().toLocaleString()}! (${time}s)`);
-	return [trollFirstNameDict, trollFullNameDict];
+	return [trollFirstNameDict, trollFullNameDict, trollTitleDict];
 }
 
 function getDocLink(id) {
@@ -78,4 +98,5 @@ module.exports = {
 	getDocLink: getDocLink,
 	trollFullNameDict: trollFullNameDict,
 	trollFirstNameDict: trollFirstNameDict,
+	trollTitleDict: trollTitleDict,
 };
