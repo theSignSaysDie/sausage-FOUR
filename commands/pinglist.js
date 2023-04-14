@@ -74,8 +74,17 @@ module.exports = {
 		} else if (operation === 'assess') {
 			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
 			result = await fetchSQL(query, [name]);
-			const userList = result.map(x => `<@${x.snowflake}>`).join(', ');
-			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userList}`, ephemeral: true });
+
+			console.log('JHJGHDDGFHJ');
+			const userList = [];
+			for (const i in result) {
+				await interaction.guild.members.fetch();
+				const userName = (await interaction.guild.members.fetch(result[i].snowflake)) ?? 'Unknown User';
+				console.log(userName);
+				userList.push(`- \`${userName.user.username}#${userName.user.discriminator}\``);
+			}
+			const userNames = userList.map(x => x).join('\n');
+			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userNames}`, ephemeral: true });
 		} else if (operation === 'rename') {
 			const modal = new ModalBuilder()
 				.setCustomId(`pinglist_rename_${name}_${user}`)
