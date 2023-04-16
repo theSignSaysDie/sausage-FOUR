@@ -161,7 +161,7 @@ const fanmadeLinks = [
 	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
 ];
 
-const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle'];
+const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle', 'spaceship'];
 const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle', 'spaceship'];
 
 const birthdays = [];
