@@ -140,6 +140,7 @@ const docDict = {
 	PERFECTLY_GENERIC: '1_ekvclk77Zc1akQBAAb00z07h8mklSs-zZFjgIahVws',
 	ABSTRATA: '16wmz_rGeTTxLE4iuJRzI_yyZOW88pLoBmt5fFGJp95Y',
 	EFFECT: '19baxL--fUlTDFFN9UdDycKwQiDYDqDtsT8hym4YllmI',
+	SPACESHIP: '1vOw1mhMHhJ6JQ6hZ8cQPiptR8UvCXI7Y1MvtmRrcvYM',
 };
 
 const fanmadeLinks = [
@@ -161,7 +162,7 @@ const fanmadeLinks = [
 ];
 
 const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle'];
-const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle'];
+const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle', 'spaceship'];
 
 const birthdays = [];
 
@@ -265,8 +266,8 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.5.1',
-	lastUpdated: new Date('April 13, 2023 18:18 PST'),
+	versionNum: 'v3.5.2',
+	lastUpdated: new Date('April 16, 2023 14:48 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,

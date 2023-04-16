@@ -47,8 +47,13 @@ module.exports = {
 				embed = renderMove(embed, entry, key);
 			} else {
 				const tableKey = targetTable.toUpperCase();
+				let desc = entry.text;
+				console.log(entry);
+				if (entry.cost) {
+					desc = `**${entry.cost} LUX**\n` + desc;
+				}
 				embed.setTitle(entry.title)
-					.setDescription(entry.text);
+					.setDescription(desc);
 				if (entry.doc) {
 					embed.setURL(getDocLink(docDict[entry.doc]));
 				} else {
@@ -57,7 +62,6 @@ module.exports = {
 
 			}
 		} else if (targetTable === 'move') {
-			console.log('GHAGHS');
 			const terms = key.split(' ');
 			const clauses = [];
 			for (const term in terms) {
