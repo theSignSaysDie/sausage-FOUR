@@ -26,7 +26,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		console.log('e');
-		const name = interaction.options.getString('name').replace(/[^ a-zA-Z0-9?]/, '').toLowerCase();
+		const name = interaction.options.getString('name').replace(/[^ a-zA-Z0-9?]/g, '').toLowerCase();
 		const operation = interaction.options.getString('operation');
 		const user = interaction.user.id;
 		let query, result;
