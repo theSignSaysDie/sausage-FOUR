@@ -25,7 +25,6 @@ module.exports = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		console.log('e');
 		const name = interaction.options.getString('name').replace(/[^ a-zA-Z0-9?]/g, '').toLowerCase();
 		const operation = interaction.options.getString('operation');
 		const user = interaction.user.id;
@@ -69,18 +68,15 @@ module.exports = {
 			result = await fetchSQL(query, [name]);
 			const userList = result.map(x => `<@${x.snowflake}>`).join(' ');
 			const announcement = `Ping by ${interaction.member.displayName}!`;
-			console.log('glghajgk');
 			await interaction.reply({ content: `${announcement}\n\n======\n\n${userList}`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
 		} else if (operation === 'assess') {
 			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
 			result = await fetchSQL(query, [name]);
 
-			console.log('JHJGHDDGFHJ');
 			const userList = [];
 			for (const i in result) {
 				await interaction.guild.members.fetch();
 				const userName = (await interaction.guild.members.fetch(result[i].snowflake)) ?? 'Unknown User';
-				console.log(userName);
 				userList.push(`- \`${userName.user.username}#${userName.user.discriminator}\``);
 			}
 			const userNames = userList.map(x => x).join('\n');
