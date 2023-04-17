@@ -80,6 +80,7 @@ module.exports = {
 				userList.push(`- \`${userName.user.username}#${userName.user.discriminator}\``);
 			}
 			const userNames = userList.map(x => x).join('\n');
+			console.log(userNames);
 			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userNames}`, ephemeral: true });
 		} else if (operation === 'rename') {
 			const modal = new ModalBuilder()
