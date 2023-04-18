@@ -77,8 +77,8 @@ module.exports = {
 
 			console.log('JHJGHDDGFHJ');
 			const userList = [];
+			await interaction.guild.members.fetch();
 			for (const i in result) {
-				await interaction.guild.members.fetch();
 				const userName = (await interaction.guild.members.fetch(result[i].snowflake)) ?? 'Unknown User';
 				console.log(userName);
 				userList.push(`- \`${userName.user.username}#${userName.user.discriminator}\``);
