@@ -74,7 +74,6 @@ async function loadTrollCall() {
 			if (typeof cell.hyperlink !== 'undefined') {
 				const cellName = cell.value.toString().toLowerCase();
 				const title = cellName.substring(4);
-				console.log(title);
 				trollTitleDict[title] = cell.hyperlink;
 			}
 		}
