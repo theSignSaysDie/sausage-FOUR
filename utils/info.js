@@ -153,7 +153,7 @@ const fanmadeLinks = [
 	'https://docs.google.com/document/d/1tlfH6U-mBLgN24zZgN-uhNvgC93uIwXBdTx4NgucaJg/edit',
 	'https://docs.google.com/document/d/1USYiHluU3Auit1JsMG1Od7xJshCBNBdzN6_ZBsc_m2A/edit',
 	'https://docs.google.com/spreadsheets/d/1LxWQF_To6Rpxj7uN0PGtBueDtovi582XxB4bouyGCcM/edit#gid=0',
-	'https://docs.google.com/document/d/176L2QtGtsZf_mujAKssNmgQHmYZjCKcs9FApyvv63zc/edit',
+	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
 	'https://docs.google.com/document/d/1_ifoRJ9xPof9Ka2ZRLw259dKT_ULKX41nocmLJeNbJg/edit',
 	'https://docs.google.com/spreadsheets/d/1K5ETHwd6n9WbQlGKi6-M54Q-_qlI2SzfgI2Gm1aOay0/edit?usp=sharing',
 	'https://mspaintadventures.fandom.com/wiki/Troll_language',
