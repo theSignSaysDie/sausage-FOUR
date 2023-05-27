@@ -3,6 +3,17 @@ const { RNG } = require('../utils/prng');
 
 const random = RNG();
 
+function rollWeighted(choices, weights) {
+	const cumulativeWeights = weights.map((sum => value => sum += value)(0));
+	const weightMax = cumulativeWeights.slice(-1)[0];
+	const roll = Math.floor(random() * weightMax);
+	for (let i = 0; i < cumulativeWeights.length; i++) {
+		if (cumulativeWeights[i] >= roll) {
+			return choices[i];
+		}
+	}
+}
+
 function roll1ToX(diceType) {
 	return Math.floor(random() * diceType) + 1;
 }
@@ -108,6 +119,7 @@ function getRollColor(rollResult) {
 }
 
 module.exports = {
+	rollWeighted: rollWeighted,
 	rollDice: rollDice,
 	modStr: modStr,
 	formatRoll: formatRoll,
