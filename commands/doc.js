@@ -13,7 +13,7 @@ module.exports = {
 				.setRequired(false),
 		),
 	async execute(interaction) {
-		const choice = (interaction.options.getString('document') ?? '').toUpperCase();
+		const choice = (interaction.options.getString('document') ?? '').replace(' ', '_').toUpperCase();
 		const embed = getDefaultEmbed();
 		const validChoices = Object.keys(docDict);
 		if (choice !== '') {
