@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fetchSQL, getDocLink } = require('../utils/db');
-const { camelize, titleCase, getDefaultEmbed, blankUndefined, dictList } = require('../utils/stringy');
+const { camelize, titleCase, getDefaultEmbed, blankNoneOrUndefined, dictList } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict, lookupTableNames } = require('../utils/info');
 
 function renderMove(embed, entry, key) {
@@ -8,9 +8,11 @@ function renderMove(embed, entry, key) {
 		entry.text = `\nSorry! Due to Discord's embed character limit, I can't render \`move.${key}\` here. Use the doc link above to access the move text! Apologies for the inconvenience.`;
 	}
 	embed.setTitle(entry.title)
-		.setDescription(`${blankUndefined(entry.cost, '**', '**\n')}${blankUndefined(entry.wealth_level, '**', '**\n')}${blankUndefined(entry.tags, '**', '**\n')}${entry.text}`)
+		.setDescription(`${blankNoneOrUndefined(entry.cost, '**', '**\n')}${blankNoneOrUndefined(entry.wealth_level, '**', '**\n')}${blankNoneOrUndefined(entry.tags, '**', '**\n')}${entry.text}`)
 		.setColor(colorDict[entry.color])
 		.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict['MOVE'] : docDict[entry.doc]));
+	console.log(`Tags: "${entry.tags}"`);
+	console.log(`${blankNoneOrUndefined(entry.tags, '**', '**\n')}`);
 	return embed;
 }
 

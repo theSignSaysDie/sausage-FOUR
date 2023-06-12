@@ -30,8 +30,8 @@ function getHelpEmbed(information) {
 
 }
 
-function blankUndefined(thing, prefix = '', suffix = '') {
-	return thing === undefined ? '' : `${prefix}${thing}${suffix}`;
+function blankNoneOrUndefined(thing, prefix = '', suffix = '') {
+	return thing === undefined || thing === '' ? '' : `${prefix}${thing}${suffix}`;
 }
 
 function dictList(stringArr) {
@@ -43,7 +43,7 @@ module.exports = {
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
 	getHelpEmbed: getHelpEmbed,
-	blankUndefined: blankUndefined,
+	blankNoneOrUndefined: blankNoneOrUndefined,
 	titleCase: titleCase,
 	dictList : dictList,
 };
