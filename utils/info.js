@@ -143,6 +143,7 @@ const docDict = {
 	ABSTRATA: '16wmz_rGeTTxLE4iuJRzI_yyZOW88pLoBmt5fFGJp95Y',
 	EFFECT: '19baxL--fUlTDFFN9UdDycKwQiDYDqDtsT8hym4YllmI',
 	SPACESHIP: '1vOw1mhMHhJ6JQ6hZ8cQPiptR8UvCXI7Y1MvtmRrcvYM',
+	HEROMODE: '1L9OUQ92tjuuAwLzGeCpzc4qR97vGIaGGPZX1ZUhjBms',
 };
 
 const fanmadeLinks = [
