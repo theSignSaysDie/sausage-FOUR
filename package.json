@@ -10,6 +10,7 @@
   "author": "✨Meme Magician✨",
   "license": "ISC",
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.41",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "google-spreadsheet": "^3.3.0",
