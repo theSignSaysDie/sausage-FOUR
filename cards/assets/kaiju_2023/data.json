@@ -34,6 +34,20 @@
 				"art_scale": 3,
 				"card_art_border_color": "#00BB00",
 				"drop_shadow_color": "#000000"
+			},
+			"palpityrant": {
+				"card_name": "Palpityrant",
+				"art_path": "kaiju/palpityrant.png",
+				"card_border_color": "hsl(339, 76%, 55%)",
+				"bg_grd_start": "hsl(332, 87%, 74%)", 
+				"bg_grd_end": "hsl(332, 87%, 52%)",
+				"bg_hex_start": "hsl(339, 76%, 33%)", 
+				"bg_hex_end": "hsl(339, 76%, 11%)",
+				"art_offset_x": -370,
+				"art_offset_y": 0,
+				"art_scale": 0.65,
+				"card_art_border_color": "hsl(339, 76%, 55%)",
+				"drop_shadow_color": "#000000"
 			}
 		}
 	}

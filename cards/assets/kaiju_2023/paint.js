@@ -93,7 +93,7 @@ async function paintCard(data, name) {
 	console.log(__dirname, art_dir, art_path);
 	const card_art = await Canvas.loadImage(path.join(__dirname, `${art_dir}/${art_path}`));
 	ctx_info.drawImage(card_art,
-		(card_art.width - (art_size_x / art_scale)) / 2 - art_offset_x, (card_art.height - (art_size_y / art_scale)) / 2 - art_offset_y, art_size_x / art_scale, art_size_y / art_scale,
+		(card_art.width - (art_size_x / art_scale)) / 2 + art_offset_x, (card_art.height - (art_size_y / art_scale)) / 2 + art_offset_y, art_size_x / art_scale, art_size_y / art_scale,
 		(card_width - art_size_x) / 2, art_top, art_size_x, art_size_y);
 
 	// Add namebox
