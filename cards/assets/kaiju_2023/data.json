@@ -1,0 +1,40 @@
+{
+	"global_settings": {
+		"card_width": 900,
+		"card_height": 1200,
+		"card_border_offset": 20,
+		"card_border_thickness": 16,
+		"card_corner_roundness": 80,
+		"grd_start": 0.5,
+		"art_size_x": 700, 
+		"art_size_y": 850,
+		"art_top": 100,
+		"card_art_border_thickness": 20,
+		"drop_shadow_blur": 15,
+		"vert_info_space": 50,
+		"info_height": 100,
+		"info_corner_roundness": 25,
+		"text_font_size": 50,
+		"text_modifiers": "bold",
+		"text_font": "Courier New"
+	},
+	"card_info": {
+		"names": ["junf", "palpityrant", "cerublord", "lacunophidia", "terrapunultimate", "gastrolusix", "goressegal", "aeistherou", "kefukefukefukefu", "carnacorrup", "octolustrous", "annulczov", "banansa"],
+		"cards": {
+			"banansa": {
+				"card_name": "Banansa",
+				"art_path": "kaiju/banansa.png",
+				"card_border_color": "#00BB00",
+				"bg_grd_start": "#008800", 
+				"bg_grd_end": "#003300",
+				"bg_hex_start": "#006600", 
+				"bg_hex_end": "#002200",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 3,
+				"card_art_border_color": "#00BB00",
+				"drop_shadow_color": "#000000"
+			}
+		}
+	}
+}
