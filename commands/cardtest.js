@@ -12,6 +12,7 @@ module.exports = {
 		/*
 			CONFIGURATION
 		*/
+		const card_name = 'Banansa';
 		const card_border_offset = 20;
 		const card_border_thickness = 16;
 		const card_border_color = '#00BB00';
@@ -34,7 +35,10 @@ module.exports = {
 		const vert_info_space = 50;
 		const info_height = 100;
 		const info_corner_roundness = 25;
+		const text_font_size = 50;
+		const text_format = `bold ${text_font_size}px Courier New`;
 		const nameplate_width = art_size_x - vert_info_space - info_height;
+		const max_text_width = nameplate_width - card_border_thickness * 4;
 
 		// Hex svg mask
 		const hexes = await Canvas.loadImage(path.join(__dirname, '../cards/assets/hex_final.svg'));
@@ -49,6 +53,7 @@ module.exports = {
 		const canvas_info = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
 		const ctx_info = canvas_info.getContext('2d');
 		ctx_info.imageSmoothingEnabled = true;
+		ctx_info.textAlign = 'center';
 
 		// Logo layer
 		const canvas_noshadow = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
@@ -150,6 +155,7 @@ module.exports = {
 
 		// Put logo on otherbox
 		ctx_info.globalCompositeOperation = 'source-over';
+		ctx_info.save();
 		ctx_info.beginPath();
 		ctx_info.lineWidth = card_art_border_thickness;
 		ctx_info.shadowColor = drop_shadow_color;
@@ -158,7 +164,20 @@ module.exports = {
 		ctx_info.fill();
 		ctx_info.stroke();
 		ctx_info.closePath();
+		ctx_info.restore();
 		ctx_info.drawImage(canvas_noshadow, 0, 0);
+
+		// Add nametext
+		ctx_info.beginPath();
+		ctx_info.fillStyle = card_art_border_color;
+		ctx_info.shadowColor = drop_shadow_color;
+		ctx_info.shadowBlur = drop_shadow_blur;
+		ctx_info.font = text_format;
+		ctx_info.fillText(card_name,
+			(CARD_WIDTH - art_size_x) / 2 + nameplate_width / 2,
+			art_top + art_size_y + vert_info_space + info_height / 2 + card_art_border_thickness / 2,
+			max_text_width);
+		ctx_info.closePath();
 
 		// Layer collapse
 		context.globalCompositeOperation = 'source-atop';
