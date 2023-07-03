@@ -12,7 +12,6 @@ module.exports = {
 		/*
 			CONFIGURATION
 		*/
-
 		const card_border_offset = 20;
 		const card_border_thickness = 16;
 		const card_border_color = '#00BB00';
@@ -27,33 +26,36 @@ module.exports = {
 		const art_top = 100;
 		const art_offset_x = 0;
 		const art_offset_y = 0;
-		const art_scale = 1;
+		const art_scale = 3;
 		const card_art_border_thickness = 20;
 		const card_art_border_color = '#00BB00';
 		const drop_shadow_blur = 15;
 		const drop_shadow_color = '#000000';
 		const vert_info_space = 50;
-		const nameplate_width = 550;
 		const info_height = 100;
 		const info_corner_roundness = 25;
+		const nameplate_width = art_size_x - vert_info_space - info_height;
 
 		// Hex svg mask
 		const hexes = await Canvas.loadImage(path.join(__dirname, '../cards/assets/hex_final.svg'));
 		const sns_logo = await Canvas.loadImage(path.join(__dirname, '../cards/assets/sns.png'));
 
+		// Hex background layer
 		const canvas_hex = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
 		const ctx_hex = canvas_hex.getContext('2d');
 		ctx_hex.imageSmoothingEnabled = true;
 
+		// Infoboxes layer
 		const canvas_info = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
 		const ctx_info = canvas_info.getContext('2d');
 		ctx_info.imageSmoothingEnabled = true;
 
+		// Logo layer
 		const canvas_noshadow = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
 		const ctx_noshadow = canvas_noshadow.getContext('2d');
 		ctx_noshadow.imageSmoothingEnabled = true;
 
-
+		// Final layer
 		const canvas = Canvas.createCanvas(CARD_WIDTH, CARD_HEIGHT);
 		const context = canvas.getContext('2d');
 		context.imageSmoothingEnabled = true;
@@ -64,13 +66,13 @@ module.exports = {
 		// Card hex gradient
 		const grd_hex = makeGradient(ctx_hex, canvas_hex, 'vertical', [0, grd_start, 1], [bg_hex_start, bg_hex_start, bg_hex_end]);
 
+		// Draw hexes with gradient
 		ctx_hex.fillStyle = grd_hex;
 		ctx_hex.drawImage(hexes, 0, 0, canvas_hex.width, canvas_hex.height, 0, 0, canvas_hex.width, canvas_hex.height);
 
 		ctx_hex.globalCompositeOperation = 'source-atop';
 
 		ctx_hex.beginPath();
-		ctx_hex.fillStyle = grd_hex;
 		ctx_hex.fillRect(0, 0, canvas_hex.width, canvas_hex.height);
 		ctx_hex.closePath();
 
@@ -83,14 +85,15 @@ module.exports = {
 
 		// Decorative border
 		ctx_info.fillStyle = 'rgba(0, 0, 0, 0)';
-		ctx_info.globalCompositeOperation = 'source-over';
 		ctx_info.beginPath();
 		ctx_info.strokeStyle = card_border_color;
 		ctx_info.lineWidth = card_border_thickness;
 		ctx_info.save();
 		ctx_info.shadowColor = drop_shadow_color;
 		ctx_info.shadowBlur = drop_shadow_blur;
-		ctx_info.roundRect(card_border_offset, card_border_offset, canvas_info.width - card_border_offset * 2, canvas_info.height - card_border_offset * 2, [card_corner_roundness - card_border_offset]);
+		ctx_info.roundRect(
+			card_border_offset, card_border_offset, canvas_info.width - card_border_offset * 2, canvas_info.height - card_border_offset * 2,
+			[card_corner_roundness - card_border_offset]);
 		ctx_info.stroke();
 		ctx_info.closePath();
 		ctx_info.restore();
@@ -135,9 +138,7 @@ module.exports = {
 		// Format logo
 		ctx_noshadow.globalCompositeOperation = 'source-over';
 		ctx_noshadow.beginPath();
-		ctx_noshadow.strokeStyle = card_art_border_color;
 		ctx_noshadow.lineWidth = card_art_border_thickness;
-		ctx_noshadow.fillStyle = '#FFFFFF';
 		ctx_noshadow.roundRect((CARD_WIDTH - art_size_x) / 2 + nameplate_width + vert_info_space, art_top + art_size_y + vert_info_space, info_height, info_height, [0, 0, info_corner_roundness, 0]);
 		ctx_noshadow.fill();
 		ctx_noshadow.stroke();
@@ -146,13 +147,10 @@ module.exports = {
 		ctx_noshadow.drawImage(sns_logo,
 			0, 0, sns_logo.width, sns_logo.height,
 			(CARD_WIDTH - art_size_x) / 2 + nameplate_width + vert_info_space - card_art_border_thickness / 2, art_top + art_size_y + vert_info_space - card_art_border_thickness / 2, info_height + card_art_border_thickness, info_height + card_art_border_thickness);
-		ctx_info.roundRect((CARD_WIDTH - art_size_x) / 2, art_top + art_size_y + vert_info_space, nameplate_width, info_height, [0, 0, 0, info_corner_roundness]);
-		ctx_info.fillRect((CARD_WIDTH - art_size_x) / 2, art_top + art_size_y + vert_info_space, nameplate_width, info_height);
 
 		// Put logo on otherbox
 		ctx_info.globalCompositeOperation = 'source-over';
 		ctx_info.beginPath();
-		ctx_info.strokeStyle = card_art_border_color;
 		ctx_info.lineWidth = card_art_border_thickness;
 		ctx_info.shadowColor = drop_shadow_color;
 		ctx_info.shadowBlur = drop_shadow_blur;
