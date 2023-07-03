@@ -6,7 +6,7 @@ module.exports = {
 		.setName('cardtest')
 		.setDescription('Simple card test command'),
 	async execute(interaction) {
-		const card = await generateCard();
+		const card = await generateCard('kaiju_2023', 'banansa');
 		const attachment = new AttachmentBuilder(card, { name: 'test.png' });
 		await interaction.reply({ files: [attachment] });
 	},
