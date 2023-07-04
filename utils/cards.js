@@ -22,8 +22,8 @@ function makeGradient(ctx, canvas, align, stop_points, stop_colors) {
 }
 
 async function generateCard(style, name) {
-	const data = JSON.parse(fs.readFileSync(`./cards/assets/${style}/data.json`, 'utf8'));
-	const { paintCard } = require(`../cards/assets/${style}/paint.js`);
+	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
+	const { paintCard } = require(`../cards/${style}/paint.js`);
 	return await paintCard(data, name);
 }
 

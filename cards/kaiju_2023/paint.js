@@ -1,6 +1,6 @@
 const Canvas = require('@napi-rs/canvas');
 const path = require('node:path');
-const { makeGradient } = require('../../../utils/cards');
+const { makeGradient } = require('../../utils/cards');
 const art_dir = './art';
 async function paintCard(data, name) {
 	const { global_settings, card_info } = data;
