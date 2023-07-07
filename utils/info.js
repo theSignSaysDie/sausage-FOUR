@@ -32,6 +32,7 @@ const colorDict = {
 	OTHER: 0xade196,
 	ORGANIZATIONS: 0xff0100,
 	KID: 0x7bafde,
+	GREY: 0xc3c3c3,
 };
 
 
