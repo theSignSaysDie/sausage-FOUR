@@ -4,7 +4,6 @@ const emojiRegex = require('emoji-regex');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { makeRelativeTimestamp } = require('../utils/time');
 const { zip } = require('../utils/math');
-const { afterEach } = require('node:test');
 
 module.exports = {
 	data: new SlashCommandBuilder()
