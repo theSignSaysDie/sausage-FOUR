@@ -17,6 +17,7 @@ module.exports = {
 					{ name: 'help', value: 'help' },
 					{ name: 'lookup', value: 'lookup' },
 					{ name: 'pinglist', value: 'pinglist' },
+					{ name: 'poll', value: 'poll' },
 					{ name: 'roll', value: 'roll' },
 					{ name: 'starter', value: 'starter' },
 				).setRequired(false),

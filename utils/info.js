@@ -190,6 +190,7 @@ const helpText = {
 \`/help <command>\` - Fetch additional help for complex* commands
 \`/image <category>\` - Fetch a random image from a specific category
 \`/invite\` - Fetch an invite link for Sausage
+\`/poll <title> <description> <choices> <time>\` - set up a poll for others to vote in
 \`/version\` - Read Sausage version information
 
 **Fun**
@@ -217,6 +218,17 @@ Here are some examples:
 \`/pinglist invoke <name>\` - Invokes the pinglist with the given name, pinging everyone on the list and posting a join/leave menu
 \`/pinglist delete <name>\` - Upon successful confirmation, unsubscribes all pinglist members and deletes the pinglist from Sausage
 `,
+
+	'poll': `
+- \`title\` may be any string of text
+- \`description\` may be any string of text
+- \`choices\` must be a list of choices numbered by emojis (max 50 choices, only default emojis)
+- \`time\` is an interval of time ranging from one minute to 24 hours
+
+
+Ex. of valid poll:
+\`/poll title:Test poll description:hello world choices:🍎 First option 🍌 Second option 🍇 Something else time:10m\`
+	`,
 
 	'roll':
 `\`/roll [talent] [modifier] [description] [dice]\`
@@ -272,7 +284,7 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.7.0',
-	lastUpdated: new Date('July 9, 2023 14:34 PST'),
+	lastUpdated: new Date('July 9, 2023 16:44 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
