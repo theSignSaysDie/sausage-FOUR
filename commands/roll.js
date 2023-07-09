@@ -41,18 +41,19 @@ module.exports = {
 			let m;
 			const lie_regex = /lie ([^ ]+) ([^ ]+)/;
 			const regex = /(\d+)?d(\d+)(?:k([lh])(\d+))?(?:([+-])(\d+))?/;
+			const timestamp = Date.now();
 			if ((m = lie_regex.exec(raw)) !== null) {
 				const embed = getDefaultEmbed()
 					.setTitle(`**${description}**`)
 					.setDescription(`🎲 Roll result: ${m[1]}`)
 					.setColor(colorDict.LIME);
 				const calloutButton = new ButtonBuilder()
-					.setCustomId(`callout_${m[1]}_${m[2]}`)
+					.setCustomId(`callout_${m[1]}_${m[2]}_${timestamp}`)
 					.setLabel('BS!')
 					.setEmoji('📢')
 					.setStyle(ButtonStyle.Danger);
 				const okayButton = new ButtonBuilder()
-					.setCustomId(`alright_${m[1]}_${m[2]}`)
+					.setCustomId(`alright_${m[1]}_${m[2]}_${timestamp}`)
 					.setLabel('Alright')
 					.setEmoji('✅')
 					.setStyle(ButtonStyle.Primary);
@@ -65,7 +66,7 @@ module.exports = {
 					if (confirmation.customId.startsWith('callout')) {
 						const true_or_lie_embed = getDefaultEmbed()
 							.setTitle(`**${description}**`)
-							.setDescription(`🎲 Roll result: ${m[1]} (${m[1] === m[2] ? '**TRUTH!**' : '**LIE!**'})`)
+							.setDescription(`🎲 Roll result: ${m[1]} (${m[1] === m[2] ? '**TRUTH!**' : `**LIE!** Actual: ${m[2]}`})`)
 							.setColor(m[1] === m[2] ? colorDict.LIME : colorDict.RUST);
 						await confirmation.update({ embeds: [true_or_lie_embed], components: [] });
 					} else if (confirmation.customId.startsWith('alright')) {
