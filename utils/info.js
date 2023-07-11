@@ -228,7 +228,8 @@ Here are some examples:
 
 Ex. of valid poll:
 \`/poll title:Test poll description:hello world choices:🍎 First option 🍌 Second option 🍇 Something else time:10m\`
-	`,
+
+**NOTE:** Due to Discord's policy on interaction expiry, polls exceeding 15m in duration will send results as a new message, rather than editing the original message.`,
 
 	'roll':
 `\`/roll [talent] [modifier] [description] [dice]\`
