@@ -40,7 +40,7 @@ module.exports = {
 		const description = interaction.options.getString('description');
 		const rawChoices = interaction.options.getString('choices');
 		const title = interaction.options.getString('title');
-		// const channelID = await interaction.client.channels.cache.get(interaction.channelId);
+		const channel = await interaction.client.channels.cache.get(interaction.channelId);
 		const regex = emojiRegex();
 		const matches = Array.from(rawChoices.matchAll(regex));
 		const emoji = matches.map(x => x[0]);
@@ -62,7 +62,6 @@ module.exports = {
 		} catch (error) {
 			console.log(`Fuck! I can't react!:  ${error}`);
 		}
-
 		const collectorFilter = (reaction, user) => {
 			return !user.bot;
 		};
@@ -76,18 +75,26 @@ module.exports = {
 			console.log(`Collected ${collected.size} items.`);
 			console.log(whoReacted);
 			const reactCounts = {};
+			let maxVotes = -1;
 			for (const e of Object.values(whoReacted)) {
 				reactCounts[e] = reactCounts[e] ? reactCounts[e] + 1 : 1;
+				if (reactCounts[e] > maxVotes) {
+					maxVotes = reactCounts[e];
+				}
 			}
-			console.log(reactCounts);
+			console.log(reactCounts, maxVotes);
 			message.reactions.removeAll()
 				.catch(error => console.error('Failed to clear reactions:', error));
 			const resultEmbed = getDefaultEmbed()
-				.setDescription(`# ${title}\nPoll closed!\n\n${description}\n\n${choices.map(x => `${x[0]} ${x[1]} (${reactCounts[x[0]] ?? 0} vote${(reactCounts[x[0]] ?? 0) === 1 ? '' : 's'})`).join('\n')}`);
-			await interaction.editReply({ embeds: [resultEmbed] });
-
-			return reactCounts;
+				.setDescription(`# ${title}\nPoll closed!\n\n${description}\n\n${choices.map(x => `${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}${x[0]} ${x[1]} (${reactCounts[x[0]] ?? 0} vote${(reactCounts[x[0]] ?? 0) === 1 ? '' : 's'})${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}`).join('\n')}`);
+			if (interaction.options.getInteger('time') < 15) {
+				await interaction.editReply({ embeds: [resultEmbed] });
+			} else {
+				await message.delete();
+				await channel.send({ embeds: [resultEmbed] });
+			}
 		});
+
 
 		// Display actual poll
 		const timestamp = await makeRelativeTimestamp(rawTime);
