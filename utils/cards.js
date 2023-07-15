@@ -1,6 +1,7 @@
 // Const Canvas = require('@napi-rs/canvas');
 const { zip } = require('./math');
 const fs = require('fs');
+const { rollWeighted } = require('../utils/dice');
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -24,6 +25,25 @@ function makeGradient(ctx, canvas, align, stop_points, stop_colors) {
 	return grd;
 }
 
+function loadWeightTable(raw) {
+	const result = {};
+	for (const i in raw) {
+		result[raw[i][0]] = raw[i][1] ?? 1;
+	}
+	return result;
+}
+
+async function getRandomCard(style) {
+	console.log(style);
+	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
+	const { cardInfo } = data;
+	const { drop_table } = cardInfo;
+	const weightTable = loadWeightTable(drop_table);
+	const cardChoice = rollWeighted(weightTable);
+	console.log(cardChoice);
+	return cardChoice;
+}
+
 async function generateCard(style, name) {
 	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
 	const { paintCard } = require(`../cards/${style}/paint.js`);
@@ -33,4 +53,6 @@ async function generateCard(style, name) {
 module.exports = {
 	makeGradient: makeGradient,
 	generateCard: generateCard,
+	loadWeightTable: loadWeightTable,
+	getRandomCard: getRandomCard,
 };

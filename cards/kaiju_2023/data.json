@@ -19,7 +19,9 @@
 		"text_font": "Courier New"
 	},
 	"card_info": {
-		"names": ["banansa"],
+		"drop_table": [
+			["banansa"]
+		],
 		"cards": {
 			"banansa": {
 				"card_name": "Banansa",

@@ -268,6 +268,10 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 - \`/doc <docName>\` - Retrieve the document under that ID`,
 };
 
+const setData = {
+	2023: 'kaiju_2023',
+};
+
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.6.0',
@@ -280,4 +284,5 @@ module.exports = {
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
 	helpText: helpText,
+	setData: setData,
 };
