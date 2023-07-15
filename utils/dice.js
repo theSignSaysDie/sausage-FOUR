@@ -3,13 +3,21 @@ const { RNG } = require('../utils/prng');
 
 const random = RNG();
 
-function rollWeighted(choices, weights) {
-	const cumulativeWeights = weights.map((sum => value => sum += value)(0));
+function rollWeighted() {
+	let cumulativeWeights;
+	let myChoices;
+	if (arguments.length === 1) {
+		myChoices = Object.keys(arguments[0]);
+		cumulativeWeights = Object.values(arguments[0]);
+	} else if (arguments.length === 2) {
+		myChoices = arguments[0];
+		cumulativeWeights = arguments[1].map((sum => value => sum += value)(0));
+	}
 	const weightMax = cumulativeWeights.slice(-1)[0];
 	const roll = Math.floor(random() * weightMax);
 	for (let i = 0; i < cumulativeWeights.length; i++) {
 		if (cumulativeWeights[i] >= roll) {
-			return choices[i];
+			return myChoices[i];
 		}
 	}
 }
