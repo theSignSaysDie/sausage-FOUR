@@ -11,7 +11,7 @@ module.exports = {
 		// Ignore bot messages
 		if (interaction.author.bot) return;
 
-		const cardChoice = getRandomCard('kaiju_2023');
-		await interaction.client.guilds.cache.get(process.env.GUILD_ID).channels.cache.get(process.env.BOTHER_CHANNEL).send(cardChoice);
+		const cardChoice = await getRandomCard('kaiju_2023');
+		await interaction.client.guilds.cache.get(process.env.GUILD_ID).channels.cache.get(process.env.BOTHER_CHANNEL).send(`Card selected: ${cardChoice}`);
 	},
 };

@@ -34,10 +34,9 @@ function loadWeightTable(raw) {
 }
 
 async function getRandomCard(style) {
-	console.log(style);
 	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
-	const { cardInfo } = data;
-	const { drop_table } = cardInfo;
+	const { card_info } = data;
+	const { drop_table } = card_info;
 	const weightTable = loadWeightTable(drop_table);
 	const cardChoice = rollWeighted(weightTable);
 	console.log(cardChoice);
