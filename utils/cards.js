@@ -42,7 +42,7 @@ async function getRandomCard(style) {
 	const cardChoice = rollWeighted(weightTable);
 	console.log(`Card selected: ${cardChoice}`);
 	const cardImage = await getCardImage(style, cardChoice);
-	return [cardChoice, cardImage];
+	return cardImage;
 }
 
 async function getCardImage(style, name) {
@@ -56,7 +56,10 @@ async function getCardImage(style, name) {
 async function generateCard(style, name) {
 	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
 	const { paintCard } = require(`../cards/${style}/paint.js`);
-	return await paintCard(data, name);
+	console.log('Painting card...');
+	const result = await paintCard(data, name);
+	console.log('Returning card...');
+	return result;
 }
 
 module.exports = {

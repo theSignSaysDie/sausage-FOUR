@@ -1,6 +1,8 @@
+/* eslint-disable capitalized-comments */
 require('dotenv').config();
-const { Events } = require('discord.js');
+const { Events, AttachmentBuilder } = require('discord.js');
 const { getRandomCard } = require('../utils/cards');
+const { getDefaultEmbed } = require('../utils/stringy');
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -11,7 +13,12 @@ module.exports = {
 		// Ignore bot messages
 		if (interaction.author.bot) return;
 
-		const cardChoice = await getRandomCard('kaiju_2023');
-		await interaction.client.guilds.cache.get(process.env.GUILD_ID).channels.cache.get(process.env.BOTHER_CHANNEL).send(`Card selected: ${cardChoice}`);
+		const cardImage = await getRandomCard('kaiju_2023');
+		const attachment = new AttachmentBuilder(cardImage, { name: 'card.png' });
+		const embed = getDefaultEmbed()
+			.setImage('attachment://card.png');
+		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
+		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
+		await botherChannel.send({ embeds: [embed], files: [attachment] });
 	},
 };
