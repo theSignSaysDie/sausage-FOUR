@@ -2,6 +2,7 @@
 const { zip } = require('./math');
 const fs = require('fs');
 const { rollWeighted } = require('../utils/dice');
+const { cardCache } = require('../utils/info');
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -39,8 +40,17 @@ async function getRandomCard(style) {
 	const { drop_table } = card_info;
 	const weightTable = loadWeightTable(drop_table);
 	const cardChoice = rollWeighted(weightTable);
-	console.log(cardChoice);
-	return cardChoice;
+	console.log(`Card selected: ${cardChoice}`);
+	const cardImage = await getCardImage(style, cardChoice);
+	return [cardChoice, cardImage];
+}
+
+async function getCardImage(style, name) {
+	const target = `${style}_${name}`;
+	if (!(target in cardCache)) {
+		cardCache[target] = await generateCard(style, name);
+	}
+	return cardCache[target];
 }
 
 async function generateCard(style, name) {

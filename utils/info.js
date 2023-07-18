@@ -169,6 +169,7 @@ const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', '
 const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle', 'spaceship'];
 
 const birthdays = [];
+const cardCache = {};
 
 const helpText = {
 	'default':
@@ -283,6 +284,7 @@ module.exports = {
 	lookupTableNames: lookupTableNames,
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
+	cardCache: cardCache,
 	helpText: helpText,
 	setData: setData,
 };
