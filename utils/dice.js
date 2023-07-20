@@ -22,8 +22,12 @@ function rollWeighted() {
 	}
 }
 
+function rollFloat() {
+	return random();
+}
+
 function roll1ToX(diceType) {
-	return Math.floor(random() * diceType) + 1;
+	return Math.floor(rollFloat() * diceType) + 1;
 }
 
 function rollDice(diceType, amt = 1, talent = 0) {
@@ -134,4 +138,5 @@ module.exports = {
 	formatRawRoll: formatRawRoll,
 	getRollColor: getRollColor,
 	roll1ToX: roll1ToX,
+	rollFloat: rollFloat,
 };
