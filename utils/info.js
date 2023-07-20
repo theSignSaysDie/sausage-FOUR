@@ -170,6 +170,9 @@ const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emoti
 
 const birthdays = [];
 const cardCache = {};
+const currentSet = 'kaiju_2023';
+const cardDropWaitTime = 60 * 60;
+const cardDropChance = 0.01;
 
 const helpText = {
 	'default':
@@ -285,6 +288,9 @@ module.exports = {
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
 	cardCache: cardCache,
+	currentSet: currentSet,
+	cardDropChance: cardDropChance,
+	cardDropWaitTime: cardDropWaitTime,
 	helpText: helpText,
 	setData: setData,
 };

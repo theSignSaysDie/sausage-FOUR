@@ -1,8 +1,9 @@
 // Const Canvas = require('@napi-rs/canvas');
-const { zip } = require('./math');
 const fs = require('fs');
-const { rollWeighted } = require('../utils/dice');
-const { cardCache } = require('../utils/info');
+const { zip } = require('./math');
+const { rollWeighted } = require('./dice');
+const { cardCache } = require('./info');
+const { fetchSQL } = require('./db');
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -42,7 +43,7 @@ async function getRandomCard(style) {
 	const cardChoice = rollWeighted(weightTable);
 	console.log(`Card selected: ${cardChoice}`);
 	const cardImage = await getCardImage(style, cardChoice);
-	return cardImage;
+	return { name: cardChoice, image: cardImage };
 }
 
 async function getCardImage(style, name) {
@@ -62,9 +63,33 @@ async function generateCard(style, name) {
 	return result;
 }
 
+async function handlePlayerReward(snowflake, set, name, time) {
+	const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [snowflake]);
+	let binder;
+	if (queryResult.length) {
+		binder = JSON.parse(queryResult[0]['binder']);
+	} else {
+		binder = {};
+	}
+	if (!binder[set]) {
+		binder[set] = { [name]: 1 };
+	} else {
+		binder[set][name] = binder[set][name] + 1;
+	}
+	const blob = JSON.stringify(binder);
+	if (queryResult.length) {
+		await fetchSQL('UPDATE `player` SET `binder` = ?, `last_drop` = ? WHERE `snowflake` = ?', [blob, time, snowflake]);
+		console.log(`Updated ${snowflake}'s binder to \n${blob}`);
+	} else {
+		await fetchSQL('INSERT INTO `player` VALUES (?, ?, ?)', [snowflake, blob, time]);
+		console.log(`Made new player entry for ${snowflake}`);
+	}
+}
+
 module.exports = {
 	makeGradient: makeGradient,
 	generateCard: generateCard,
 	loadWeightTable: loadWeightTable,
 	getRandomCard: getRandomCard,
+	handlePlayerReward: handlePlayerReward,
 };
