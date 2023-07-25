@@ -15,7 +15,8 @@
     "dotenv": "^16.0.3",
     "emoji-regex": "^10.2.1",
     "google-spreadsheet": "^3.3.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^8.31.0"
