@@ -34,8 +34,14 @@ for (const file of eventFiles) {
 	}
 }
 
+const now = new Date();
+const minutes = now.getMinutes();
+const seconds = now.getSeconds();
+
+db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
+
 // Load troll call and other resources
-schedule('0 0 * * * *', function() {
+schedule(`${seconds} ${minutes} * * * *`, function() {
 	console.log('---------------------');
 	db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
 });
