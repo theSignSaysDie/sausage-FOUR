@@ -3,7 +3,7 @@ const colorDict = {
 	BRONZE: 0xd38232,
 	GOLD: 0xb8b823,
 	LIME: 0x64b614,
-	OLIVE: 0x109c57,
+	OLIVE: 0x7e9655,
 	JADE: 0x109c57,
 	TEAL: 0x27c2c2,
 	CERULEAN: 0x076899,
