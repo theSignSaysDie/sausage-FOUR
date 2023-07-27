@@ -284,8 +284,8 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.7.1',
-	lastUpdated: new Date('July 24, 2023 21:01 PST'),
+	versionNum: 'v3.7.2',
+	lastUpdated: new Date('July 27, 2023 11:40 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
