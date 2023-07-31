@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { formatRoll, modStr, getRollColor, formatRawRoll } = require('../utils/dice');
 const { colorDict } = require('../utils/info');
@@ -39,42 +39,41 @@ module.exports = {
 		const description = interaction.options.getString('description') || 'Roll result';
 		if (raw) {
 			let m;
-			const lie_regex = /lie ([^ ]+) ([^ ]+)/;
+			const lie_regex = /lie/;
 			const regex = /(\d+)?d(\d+)(?:k([lh])(\d+))?(?:([+-])(\d+))?/;
-			const timestamp = Date.now();
 			if ((m = lie_regex.exec(raw)) !== null) {
-				const embed = getDefaultEmbed()
-					.setTitle(`**${description}**`)
-					.setDescription(`🎲 Roll result: ${m[1]}`)
-					.setColor(colorDict.LIME);
-				const calloutButton = new ButtonBuilder()
-					.setCustomId(`callout_${m[1]}_${m[2]}_${timestamp}`)
-					.setLabel('BS!')
-					.setEmoji('📢')
-					.setStyle(ButtonStyle.Danger);
-				const okayButton = new ButtonBuilder()
-					.setCustomId(`alright_${m[1]}_${m[2]}_${timestamp}`)
-					.setLabel('Alright')
-					.setEmoji('✅')
-					.setStyle(ButtonStyle.Primary);
-				const row = new ActionRowBuilder()
-					.addComponents(okayButton, calloutButton);
-
-				const response = await interaction.reply({ embeds: [embed], components: [row] });
-				try {
-					const confirmation = await response.awaitMessageComponent({ time: 60_000 });
-					if (confirmation.customId.startsWith('callout')) {
-						const true_or_lie_embed = getDefaultEmbed()
-							.setTitle(`**${description}**`)
-							.setDescription(`🎲 Roll result: ${m[1]} (${m[1] === m[2] ? '**TRUTH!**' : `**LIE!** Actual: ${m[2]}`})`)
-							.setColor(m[1] === m[2] ? colorDict.LIME : colorDict.RUST);
-						await confirmation.update({ embeds: [true_or_lie_embed], components: [] });
-					} else if (confirmation.customId.startsWith('alright')) {
-						await confirmation.update({ components: [] });
-					}
-				} catch (e) {
-					await interaction.editReply({ content: `Something broke. ${m[1]} ${m[2]}`, components: [] });
-				}
+				const truthRow = new ActionRowBuilder();
+				const lieRow = new ActionRowBuilder();
+				const descRow = new ActionRowBuilder();
+				const descBox = new TextInputBuilder()
+					.setCustomId('limeLieRoll_desc')
+					.setLabel('Description')
+					.setPlaceholder('What\'s the roll for?')
+					.setStyle(TextInputStyle.Short)
+					.setMaxLength(8);
+				descRow.addComponents(descBox);
+				const truthBox = new TextInputBuilder()
+					.setCustomId('limeLieRoll_truth')
+					.setLabel('Truth')
+					.setPlaceholder('What\'d you roll?')
+					.setStyle(TextInputStyle.Short)
+					.setMaxLength(8)
+					.setRequired(true);
+				truthRow.addComponents(truthBox);
+				const lieBox = new TextInputBuilder()
+					.setCustomId('limeLieRoll_lie')
+					.setLabel('Lie')
+					.setPlaceholder('What\'d you decide? (leave blank if no lying)')
+					.setStyle(TextInputStyle.Short)
+					.setMaxLength(8)
+					.setRequired(false);
+				lieRow.addComponents(lieBox);
+				const modal = new ModalBuilder()
+					.setCustomId('limeLieModal')
+					.setTitle('Lies time yippee')
+					.addComponents(descRow, truthRow, lieRow);
+				console.log('Showing modal....');
+				await interaction.showModal(modal);
 			} else if ((m = regex.exec(raw)) !== null) {
 				const amt = +(m[1] ?? 1);
 				const size = +m[2];
