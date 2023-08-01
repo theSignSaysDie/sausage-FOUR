@@ -9,14 +9,12 @@ module.exports = {
 		const id = interaction.customId;
 		if (id.startsWith('callout_')) {
 			const details = id.replace('callout_', '').split('_');
-			const [lie, truth, timestamp] = details;
-			console.log('lie, truth');
+			const [lie, truth] = details;
 			const true_or_lie_embed = getDefaultEmbed()
 				.setDescription(`🎲 Roll result: ${lie} (${lie === truth ? '**TRUTH!**' : `**LIE!** Actual: ${truth}`})`)
 				.setColor(lie === truth ? colorDict.LIME : colorDict.RUST);
 			await interaction.message.edit({ embeds: [true_or_lie_embed], components: [] });
 		} else if (id.startsWith('alright_')) {
-			console.log('OOOO');
 			await interaction.message.edit({ components: [] });
 		}
 	},

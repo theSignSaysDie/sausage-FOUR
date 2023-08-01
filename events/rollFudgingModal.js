@@ -11,21 +11,21 @@ module.exports = {
 		const id = interaction.customId;
 		if (id.startsWith('limeLieModal')) {
 			const truth = interaction.fields.getTextInputValue('limeLieRoll_truth');
-			const lie = interaction.fields.getTextInputValue('limeLieRoll_lie') ?? truth;
+			const rawLie = interaction.fields.getTextInputValue('limeLieRoll_lie');
+			const lie = rawLie.length ? lie : truth;
 			const description = interaction.fields.getTextInputValue('limeLieRoll_desc');
 			console.log(`Truth: ${truth}, Lie: ${lie}`);
-			const timestamp = Date.now();
 			const embed = getDefaultEmbed()
 				.setTitle(`**${description}**`)
 				.setDescription(`🎲 Roll result: ${lie}`)
 				.setColor(colorDict.LIME);
 			const calloutButton = new ButtonBuilder()
-				.setCustomId(`callout_${lie}_${truth}_${timestamp}`)
+				.setCustomId(`callout_${lie}_${truth}`)
 				.setLabel('BS!')
 				.setEmoji('📢')
 				.setStyle(ButtonStyle.Danger);
 			const okayButton = new ButtonBuilder()
-				.setCustomId(`alright_${lie}_${truth}_${timestamp}`)
+				.setCustomId(`alright_${lie}_${truth}`)
 				.setLabel('Alright')
 				.setEmoji('✅')
 				.setStyle(ButtonStyle.Primary);

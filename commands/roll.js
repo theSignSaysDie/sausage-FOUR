@@ -49,8 +49,7 @@ module.exports = {
 					.setCustomId('limeLieRoll_desc')
 					.setLabel('Description')
 					.setPlaceholder('What\'s the roll for?')
-					.setStyle(TextInputStyle.Short)
-					.setMaxLength(8);
+					.setStyle(TextInputStyle.Short);
 				descRow.addComponents(descBox);
 				const truthBox = new TextInputBuilder()
 					.setCustomId('limeLieRoll_truth')
@@ -70,7 +69,7 @@ module.exports = {
 				lieRow.addComponents(lieBox);
 				const modal = new ModalBuilder()
 					.setCustomId('limeLieModal')
-					.setTitle('Lies time yippee')
+					.setTitle('Input lie details')
 					.addComponents(descRow, truthRow, lieRow);
 				console.log('Showing modal....');
 				await interaction.showModal(modal);
