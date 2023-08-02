@@ -12,7 +12,7 @@ module.exports = {
 		if (id.startsWith('limeLieModal')) {
 			const truth = interaction.fields.getTextInputValue('limeLieRoll_truth');
 			const rawLie = interaction.fields.getTextInputValue('limeLieRoll_lie');
-			const lie = rawLie.length ? lie : truth;
+			const lie = rawLie.length ? rawLie : truth;
 			const description = interaction.fields.getTextInputValue('limeLieRoll_desc');
 			console.log(`Truth: ${truth}, Lie: ${lie}`);
 			const embed = getDefaultEmbed()
