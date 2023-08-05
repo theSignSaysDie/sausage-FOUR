@@ -63,7 +63,7 @@ async function generateCard(style, name) {
 	return result;
 }
 
-async function handlePlayerReward(snowflake, set, name, time) {
+async function fetchBinder(snowflake) {
 	const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [snowflake]);
 	let binder;
 	if (queryResult.length) {
@@ -71,19 +71,31 @@ async function handlePlayerReward(snowflake, set, name, time) {
 	} else {
 		binder = {};
 	}
+	return binder;
+}
+
+async function addCard(binder, set, name) {
 	if (!binder[set]) {
 		binder[set] = { [name]: 1 };
 	} else {
 		binder[set][name] = binder[set][name] + 1;
 	}
+}
+
+async function pushBinder(snowflake, binder) {
 	const blob = JSON.stringify(binder);
-	if (queryResult.length) {
-		await fetchSQL('UPDATE `player` SET `binder` = ?, `last_drop` = ? WHERE `snowflake` = ?', [blob, time, snowflake]);
-		console.log(`Updated ${snowflake}'s binder to \n${blob}`);
-	} else {
-		await fetchSQL('INSERT INTO `player` VALUES (?, ?, ?)', [snowflake, blob, time]);
-		console.log(`Made new player entry for ${snowflake}`);
-	}
+	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
+}
+
+async function updateCooldown(snowflake, time) {
+	await fetchSQL('UPDATE `player` SET `last_drop` = ? WHERE `snowflake` = ?', [time, snowflake]);
+}
+
+async function handlePlayerReward(snowflake, set, name, time) {
+	const binder = await fetchBinder(snowflake);
+	addCard(binder, set, name);
+	pushBinder(snowflake, binder);
+	updateCooldown(snowflake, time);
 }
 
 module.exports = {
