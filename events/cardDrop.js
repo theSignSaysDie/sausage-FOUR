@@ -10,7 +10,7 @@ module.exports = {
 	name: Events.MessageCreate,
 	async execute(interaction) {
 		// Ignore all other servers
-		if (interaction.guild !== process.end.GUILD_ID) return;
+		if (interaction.guildId !== process.env.GUILD_ID) return;
 		// Ignore channels off whitelist
 		const procChannels = process.env.PROC_CHANNELS.split(' ');
 		if (!procChannels.includes(interaction.channel.id)) return;
