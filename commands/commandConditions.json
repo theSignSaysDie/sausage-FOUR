@@ -1,5 +1,6 @@
 {
 	"cardtest": {
-		"MONTH": 8
+		"DEBUG_OVERRIDE": 1,
+		"MONTH": 8		
 	}
 }
