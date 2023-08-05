@@ -1,7 +1,8 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder } = require('discord.js');
-const { postCard } = require('../utils/cards');
+const { postCard, fetchBinder, getPrettyBinderSummary } = require('../utils/cards');
 const { currentSet } = require('../utils/info');
+const { getDefaultEmbed } = require('../utils/stringy');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -28,8 +29,12 @@ module.exports = {
 		),
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'binder') {
-
-			return;
+			const binder = await fetchBinder(interaction.user.id);
+			const summary = await getPrettyBinderSummary(currentSet, binder);
+			const embed = getDefaultEmbed()
+				.setTitle('Binder Contents')
+				.setDescription(summary);
+			await interaction.reply({ embeds: [embed] });
 		} else if (interaction.options.getSubcommand() === 'card') {
 			await interaction.reply(await postCard(currentSet, interaction.options.getString('name')));
 		} else if (interaction.options.getSubcommand() === 'trade') {

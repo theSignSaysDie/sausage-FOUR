@@ -1,11 +1,12 @@
 // Const Canvas = require('@napi-rs/canvas');
 const fs = require('fs');
-const { zip } = require('./math');
+const { zip, objectToListMap } = require('./math');
 const { rollWeighted } = require('./dice');
-const { cardCache } = require('./info');
+const { cardCache, currentSet } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
+const cardData = JSON.parse(fs.readFileSync(`./cards/${currentSet}/data.json`, 'utf8'));
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -38,8 +39,7 @@ function loadWeightTable(raw) {
 }
 
 async function getRandomCard(style) {
-	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
-	const { card_info } = data;
+	const { card_info } = cardData;
 	const { drop_table } = card_info;
 	const weightTable = loadWeightTable(drop_table);
 	const cardChoice = rollWeighted(weightTable);
@@ -108,6 +108,19 @@ async function postCard(set, name) {
 	return { embeds: [embed], files: [attachment], ephemeral: true };
 }
 
+async function getPrettyBinderSummary(set, binder) {
+	if (!binder[set]) {
+		return 'You don\'t have any cards in this year\'s set yet!';
+	} else {
+		const { card_info } = cardData;
+		const { cards } = card_info;
+		const summary = objectToListMap(Object.keys(cards), function(card) {
+			return `- \`${cards[card]['card_name']}\`: x${binder[currentSet][card] ?? 0}`;
+		}).join('\n');
+		return summary;
+	}
+}
+
 module.exports = {
 	makeGradient: makeGradient,
 	generateCard: generateCard,
@@ -116,4 +129,5 @@ module.exports = {
 	fetchBinder: fetchBinder,
 	handlePlayerReward: handlePlayerReward,
 	postCard: postCard,
+	getPrettyBinderSummary: getPrettyBinderSummary,
 };
