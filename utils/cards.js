@@ -3,7 +3,9 @@ const fs = require('fs');
 const { zip } = require('./math');
 const { rollWeighted } = require('./dice');
 const { cardCache } = require('./info');
+const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL } = require('./db');
+const { AttachmentBuilder } = require('discord.js');
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -98,10 +100,20 @@ async function handlePlayerReward(snowflake, set, name, time) {
 	updateCooldown(snowflake, time);
 }
 
+async function postCard(set, name) {
+	const card = await getCardImage(set, name);
+	const attachment = new AttachmentBuilder(card, { name: 'card.png' });
+	const embed = getDefaultEmbed()
+		.setImage('attachment://card.png');
+	return { embeds: [embed], files: [attachment], ephemeral: true };
+}
+
 module.exports = {
 	makeGradient: makeGradient,
 	generateCard: generateCard,
 	loadWeightTable: loadWeightTable,
 	getRandomCard: getRandomCard,
+	fetchBinder: fetchBinder,
 	handlePlayerReward: handlePlayerReward,
+	postCard: postCard,
 };

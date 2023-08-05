@@ -1,7 +1,6 @@
 /* eslint-disable capitalized-comments */
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const { getCardImage } = require('../utils/cards');
-const { getDefaultEmbed } = require('../utils/stringy');
+const { SlashCommandBuilder } = require('discord.js');
+const { postCard } = require('../utils/cards');
 const { currentSet } = require('../utils/info');
 
 module.exports = {
@@ -29,13 +28,10 @@ module.exports = {
 		),
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'binder') {
+
 			return;
 		} else if (interaction.options.getSubcommand() === 'card') {
-			const card = await getCardImage(currentSet, interaction.options.getString('name'));
-			const attachment = new AttachmentBuilder(card, { name: 'card.png' });
-			const embed = getDefaultEmbed()
-				.setImage('attachment://card.png');
-			await interaction.reply({ embeds: [embed], files: [attachment], ephemeral: true });
+			await interaction.reply(await postCard(currentSet, interaction.options.getString('name')));
 		} else if (interaction.options.getSubcommand() === 'trade') {
 			return;
 		}
