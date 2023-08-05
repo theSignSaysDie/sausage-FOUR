@@ -1,7 +1,9 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const { generateCard } = require('../utils/cards');
+const { getCardImage } = require('../utils/cards');
 const { getDefaultEmbed } = require('../utils/stringy');
+const { currentSet } = require('../utils/info');
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('cardtest')
@@ -29,7 +31,7 @@ module.exports = {
 		if (interaction.options.getSubcommand() === 'binder') {
 			return;
 		} else if (interaction.options.getSubcommand() === 'card') {
-			const card = await generateCard('kaiju_2023', interaction.options.getString('name'));
+			const card = await getCardImage(currentSet, interaction.options.getString('name'));
 			const attachment = new AttachmentBuilder(card, { name: 'card.png' });
 			const embed = getDefaultEmbed()
 				.setImage('attachment://card.png');
