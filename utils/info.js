@@ -1,3 +1,6 @@
+/**
+ * @desc global list of colors for use in embeds and other applications.
+ */
 const colorDict = {
 	RUST: 0xe24b4b,
 	BRONZE: 0xd38232,
@@ -35,7 +38,11 @@ const colorDict = {
 	GREY: 0xc3c3c3,
 };
 
-
+/**
+ * @desc global list of Google Doc IDs
+ * @see module:db.getDocLink
+ */
+// TODO fix the joint above
 const docDict = {
 	SNS: '1s00GvbGKS6gW3Dl1K1qMk3TSMQ1x-o-jnYhq_PODBks',
 	RUST: '1HI2-2sDqiZf2cdihOXaT3pCQy17WCb2dht1xyb6Qyh0',
@@ -148,6 +155,9 @@ const docDict = {
 	WYLDERDRUID: '1OgtZgVEmFkPyKCPdkEAmCXms-2MJjkbP8IiWstNmJWs',
 };
 
+/**
+ * @desc global list of hard-coded links to fanmade/serverstuck resources.
+ */
 const fanmadeLinks = [
 	'**WARNING**: Modified character sheets are NOT accepted upon submission. Please use this as a secondary sheet, or after approval.\nhttps://docs.google.com/document/d/1A6259kYnzmpQ0uLnTmnCQ0XamS-2iOam1ztm8Wl-_do/edit',
 	'https://docs.google.com/spreadsheets/d/17G_Er3M8nht6TBCKXk1197QLU7rFYZ5vryyD8IcUMis/edit#gid=0',
@@ -166,11 +176,24 @@ const fanmadeLinks = [
 	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
 ];
 
+/**
+ * @desc list of tables in Sausage's database.
+ */
 const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle', 'spaceship'];
+/**
+ * @desc list of tables in Sausage's database which can be looked up in `/lookup`.
+ */
 const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle', 'spaceship'];
+// TODO Do these need updating?
 
+/**
+ * @desc global list of users currently being birthday beamed.
+ */
 const birthdays = [];
 
+/**
+ * @desc help text for the `/help` command.
+ */
 const helpText = {
 	'default':
 `> Use \`/help <command>\` on any command with an * to learn more about it.
