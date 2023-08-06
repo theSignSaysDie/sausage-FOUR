@@ -8,13 +8,13 @@ function rollWeighted() {
 	let myChoices;
 	if (arguments.length === 1) {
 		myChoices = Object.keys(arguments[0]);
-		cumulativeWeights = Object.values(arguments[0]);
+		cumulativeWeights = Object.values(arguments[0]).map((sum => value => sum += value)(0));
 	} else if (arguments.length === 2) {
 		myChoices = arguments[0];
 		cumulativeWeights = arguments[1].map((sum => value => sum += value)(0));
 	}
 	const weightMax = cumulativeWeights.slice(-1)[0];
-	const roll = Math.floor(random() * weightMax);
+	const roll = roll1ToX(weightMax);
 	for (let i = 0; i < cumulativeWeights.length; i++) {
 		if (cumulativeWeights[i] >= roll) {
 			return myChoices[i];
