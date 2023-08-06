@@ -76,12 +76,16 @@ async function fetchBinder(snowflake) {
 	return binder;
 }
 
-async function addCard(binder, set, name) {
-	if (!binder[set]) {
-		binder[set] = { [name]: 1 };
-	} else {
-		binder[set][name] = binder[set][name] + 1;
-	}
+async function addCard(binder, set, name, quantity = 1) {
+	if (!binder[set]) binder[set] = { [name]: 0 };
+	if (!binder[set][name]) binder[set][name] = 0;
+	binder[set][name] += quantity;
+}
+
+async function removeCard(binder, set, name, quantity = 1) {
+	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
+	if (!binder[set][name]) throw Error('This binder doesn\'t have any of the card being removed.');
+	binder[set][name] -= quantity;
 }
 
 async function pushBinder(snowflake, binder) {
@@ -130,4 +134,7 @@ module.exports = {
 	handlePlayerReward: handlePlayerReward,
 	postCard: postCard,
 	getPrettyBinderSummary: getPrettyBinderSummary,
+	addCard: addCard,
+	removeCard: removeCard,
+	pushBinder: pushBinder,
 };
