@@ -6,6 +6,7 @@ const doc = new GoogleSpreadsheet(process.env.TROLL_CALL_DOC_ID);
 const trollFullNameDict = {};
 const trollFirstNameDict = {};
 const trollTitleDict = {};
+const cardTradeSessions = {};
 
 const con = mysql.createPool({
 	connectionLimit: 8,
@@ -98,4 +99,5 @@ module.exports = {
 	trollFullNameDict: trollFullNameDict,
 	trollFirstNameDict: trollFirstNameDict,
 	trollTitleDict: trollTitleDict,
+	cardTradeSessions: cardTradeSessions,
 };
