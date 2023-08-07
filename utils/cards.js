@@ -67,13 +67,7 @@ async function generateCard(style, name) {
 
 async function fetchBinder(snowflake) {
 	const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [snowflake]);
-	let binder;
-	if (queryResult.length) {
-		binder = JSON.parse(queryResult[0]['binder']);
-	} else {
-		binder = {};
-	}
-	return binder;
+	return queryResult.length ? JSON.parse(queryResult[0]['binder']) : {};
 }
 
 async function addCard(binder, set, name, quantity = 1) {
