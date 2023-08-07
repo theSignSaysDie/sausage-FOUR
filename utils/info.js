@@ -1,9 +1,12 @@
+/**
+ * @desc global list of colors for use in embeds and other applications.
+ */
 const colorDict = {
 	RUST: 0xe24b4b,
 	BRONZE: 0xd38232,
 	GOLD: 0xb8b823,
 	LIME: 0x64b614,
-	OLIVE: 0x109c57,
+	OLIVE: 0x7e9655,
 	JADE: 0x109c57,
 	TEAL: 0x27c2c2,
 	CERULEAN: 0x076899,
@@ -32,9 +35,14 @@ const colorDict = {
 	OTHER: 0xade196,
 	ORGANIZATIONS: 0xff0100,
 	KID: 0x7bafde,
+	GREY: 0xc3c3c3,
 };
 
-
+/**
+ * @desc global list of Google Doc IDs
+ * @see module:db.getDocLink
+ */
+// TODO fix the joint above
 const docDict = {
 	SNS: '1s00GvbGKS6gW3Dl1K1qMk3TSMQ1x-o-jnYhq_PODBks',
 	RUST: '1HI2-2sDqiZf2cdihOXaT3pCQy17WCb2dht1xyb6Qyh0',
@@ -147,6 +155,9 @@ const docDict = {
 	WYLDERDRUID: '1OgtZgVEmFkPyKCPdkEAmCXms-2MJjkbP8IiWstNmJWs',
 };
 
+/**
+ * @desc global list of hard-coded links to fanmade/serverstuck resources.
+ */
 const fanmadeLinks = [
 	'**WARNING**: Modified character sheets are NOT accepted upon submission. Please use this as a secondary sheet, or after approval.\nhttps://docs.google.com/document/d/1A6259kYnzmpQ0uLnTmnCQ0XamS-2iOam1ztm8Wl-_do/edit',
 	'https://docs.google.com/spreadsheets/d/17G_Er3M8nht6TBCKXk1197QLU7rFYZ5vryyD8IcUMis/edit#gid=0',
@@ -165,15 +176,28 @@ const fanmadeLinks = [
 	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
 ];
 
+/**
+ * @desc list of tables in Sausage's database.
+ */
 const tableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'trollcall', 'vehicle', 'spaceship'];
+/**
+ * @desc list of tables in Sausage's database which can be looked up in `/lookup`.
+ */
 const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emotion', 'hazard', 'hivecrafting', 'lusus', 'monster', 'move', 'prosthetic', 'sylladex', 'tag', 'vehicle', 'spaceship'];
+// TODO Do these need updating?
 
+/**
+ * @desc global list of users currently being birthday beamed.
+ */
 const birthdays = [];
 const cardCache = {};
 const currentSet = 'kaiju_2023';
 const cardDropWaitTime = 60 * 60;
 const cardDropChance = 0.01;
 
+/**
+ * @desc help text for the `/help` command.
+ */
 const helpText = {
 	'default':
 `> Use \`/help <command>\` on any command with an * to learn more about it.
@@ -193,6 +217,7 @@ const helpText = {
 \`/help <command>\` - Fetch additional help for complex* commands
 \`/image <category>\` - Fetch a random image from a specific category
 \`/invite\` - Fetch an invite link for Sausage
+\`/poll <title> <description> <choices> <time>\` - set up a poll for others to vote in
 \`/version\` - Read Sausage version information
 
 **Fun**
@@ -220,6 +245,18 @@ Here are some examples:
 \`/pinglist invoke <name>\` - Invokes the pinglist with the given name, pinging everyone on the list and posting a join/leave menu
 \`/pinglist delete <name>\` - Upon successful confirmation, unsubscribes all pinglist members and deletes the pinglist from Sausage
 `,
+
+	'poll': `
+- \`title\` may be any string of text
+- \`description\` may be any string of text
+- \`choices\` must be a list of choices numbered by emojis (max 50 choices, only default emojis)
+- \`time\` is an interval of time ranging from one minute to 24 hours
+
+
+Ex. of valid poll:
+\`/poll title:Test poll description:hello world choices:🍎 First option 🍌 Second option 🍇 Something else time:10m\`
+
+**NOTE:** Due to Discord's policy on interaction expiry, polls exceeding 15m in duration will send results as a new message, rather than editing the original message.`,
 
 	'roll':
 `\`/roll [talent] [modifier] [description] [dice]\`
@@ -278,8 +315,8 @@ const setData = {
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.6.0',
-	lastUpdated: new Date('June 29, 2023 21:53 PST'),
+	versionNum: 'v3.7.3',
+	lastUpdated: new Date('August 3, 2023 09:42 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,

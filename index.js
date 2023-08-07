@@ -1,12 +1,13 @@
 require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { schedule } = require('node-cron');
 const fs = require('node:fs');
 const path = require('node:path');
 const db = require('./utils/db');
 const { isAllowed } = require('./utils/conditions');
 
 // Initialize client
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 
 // Load conditions for commands, events
 const eventConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'events/eventConditions.json'), 'utf8'));
@@ -50,8 +51,18 @@ for (const file of eventFiles) {
 	}
 }
 
-// Load troll call and other resources
+const now = new Date();
+const minutes = now.getMinutes();
+const seconds = now.getSeconds();
+
 db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
+
+// Load troll call and other resources
+schedule(`${seconds} ${minutes} * * * *`, function() {
+	console.log('---------------------');
+	db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
+});
+
 
 // Login!
 client.login(process.env.DISCORD_TOKEN);

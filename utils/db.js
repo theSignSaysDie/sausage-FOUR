@@ -8,6 +8,12 @@ const trollFirstNameDict = {};
 const trollTitleDict = {};
 const cardTradeSessions = {};
 
+/** Global MySQL Connection Pool.
+ * This definition pulls details from the .env file to establish a connection,
+ * because hard-coding tokens is terribly insecure.
+ * Forbidding multiple statements is the first line of defense against
+ * injection attacks.
+*/
 const con = mysql.createPool({
 	connectionLimit: 8,
 	host: process.env.SQL_HOST,
@@ -17,6 +23,13 @@ const con = mysql.createPool({
 	multipleStatements: false,
 });
 
+/**
+ * @description Simplified wrapper for the `mysql.Pool.query` method.
+ * @param {String} [query=[]] Query string formatted with MariaDB syntax
+ * @param {Array} params Escaped query values. More info {@link https://github.com/mysqljs/mysql#escaping-query-values here}.
+ * @returns an array of query result objects, or an empty list.
+ * @example let queryResult = await fetchSQL("SELECT ? FROM ??", ["title", "move"]);
+ */
 const fetchSQL = (query, params = []) => {
 	return new Promise((resolve, reject) => {
 		con.query(query, params, (err, elements) => {
@@ -30,10 +43,15 @@ const fetchSQL = (query, params = []) => {
 	});
 };
 
+// TODO investigate this method and maybe remove it/refactor
 function sanitizeForQuery(string) {
 	return string.replace(/'/g, '\\\'');
 }
 
+/**
+ * @description Loads the troll call
+ * @returns List of first names, full names, and adult titles with which to look up trolls
+ */
 async function loadTrollCall() {
 	const start = new Date();
 	console.log('Loading Troll Call...');
@@ -86,6 +104,11 @@ async function loadTrollCall() {
 	return [trollFirstNameDict, trollFullNameDict, trollTitleDict];
 }
 
+/**
+ * @description Formats an ID as a valid Google Doc
+ * @param {String} id the document ID
+ * @returns the Google Doc URL as a String
+ */
 function getDocLink(id) {
 	return `https://docs.google.com/document/d/${id}`;
 }
