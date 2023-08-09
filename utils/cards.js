@@ -51,7 +51,6 @@ function getCardData(style) {
  * @param {String} style the card set to roll from
  * @returns a randomly selected card from the current set according to drop weights
  */
-
 async function getRandomCard(style) {
 	const { card_info } = getCardData(style);
 	const { drop_table } = card_info;
