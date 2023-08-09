@@ -6,7 +6,6 @@ const { cardCache, currentSet } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
-const cardData = JSON.parse(fs.readFileSync(`./cards/${currentSet}/data.json`, 'utf8'));
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
@@ -30,6 +29,11 @@ function makeGradient(ctx, canvas, align, stop_points, stop_colors) {
 	return grd;
 }
 
+/**
+ * @desc Loads a weight table from a list of weights specified in a card set's data file. Default weight is always 1
+ * @param {Object} raw a list of arrays or objects with a single value: a card's name and its weight
+ * @returns an Object consisting of card names and weights
+ */
 function loadWeightTable(raw) {
 	const result = {};
 	for (const i in raw) {
@@ -38,8 +42,18 @@ function loadWeightTable(raw) {
 	return result;
 }
 
+function getCardData(style) {
+	return JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
+}
+
+/**
+ * @desc Returns a randomly selected card from the current set according to drop weights
+ * @param {String} style the card set to roll from
+ * @returns a randomly selected card from the current set according to drop weights
+ */
+
 async function getRandomCard(style) {
-	const { card_info } = cardData;
+	const { card_info } = getCardData(style);
 	const { drop_table } = card_info;
 	const weightTable = loadWeightTable(drop_table);
 	const cardChoice = rollWeighted(weightTable);
@@ -48,6 +62,14 @@ async function getRandomCard(style) {
 	return { name: cardChoice, image: cardImage };
 }
 
+/**
+ * @desc Retrieves a card from a set if it exists - either from cache, or by generating a new card
+ * @param {String} style the set to draw from
+ * @param {String} name the card to retrieve an image for
+ * @returns the card image as a `.png` file
+ */
+// TODO add error handling for set/card misses
+// TODO add reply deferral in case of long generation time
 async function getCardImage(style, name) {
 	const target = `${style}_${name}`;
 	if (!(target in cardCache)) {
@@ -56,8 +78,14 @@ async function getCardImage(style, name) {
 	return cardCache[target];
 }
 
+/**
+ * @desc Generates card art using set/card-specific instructions for drawing
+ * @param {String} style the set to draw from
+ * @param {String} name the card to retrieve an image for
+ * @returns the card image as a `.png` file
+ */
 async function generateCard(style, name) {
-	const data = JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
+	const data = getCardData(style);
 	const { paintCard } = require(`../cards/${style}/paint.js`);
 	console.log('Painting card...');
 	const result = await paintCard(data, name);
@@ -65,32 +93,68 @@ async function generateCard(style, name) {
 	return result;
 }
 
+/**
+ * @param {String} snowflake the snowflake of the player whose binder is being accessed
+ * @returns an Object representing the player's binder, or the empty object if no binder exists under that name
+ */
 async function fetchBinder(snowflake) {
 	const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [snowflake]);
 	return queryResult.length ? JSON.parse(queryResult[0]['binder']) : {};
 }
 
+/**
+ * @desc Adds a card to a binder. Creates binder space if necessary
+ * @param {Object} binder the player binder to modify
+ * @param {String} set the set to add the card from
+ * @param {String} name the name of the card to add
+ * @param {Integer} quantity the amount of cards to add (default 1)
+ */
+// TODO Figure out default parameter notation in JSDoc
 async function addCard(binder, set, name, quantity = 1) {
 	if (!binder[set]) binder[set] = { [name]: 0 };
 	if (!binder[set][name]) binder[set][name] = 0;
 	binder[set][name] += quantity;
 }
 
+/**
+ * @desc Removes a card from a binder and throws an error if the card does not exist in the binder (or the corresponding set)
+ * @param {Object} binder the player binder to modify
+ * @param {String} set the set to remove the card to
+ * @param {String} name the name of the card to remove
+ * @param {Integer} quantity the amount of cards to remove (default 1)
+ */
 async function removeCard(binder, set, name, quantity = 1) {
 	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
 	if (!binder[set][name]) throw Error('This binder doesn\'t have any of the card being removed.');
 	binder[set][name] -= quantity;
 }
 
+/**
+ * @desc Stringifies a player binder and pushes it into the database
+ * @param {String} snowflake the snowflake ID of the player to whom the binder belongs
+ * @param {Object} binder the binder
+ */
 async function pushBinder(snowflake, binder) {
 	const blob = JSON.stringify(binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
 }
 
+/**
+ * @desc Updates the time of last card drop in the player database.
+ * @param {String} snowflake the snowflake ID of the player to whom the binder belongs
+ * @param {Integer} time the time in milliseconds since world epoch
+ */
 async function updateCooldown(snowflake, time) {
 	await fetchSQL('UPDATE `player` SET `last_drop` = ? WHERE `snowflake` = ?', [time, snowflake]);
 }
 
+/**
+ * @desc Helper function for processing a successul card drop
+ * @param {String} snowflake the snowflake ID of the player who received a card
+ * @param {String} set the set to which the dropped card belongs
+ * @param {String} name the name of the card
+ * @param {Integer} time the time of the dorp in milliseconds since world epoch
+ */
 async function handlePlayerReward(snowflake, set, name, time) {
 	const binder = await fetchBinder(snowflake);
 	addCard(binder, set, name);
@@ -98,6 +162,12 @@ async function handlePlayerReward(snowflake, set, name, time) {
 	updateCooldown(snowflake, time);
 }
 
+/**
+ * @desc formulates a message with which to present card drops
+ * @param {String} set the set to which the dropped card belongs
+ * @param {String} name the name of the card
+ * @returns an Object representing a valid Discord interaction reply message containing card art and congratulations
+ */
 async function postCard(set, name) {
 	const card = await getCardImage(set, name);
 	const attachment = new AttachmentBuilder(card, { name: 'card.png' });
@@ -106,11 +176,18 @@ async function postCard(set, name) {
 	return { embeds: [embed], files: [attachment], ephemeral: true };
 }
 
+/**
+ * @desc produces a string of list items representing the contents of a card binder
+ * @param {String} set the set to showcase
+ * @param {String} binder the binder to showcase
+ * @returns a string of newline-separated list items
+ */
+// TODO These should be sorted before printing
 async function getPrettyBinderSummary(set, binder) {
 	if (!binder[set]) {
 		return 'You don\'t have any cards in this year\'s set yet!';
 	} else {
-		const { card_info } = cardData;
+		const { card_info } = getCardData(set);
 		const { cards } = card_info;
 		const summary = objectToListMap(Object.keys(cards), function(card) {
 			return `- \`${cards[card]['card_name']}\`: x${binder[currentSet][card] ?? 0}`;
