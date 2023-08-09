@@ -5,7 +5,6 @@ const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = 
 const { currentSet } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions } = require('../utils/db');
-// const cardDrop = require('../events/cardDrop');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -37,6 +36,7 @@ module.exports = {
 				),
 		),
 	async execute(interaction) {
+		// Player wants to see their binder contents
 		if (interaction.options.getSubcommand() === 'binder') {
 			const binder = await fetchBinder(interaction.user.id);
 			const summary = await getPrettyBinderSummary(currentSet, binder);
@@ -44,21 +44,39 @@ module.exports = {
 				.setTitle('Binder Contents')
 				.setDescription(summary);
 			await interaction.reply({ embeds: [embed] });
+		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
 			await interaction.reply(await postCard(currentSet, interaction.options.getString('name')));
+		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
+			// No trades with bots
 			if (interaction.options.getUser('player').bot) await interaction.reply({ content: 'You can\'t trade with bots!', ephemeral: true });
+			// Collect information
 			const target = interaction.options.getUser('player').id;
 			let isDefault;
 			let focusInitiator, focusTarget;
 
+			// Initialize session details
 			const now = getCurrentTimestamp();
 			const sessionID = [interaction.user.id, target, now].map(i => toString64(parseInt(i), 64)).join('.');
+
+			// Begin constructing embed, buttons
 			const embed = getDefaultEmbed()
 				.setTitle('⚠️ TRADE OFFER ⚠️')
 				.setDescription('Configure your trade with the widgets below!');
 			const yourCardSelect = new StringSelectMenuBuilder()
 				.setCustomId(`binder_trade_${sessionID}_initiator_select`);
+			/*
+				Because of the way Discord's API works, string select menus don't persist
+				between clicks by default. Each time an option is selected, the select box's
+				default option must be changed. This confers the illusion of a persistent menu.
+			*/
+
+			// ========
+			// Setup for dealmaker's side
+			// ========
+
+			// Binder collection / outgoing select menu
 			const yourBinder = await fetchBinder(interaction.user.id);
 			isDefault = true;
 			for (const card in yourBinder[currentSet]) {
@@ -68,10 +86,14 @@ module.exports = {
 						.setValue(card)
 						.setDefault(isDefault),
 				);
+				// No if statement here.
+				// Optimization to prevent incorrect branching at machine level
+				// TODO does this actually make a difference?
 				focusInitiator = isDefault ? card : focusInitiator;
 				isDefault = isDefault && false;
 			}
 
+			// Up/Down buttons
 			const yourUpButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_initiator_up`)
 				.setEmoji('⬆️')
@@ -82,12 +104,17 @@ module.exports = {
 				.setStyle(ButtonStyle.Primary)
 				.setDisabled(true);
 
+			// Adding components to rows
 			const yourCardSelectRow = new ActionRowBuilder()
 				.addComponents(yourCardSelect);
 			const yourCardSelectArrowRow = new ActionRowBuilder()
 				.addComponents(yourUpButton, yourDownButton);
 
+			// ========
+			// Setup for target's side
+			// ========
 
+			// Binder collection / incoming select menu
 			const theirCardSelect = new StringSelectMenuBuilder()
 				.setCustomId(`binder_trade_${sessionID}_target_select`);
 			const theirBinder = await fetchBinder(target);
@@ -102,6 +129,8 @@ module.exports = {
 				focusTarget = isDefault ? card : focusTarget;
 				isDefault = isDefault && false;
 			}
+
+			// Up/Down buttons
 			const theirUpButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_target_up`)
 				.setEmoji('⬆️')
@@ -112,11 +141,13 @@ module.exports = {
 				.setStyle(ButtonStyle.Primary)
 				.setDisabled(true);
 
+			// Adding components to rows
 			const theirCardSelectRow = new ActionRowBuilder()
 				.addComponents(theirCardSelect);
 			const theirCardSelectArrowRow = new ActionRowBuilder()
 				.addComponents(theirUpButton, theirDownButton);
 
+			// Confirm and cancel buttons
 			const confirmButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_system_confirm`)
 				.setEmoji('✅')
@@ -127,20 +158,26 @@ module.exports = {
 				.setEmoji('🗑️')
 				.setStyle(ButtonStyle.Danger);
 
+			// Adding buttons to different rows
 			yourCardSelectArrowRow.addComponents(cancelButton);
 			theirCardSelectArrowRow.addComponents(confirmButton);
 
+			// Push session to global session tracker
 			cardTradeSessions[sessionID] = { offer: {}, payment: {}, initiatorFocus: focusInitiator, targetFocus: focusTarget, closing: false };
-			console.log(cardTradeSessions);
+			// Respond to player command with embed
+			// TODO Defer reply
 			const response = await interaction.reply({ embeds: [embed], components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 
+			// ========
+			// Set up collectors
+			// ========
 			const buttonCollector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 3_600_000 });
 			buttonCollector.on('collect', async buttonInteraction => {
 				const [, , bSession, bTrader, bDirection] = buttonInteraction.customId.split('_');
+				// Most interactions are available only to the calling user
 				if (buttonInteraction.user.id === interaction.user.id) {
-					console.log('Button Clicked: ', buttonInteraction);
-					console.log(bSession, bTrader, bDirection);
 					if (!cardTradeSessions[bSession]) {
+						// TODO test if this message actually plays after a reboot
 						response.edit({ embeds: [], components: [], content: 'Sorry, this trade request went stale and is no longer valid.' });
 						return;
 					}
@@ -164,17 +201,15 @@ module.exports = {
 							}
 						}
 					} else {
+						// TODO Functionalize this?
 						const bDecider = bTrader === 'initiator';
 						const [bInitiator, bTarget, ,] = bSession.split('.').map(x => parseInt64(x, 64));
 						const bBinder = await fetchBinder(bDecider ? bInitiator : bTarget);
 						const bFocus = cardTradeSessions[bSession][bDecider ? 'initiatorFocus' : 'targetFocus'];
 						const bDealSide = bDecider ? 'offer' : 'payment';
-						const bNewValue = (cardTradeSessions[bSession][bDealSide][bFocus] ?? 0) + (bDirection === 'up' ? 1 : -1);
-						console.log(bDecider, bTrader, bInitiator, bTarget, bBinder, bFocus, bDealSide, bNewValue);
-						clamp(bNewValue, 0, bBinder[currentSet][bFocus]);
+						const bNewValue = clamp((cardTradeSessions[bSession][bDealSide][bFocus] ?? 0) + (bDirection === 'up' ? 1 : -1), 0, bBinder[currentSet][bFocus]);
 						(bDecider ? yourUpButton : theirUpButton).setDisabled(bNewValue === bBinder[currentSet][bFocus]);
 						(bDecider ? yourDownButton : theirDownButton).setDisabled(bNewValue === 0);
-						console.log(cardTradeSessions[bSession]['offer']);
 						cardTradeSessions[bSession][bDealSide][bFocus] = bNewValue;
 						let bYourOfferString = objectToListMap(Object.entries(cardTradeSessions[bSession]['offer']), (i) => (i[1] > 0 ? `- ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n');
 						let bTheirOfferString = objectToListMap(Object.entries(cardTradeSessions[bSession]['payment']), (i) => (i[1] > 0 ? `- ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n');
@@ -186,26 +221,19 @@ module.exports = {
 						const bEmbed = getDefaultEmbed()
 							.setTitle('⚠️ TRADE OFFER ⚠️')
 							.setDescription(bTradeDescription);
-						console.log(Object.keys(response.interaction));
-						await buttonInteraction.update({ embeds: [bEmbed], components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow], content: 'A button was clicked.' });
-						console.log(cardTradeSessions);
+						await buttonInteraction.update({ embeds: [bEmbed], components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 					}
 				} else if (buttonInteraction.user.id === target) {
 					if (bDirection === 'confirm') {
 						if (cardTradeSessions[bSession]['closing']) {
 							for (const i in cardTradeSessions[bSession]['offer']) {
-								console.log(`Paying ${i} x${cardTradeSessions[bSession]['offer'][i]}...`);
-								console.log('=========\n', yourBinder, theirBinder);
+								// TODO functionalize card transfer in cards.js?
 								removeCard(yourBinder, currentSet, i, cardTradeSessions[bSession]['offer'][i]);
 								addCard(theirBinder, currentSet, i, cardTradeSessions[bSession]['offer'][i]);
-								console.log('\n', yourBinder, theirBinder, '\n=========\n\n');
 							}
 							for (const i in cardTradeSessions[bSession]['payment']) {
-								console.log(`Receiving ${i} x${cardTradeSessions[bSession]['payment'][i]}...`);
-								console.log('////////////////\n', yourBinder, theirBinder);
 								removeCard(theirBinder, currentSet, i, cardTradeSessions[bSession]['payment'][i]);
 								addCard(yourBinder, currentSet, i, cardTradeSessions[bSession]['payment'][i]);
-								console.log('\n', yourBinder, theirBinder, '\n////////////////\n\n');
 							}
 							await pushBinder(interaction.user.id, yourBinder);
 							await pushBinder(target, theirBinder);
@@ -226,12 +254,12 @@ module.exports = {
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
 			selectCollector.on('collect', async selectInteraction => {
 				if (selectInteraction.user.id === interaction.user.id) {
-					console.log('Item Selected: ', selectInteraction);
 					const [, , sSession, sTrader, ,] = selectInteraction.customId.split('_');
 					const sDecider = sTrader === 'initiator';
 					const [sInitiator, sTarget, ,] = sSession.split('.').map(x => parseInt64(x, 64));
 					const sChoice = selectInteraction.values[0];
 					cardTradeSessions[sSession][sDecider ? 'initiatorFocus' : 'targetFocus'] = sChoice;
+					// TODO ternarize this, like on the line before the update statement
 					if (sDecider) {
 						yourCardSelect.setOptions();
 						for (const card in yourBinder[currentSet]) {
@@ -245,7 +273,7 @@ module.exports = {
 					} else {
 						theirCardSelect.setOptions();
 						for (const card in theirBinder[currentSet]) {
-							yourCardSelect.addOptions(
+							theirCardSelect.addOptions(
 								new StringSelectMenuOptionBuilder()
 									.setLabel(card)
 									.setValue(card)
@@ -257,7 +285,8 @@ module.exports = {
 					const sDealSide = sDecider ? 'offer' : 'payment';
 					(sDecider ? yourUpButton : theirUpButton).setDisabled((cardTradeSessions[sSession][sDealSide][sChoice] ?? 0) === sBinder[currentSet][sChoice]);
 					(sDecider ? yourDownButton : theirDownButton).setDisabled((cardTradeSessions[sSession][sDealSide][sChoice] ?? 0) === 0);
-					await selectInteraction.update({ components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow], content: 'An option was selected.' });
+					// Update all components with changes
+					await selectInteraction.update({ components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 				} else {
 					await selectInteraction.reply({ content: 'Those dropdowns aren\'t for you! Shoo, shoo!', ephemeral: true });
 				}
