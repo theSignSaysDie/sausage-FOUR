@@ -40,9 +40,7 @@ const colorDict = {
 
 /**
  * @desc global list of Google Doc IDs
- * @see module:db.getDocLink
  */
-// TODO fix the joint above
 const docDict = {
 	SNS: '1s00GvbGKS6gW3Dl1K1qMk3TSMQ1x-o-jnYhq_PODBks',
 	RUST: '1HI2-2sDqiZf2cdihOXaT3pCQy17WCb2dht1xyb6Qyh0',
