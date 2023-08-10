@@ -313,8 +313,8 @@ const setData = {
 
 module.exports = {
 	CHAR_LIMIT: 4000,
-	versionNum: 'v3.7.3',
-	lastUpdated: new Date('August 3, 2023 09:42 PST'),
+	versionNum: 'v3.7.3b',
+	lastUpdated: new Date('August 10, 2023 15:04 PST'),
 	colorDict: colorDict,
 	docDict: docDict,
 	fanmadeLinks: fanmadeLinks,
