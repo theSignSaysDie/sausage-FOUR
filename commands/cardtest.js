@@ -50,7 +50,14 @@ module.exports = {
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
 			// No trades with bots
-			if (interaction.options.getUser('player').bot) await interaction.reply({ content: 'You can\'t trade with bots!', ephemeral: true });
+			if (interaction.options.getUser('player').bot) {
+				await interaction.reply({ content: 'You can\'t trade with bots!', ephemeral: true });
+				return;
+			}
+			if (interaction.options.getUser('player').id === interaction.user.id) {
+				await interaction.reply({ content: 'You can\'t trade with yourself!', ephemeral: true });
+				return;
+			}
 			// Collect information
 			const target = interaction.options.getUser('player').id;
 			let isDefault;
