@@ -1,6 +1,6 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, clearEmptiesInBinder } = require('../utils/cards');
+const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, clearEmptiesInBinder, checkSessionConflict, SessionStatus } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
 const { currentSet } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
@@ -49,23 +49,35 @@ module.exports = {
 			await interaction.reply(await postCard(currentSet, interaction.options.getString('name')));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
+			const targetPlayer = interaction.options.getUser('player');
+			const initiatingPlayer = interaction.user;
 			// No trades with bots
-			if (interaction.options.getUser('player').bot) {
+			if (targetPlayer.bot) {
 				await interaction.reply({ content: 'You can\'t trade with bots!', ephemeral: true });
 				return;
 			}
-			if (interaction.options.getUser('player').id === interaction.user.id) {
+			if (targetPlayer.id === initiatingPlayer.id) {
 				await interaction.reply({ content: 'You can\'t trade with yourself!', ephemeral: true });
 				return;
 			}
+
+			// Block new sessions where either participant is busy
+			const sessionInfo = checkSessionConflict(initiatingPlayer, targetPlayer);
+			if (sessionInfo === SessionStatus.InitiatorBusy) {
+				await interaction.reply({ content: 'You\'re already busy with another trade!', ephemeral: true });
+				return;
+			}
+			if (sessionInfo === SessionStatus.TargetBusy) {
+				await interaction.reply({ content: 'Your target trade partner is currently busy trading with someone else!', ephemeral: true });
+				return;
+			}
 			// Collect information
-			const target = interaction.options.getUser('player').id;
 			let isDefault;
 			let focusInitiator, focusTarget;
 
 			// Initialize session details
 			const now = getCurrentTimestamp();
-			const sessionID = [interaction.user.id, target, now].map(i => toString64(parseInt(i), 64)).join('.');
+			const sessionID = [interaction.user.id, targetPlayer.id, now].map(i => toString64(parseInt(i), 64)).join('.');
 
 			// Begin constructing embed, buttons
 			const embed = getDefaultEmbed()
@@ -82,11 +94,11 @@ module.exports = {
 			// ========
 			// Setup for dealmaker's side
 			// ========
-
 			// Binder collection / outgoing select menu
-			const yourBinder = await fetchBinder(interaction.user.id);
+			const yourBinder = await fetchBinder(initiatingPlayer.id);
+			const initiatorHasCards = yourBinder[currentSet] && Object.keys(yourBinder[currentSet]).length > 0;
 			isDefault = true;
-			for (const card in yourBinder[currentSet]) {
+			for (const card in initiatorHasCards ? yourBinder[currentSet] : { 'No cards!': 0 }) {
 				yourCardSelect.addOptions(
 					new StringSelectMenuOptionBuilder()
 						.setLabel(card)
@@ -104,7 +116,8 @@ module.exports = {
 			const yourUpButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_initiator_up`)
 				.setEmoji('⬆️')
-				.setStyle(ButtonStyle.Primary);
+				.setStyle(ButtonStyle.Primary)
+				.setDisabled(!initiatorHasCards);
 			const yourDownButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_initiator_down`)
 				.setEmoji('⬇️')
@@ -124,9 +137,10 @@ module.exports = {
 			// Binder collection / incoming select menu
 			const theirCardSelect = new StringSelectMenuBuilder()
 				.setCustomId(`binder_trade_${sessionID}_target_select`);
-			const theirBinder = await fetchBinder(target);
+			const theirBinder = await fetchBinder(targetPlayer.id);
+			const targetHasCards = theirBinder[currentSet] && Object.keys(theirBinder[currentSet]).length > 0;
 			isDefault = true;
-			for (const card in theirBinder[currentSet]) {
+			for (const card in targetHasCards ? theirBinder[currentSet] : { 'No cards!': 0 }) {
 				theirCardSelect.addOptions(
 					new StringSelectMenuOptionBuilder()
 						.setLabel(card)
@@ -141,7 +155,8 @@ module.exports = {
 			const theirUpButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_target_up`)
 				.setEmoji('⬆️')
-				.setStyle(ButtonStyle.Primary);
+				.setStyle(ButtonStyle.Primary)
+				.setDisabled(!targetHasCards);
 			const theirDownButton = new ButtonBuilder()
 				.setCustomId(`binder_trade_${sessionID}_target_down`)
 				.setEmoji('⬇️')
@@ -182,7 +197,7 @@ module.exports = {
 			buttonCollector.on('collect', async buttonInteraction => {
 				const [, , bSession, bTrader, bDirection] = buttonInteraction.customId.split('_');
 				// Most interactions are available only to the calling user
-				if (buttonInteraction.user.id === interaction.user.id) {
+				if (buttonInteraction.user.id === initiatingPlayer.id) {
 					if (!cardTradeSessions[bSession]) {
 						// TODO test if this message actually plays after a reboot
 						response.edit({ embeds: [], components: [], content: 'Sorry, this trade request went stale and is no longer valid.' });
@@ -200,7 +215,7 @@ module.exports = {
 								yourDownButton.setDisabled(true);
 								theirUpButton.setDisabled(true);
 								theirDownButton.setDisabled(true);
-								await buttonInteraction.update({ components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow], content: 'A button was clicked.' });
+								await buttonInteraction.update({ components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 								return;
 							} else {
 								await buttonInteraction.reply({ content: 'Be patient! It\'s their turn to consider the offer.', ephemeral: true });
@@ -232,7 +247,7 @@ module.exports = {
 							.setDescription(bTradeDescription);
 						await buttonInteraction.update({ embeds: [bEmbed], components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 					}
-				} else if (buttonInteraction.user.id === target) {
+				} else if (buttonInteraction.user.id === targetPlayer.id) {
 					if (bDirection === 'confirm') {
 						if (cardTradeSessions[bSession]['closing']) {
 							for (const i in cardTradeSessions[bSession]['offer']) {
@@ -246,8 +261,8 @@ module.exports = {
 							}
 							clearEmptiesInBinder(yourBinder);
 							clearEmptiesInBinder(theirBinder);
-							await pushBinder(interaction.user.id, yourBinder);
-							await pushBinder(target, theirBinder);
+							await pushBinder(initiatingPlayer, yourBinder);
+							await pushBinder(targetPlayer, theirBinder);
 							delete cardTradeSessions[bSession];
 							await buttonInteraction.update({ embeds: [], components: [], content: 'Deal sealed! Enjoy your cards!' });
 							return;
@@ -264,7 +279,7 @@ module.exports = {
 
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
 			selectCollector.on('collect', async selectInteraction => {
-				if (selectInteraction.user.id === interaction.user.id) {
+				if (selectInteraction.user.id === initiatingPlayer.id) {
 					const [, , sSession, sTrader, ,] = selectInteraction.customId.split('_');
 					const sDecider = sTrader === 'initiator';
 					const [sInitiator, sTarget, ,] = sSession.split('.').map(x => parseInt64(x, 64));

@@ -1,16 +1,23 @@
 // Const Canvas = require('@napi-rs/canvas');
 const fs = require('fs');
-const { zip, objectToListMap } = require('./math');
+const { zip, objectToListMap, toString64 } = require('./math');
 const { rollWeighted } = require('./dice');
 const { cardCache, currentSet } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
-const { fetchSQL } = require('./db');
+const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
 
 const GradientAlignment = {
 	VERTICAL: 'vertical',
 	HORIZONTAL: 'horizontal',
 };
+
+const SessionStatus = {
+	InitiatorBusy: 'init_busy',
+	TargetBusy: 'target_busy',
+	SessionPossible: 'session_ok',
+};
+
 
 /**
  * Creates a gradient from a list of stops and colors, either vertically or horizontally
@@ -217,6 +224,17 @@ async function getPrettyBinderSummary(set, binder) {
 	}
 }
 
+function checkSessionConflict(initiatingPlayer, targetPlayer) {
+	const initString = toString64(initiatingPlayer.id, 64);
+	const targetString = toString64(targetPlayer.id, 64);
+	console.log(cardTradeSessions);
+	for (const session of Object.keys(cardTradeSessions)) {
+		if (session.startsWith(initString) || session.includes(`.${initString}.`)) {return SessionStatus.InitiatorBusy;}
+		if (session.startsWith(targetString) || session.includes(`.${targetString}.`)) {return SessionStatus.TargetBusy;}
+	}
+	return SessionStatus.SessionPossible;
+}
+
 module.exports = {
 	makeGradient: makeGradient,
 	generateCard: generateCard,
@@ -230,4 +248,6 @@ module.exports = {
 	removeCard: removeCard,
 	pushBinder: pushBinder,
 	clearEmptiesInBinder: clearEmptiesInBinder,
+	checkSessionConflict: checkSessionConflict,
+	SessionStatus: SessionStatus,
 };
