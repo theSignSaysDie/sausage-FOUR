@@ -205,7 +205,7 @@ module.exports = {
 					}
 					if (bTrader === 'system') {
 						if (bDirection === 'cancel') {
-							buttonInteraction.update({ embeds: [], components: [], content: 'Trade canceled!' });
+							buttonInteraction.update({ embeds: [], components: [], content: 'Trade canceled by initiator!' });
 							delete cardTradeSessions[bSession];
 							return;
 						} else if (bDirection === 'confirm') {
@@ -248,6 +248,13 @@ module.exports = {
 						await buttonInteraction.update({ embeds: [bEmbed], components: [yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 					}
 				} else if (buttonInteraction.user.id === targetPlayer.id) {
+					if (bTrader === 'system') {
+						if (bDirection === 'cancel') {
+							buttonInteraction.update({ embeds: [], components: [], content: 'Trade canceled by target!' });
+							delete cardTradeSessions[bSession];
+							return;
+						}
+					}
 					if (bDirection === 'confirm') {
 						if (cardTradeSessions[bSession]['closing']) {
 							for (const i in cardTradeSessions[bSession]['offer']) {
@@ -261,8 +268,8 @@ module.exports = {
 							}
 							clearEmptiesInBinder(yourBinder);
 							clearEmptiesInBinder(theirBinder);
-							await pushBinder(initiatingPlayer, yourBinder);
-							await pushBinder(targetPlayer, theirBinder);
+							await pushBinder(initiatingPlayer.id, yourBinder);
+							await pushBinder(targetPlayer.id, theirBinder);
 							delete cardTradeSessions[bSession];
 							await buttonInteraction.update({ embeds: [], components: [], content: 'Deal sealed! Enjoy your cards!' });
 							return;
