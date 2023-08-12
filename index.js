@@ -55,4 +55,5 @@ schedule(`${seconds} ${minutes} * * * *`, function() {
 
 // Login!
 console.log('Logging in...');
-client.login(process.env.DISCORD_TOKEN);
+const loginTry = client.login(process.env.DISCORD_TOKEN);
+console.log('Login result: ', loginTry);
