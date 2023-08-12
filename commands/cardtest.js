@@ -1,6 +1,6 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder } = require('../utils/cards');
+const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, clearEmptiesInBinder } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
 const { currentSet } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
@@ -217,6 +217,8 @@ module.exports = {
 						const bNewValue = clamp((cardTradeSessions[bSession][bDealSide][bFocus] ?? 0) + (bDirection === 'up' ? 1 : -1), 0, bBinder[currentSet][bFocus]);
 						(bDecider ? yourUpButton : theirUpButton).setDisabled(bNewValue === bBinder[currentSet][bFocus]);
 						(bDecider ? yourDownButton : theirDownButton).setDisabled(bNewValue === 0);
+						clearEmptiesInBinder(yourBinder);
+						clearEmptiesInBinder(theirBinder);
 						cardTradeSessions[bSession][bDealSide][bFocus] = bNewValue;
 						let bYourOfferString = objectToListMap(Object.entries(cardTradeSessions[bSession]['offer']), (i) => (i[1] > 0 ? `- ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n');
 						let bTheirOfferString = objectToListMap(Object.entries(cardTradeSessions[bSession]['payment']), (i) => (i[1] > 0 ? `- ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n');
@@ -242,6 +244,8 @@ module.exports = {
 								removeCard(theirBinder, currentSet, i, cardTradeSessions[bSession]['payment'][i]);
 								addCard(yourBinder, currentSet, i, cardTradeSessions[bSession]['payment'][i]);
 							}
+							clearEmptiesInBinder(yourBinder);
+							clearEmptiesInBinder(theirBinder);
 							await pushBinder(interaction.user.id, yourBinder);
 							await pushBinder(target, theirBinder);
 							delete cardTradeSessions[bSession];

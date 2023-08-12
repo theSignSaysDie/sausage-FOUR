@@ -126,6 +126,7 @@ async function removeCard(binder, set, name, quantity = 1) {
 	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
 	if (!binder[set][name]) throw Error('This binder doesn\'t have any of the card being removed.');
 	binder[set][name] -= quantity;
+	clearEmptiesInBinder(binder);
 }
 
 /**
@@ -136,6 +137,27 @@ async function removeCard(binder, set, name, quantity = 1) {
 async function pushBinder(snowflake, binder) {
 	const blob = JSON.stringify(binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
+}
+
+/**
+ * @desc Removes empty sets or cards with 0 amount in sets
+ * @param {Object} binder the binder to clean up
+ * @returns a cleaned-up binder
+ */
+async function clearEmptiesInBinder(binder) {
+	for (const [set_, cards] of Object.entries(binder)) {
+		let emptySet = true;
+		for (const [card, amount] of Object.entries(cards)) {
+			if (amount === 0) {
+				delete binder[set_][card];
+			} else {
+				emptySet = false;
+			}
+		}
+		if (emptySet) {
+			delete binder[set_];
+		}
+	}
 }
 
 /**
@@ -207,4 +229,5 @@ module.exports = {
 	addCard: addCard,
 	removeCard: removeCard,
 	pushBinder: pushBinder,
+	clearEmptiesInBinder: clearEmptiesInBinder,
 };
