@@ -28,10 +28,12 @@ module.exports = {
 				.addComponents(noteRow);
 			console.log('Showing modal....');
 			await interaction.showModal(modal);
+			console.log('Modal shown.');
 		} catch (e) {
 			console.log('Uh oh spaghettios');
 			console.log(e);
 			await interaction.reply('Sorry, but you don\'t have permission to use this command.');
 		}
+		console.log('Done sending anon note');
 	},
 };

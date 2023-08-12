@@ -7,6 +7,7 @@ const db = require('./utils/db');
 const { isAllowed } = require('./utils/conditions');
 
 // Initialize client
+console.log('Initializing client...');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 
 // Load conditions for commands, events
@@ -14,11 +15,13 @@ const eventConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'events/
 const commandConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'commands/commandConditions.json'), 'utf8'));
 
 // Load commands
+console.log('Loading commands...');
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+console.log('Sending commands...');
 for (const file of commandFiles) {
 	const commandName = file.slice(0, -3);
 	if (commandConditions[commandName] && !isAllowed(commandConditions[commandName])) {
@@ -31,9 +34,11 @@ for (const file of commandFiles) {
 }
 
 // Load event listeners
+console.log('Loading events...');
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
+console.log('Sending events...');
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
 	const eventName = file.slice(0, -3);
@@ -51,6 +56,7 @@ for (const file of eventFiles) {
 	}
 }
 
+console.log('Initializing Troll Call...');
 const now = new Date();
 const minutes = now.getMinutes();
 const seconds = now.getSeconds();
@@ -65,4 +71,5 @@ schedule(`${seconds} ${minutes} * * * *`, function() {
 
 
 // Login!
+console.log('Logging in...');
 client.login(process.env.DISCORD_TOKEN);
