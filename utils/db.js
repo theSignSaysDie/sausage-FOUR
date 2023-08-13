@@ -41,11 +41,6 @@ const fetchSQL = (query, params = []) => {
 	});
 };
 
-// TODO investigate this method and maybe remove it/refactor
-function sanitizeForQuery(string) {
-	return string.replace(/'/g, '\\\'');
-}
-
 /**
  * @description Loads the troll call
  * @returns List of first names, full names, and adult titles with which to look up trolls
@@ -118,7 +113,6 @@ function getDocLink(id) {
 module.exports = {
 	con: con,
 	fetchSQL: fetchSQL,
-	sanitizeForQuery: sanitizeForQuery,
 	loadTrollCall: loadTrollCall,
 	getDocLink: getDocLink,
 	trollFullNameDict: trollFullNameDict,
