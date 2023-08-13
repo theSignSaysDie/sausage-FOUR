@@ -18,7 +18,8 @@ module.exports = {
 		const validChoices = Object.keys(docDict);
 		if (choice !== '') {
 			if (validChoices.indexOf(choice) > -1) {
-				await interaction.reply({ content: getDocLink(docDict[choice]) });
+				const docLink = getDocLink(docDict[choice]);
+				await interaction.reply({ content: docLink });
 			} else {
 				embed.setDescription(`Sorry, I couldn't find any documents matching \`${choice}\`. Check your spelling and try again.`);
 				await interaction.reply({ embeds: [embed], ephemeral: true });
