@@ -33,10 +33,9 @@ const fetchSQL = (query, params = []) => {
 	return new Promise((resolve, reject) => {
 		con.query(query, params, (err, elements) => {
 			if (err) {
-				console.log(`Big fuckup while processing ${query}`, err);
+				console.log(`Error while processing query: ${query}`, err);
 				return reject(err);
 			}
-			console.log(`Query '${query}' successful`);
 			return resolve(elements);
 		});
 	});
