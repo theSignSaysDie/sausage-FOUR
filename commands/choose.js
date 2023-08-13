@@ -30,6 +30,8 @@ module.exports = {
 		const secrecy = interaction.options.getBoolean('secret') ?? false;
 		const pick = interaction.options.getInteger('pick') ?? 1;
 		let choices;
+		// If no spaces exist, only one choice exists to select from
+		// Sausage admonishes the user and returns
 		if (choiceString.indexOf(' ') === -1) {
 			await interaction.reply({ content: 'dude.', ephemeral: true });
 			return;
@@ -39,12 +41,12 @@ module.exports = {
 		for (const s in delimiters) {
 			if (choiceString.indexOf(delimiters[s]) !== -1) {
 				choices = choiceString.split(delimiters[s]).map(x => x.trim());
-				// Choices.map(x => `- \`${x}\``).join('\n');
 				for (let i = 0; i < choices.length; i++) {
 					const match = /:(\d+)/.exec(choices[i]);
 					if (match) {
 						const processedString = choices[i].substring(0, choices[i].length - match[0].length);
 						displayList.push(`- \`${processedString}\` (${match[1]})`);
+						// TODO [LOW] incorporate weighted rolling methods from dice.js
 						for (let j = 0; j < parseInt(match[1]); j++) {
 							choiceList.push(processedString);
 						}

@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { fetchSQL, sanitizeForQuery } = require('../utils/db');
+const { fetchSQL } = require('../utils/db');
 const { camelize } = require('../utils/stringy');
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
 					key = camelize(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`));
 					values.push(key);
 				}
-				values.push(sanitizeForQuery(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`)));
+				values.push(interaction.fields.getTextInputValue(`patchAddTextInput_${table}_${label}`));
 			}
 			query = 'INSERT INTO ?? VALUES (?);';
 			await fetchSQL(query, [table, values]);

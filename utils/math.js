@@ -121,6 +121,15 @@ function getCurrentTimestamp() {
 	return new Date().getTime();
 }
 
+/**
+ * @desc helper method for command setup. Converts a list [a, b, ..., y, z] into [{name: "a", value: "a"}, ...]
+ * @param {Array<String>} values A list of string values to convert into command options
+ * @returns a list of objects representing command options to be unpacked
+ */
+function easyListItems(values) {
+	return values.map((v) => ({ name: v, value: v }));
+}
+
 module.exports = {
 	round: round,
 	zip: zip,
@@ -130,4 +139,5 @@ module.exports = {
 	toString64: toString64,
 	getCurrentTimestamp: getCurrentTimestamp,
 	clamp: clamp,
+	easyListItems: easyListItems,
 };

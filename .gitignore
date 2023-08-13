@@ -126,9 +126,18 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# =========================================== 
 
-# img
-img
-# events/replies.js
-events/replies.js
+# Launch config
 .vscode/launch.json
+
+# Bot-specific ignores
+# folders
+img
+# events
+events/replies.js
+# commands
+commands/tipjar.js
+# utils
+utils/info.js
+

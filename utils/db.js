@@ -34,19 +34,13 @@ const fetchSQL = (query, params = []) => {
 	return new Promise((resolve, reject) => {
 		con.query(query, params, (err, elements) => {
 			if (err) {
-				console.log(`Big fuckup while processing ${query}`, err);
+				console.log(`Error while processing query: ${query}`, err);
 				return reject(err);
 			}
-			console.log(`Query '${query}' successful`);
 			return resolve(elements);
 		});
 	});
 };
-
-// TODO investigate this method and maybe remove it/refactor
-function sanitizeForQuery(string) {
-	return string.replace(/'/g, '\\\'');
-}
 
 /**
  * @description Loads the troll call
@@ -120,7 +114,6 @@ function getDocLink(id) {
 module.exports = {
 	con: con,
 	fetchSQL: fetchSQL,
-	sanitizeForQuery: sanitizeForQuery,
 	loadTrollCall: loadTrollCall,
 	getDocLink: getDocLink,
 	trollFullNameDict: trollFullNameDict,

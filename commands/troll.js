@@ -16,7 +16,6 @@ module.exports = {
 			name = name.substring(4);
 		}
 		let reply = '';
-		console.log(trollTitleDict);
 		if (name.includes(' ')) {
 			if (trollFullNameDict[name]) {
 				reply = trollFullNameDict[name];

@@ -36,6 +36,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		// Setup
+		// Time conversion from seconds to milliseconds
 		const rawTime = interaction.options.getInteger('time') * 60 * 1000;
 		const description = interaction.options.getString('description');
 		const rawChoices = interaction.options.getString('choices');
@@ -54,13 +55,9 @@ module.exports = {
 		// React population
 		const message = await interaction.reply({ embeds: [waitEmbed], fetchReply: true });
 		try {
-			console.log(emoji);
-			for (const i in emoji) {
-				console.log(emoji[i]);
-				await message.react(emoji[i]);
-			}
+			for (const i in emoji) { await message.react(emoji[i]);	}
 		} catch (error) {
-			console.log(`Fuck! I can't react!:  ${error}`);
+			console.log(`Error attaching reacts to poll:  ${error}`);
 		}
 		const collectorFilter = (reaction, user) => {
 			return !user.bot;
@@ -68,12 +65,9 @@ module.exports = {
 		const whoReacted = {};
 		const emojiCollector = message.createReactionCollector({ filter: collectorFilter, time: rawTime });
 		emojiCollector.on('collect', (reaction, user) => {
-			console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
 			whoReacted[user.tag] = reaction.emoji.name;
 		});
-		emojiCollector.on('end', async (collected) => {
-			console.log(`Collected ${collected.size} items.`);
-			console.log(whoReacted);
+		emojiCollector.on('end', async () => {
 			const reactCounts = {};
 			let maxVotes = -1;
 			for (const e of Object.values(whoReacted)) {
@@ -82,7 +76,6 @@ module.exports = {
 					maxVotes = reactCounts[e];
 				}
 			}
-			console.log(reactCounts, maxVotes);
 			message.reactions.removeAll()
 				.catch(error => console.error('Failed to clear reactions:', error));
 			const resultEmbed = getDefaultEmbed()

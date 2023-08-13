@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { fetchSQL } = require('../utils/db');
@@ -32,7 +33,7 @@ module.exports = {
 				await interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		} else {
-			await interaction.reply('https://docs.google.com/spreadsheets/d/1PPxsKHUmNCVvd4VCGHA835ySUlWVu7OJTXz1SjSsIaI/edit#gid=0');
+			await interaction.reply(`https://docs.google.com/spreadsheets/d/${process.env.TROLL_CALL_DOC_ID}/edit#gid=0`);
 		}
 	},
 };
