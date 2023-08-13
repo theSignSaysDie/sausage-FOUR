@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { birthdays } = require('../utils/info');
+const { birthdays, birthdayBeamTime } = require('../utils/info');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,12 +15,8 @@ module.exports = {
 		birthdays.push(target.id);
 		setTimeout(() => {
 			const index = birthdays.indexOf(target.id);
-			if (index > -1) {
-				birthdays.splice(index, 1);
-			}
-			console.log(`${target.username} has been de-beamed.`);
-		}, 64800000);
-		// 18 hours
+			if (index > -1) { birthdays.splice(index, 1); }
+		}, birthdayBeamTime);
 		await interaction.reply({ content: `\`${target.username}#${target.discriminator}\` has been **birthday beamed**! Bring on the 🍰 reacts!`, ephemeral: false });
 	},
 };
