@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { helpText } = require('../utils/info');
+const { easyListItems } = require('../utils/math');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,15 +12,7 @@ module.exports = {
 				.setName('command')
 				.setDescription('Fetch specific command documentation')
 				.addChoices(
-					{ name: 'anon-note', value: 'anon-note' },
-					{ name: 'choose', value: 'choose' },
-					{ name: 'doc', value: 'doc' },
-					{ name: 'help', value: 'help' },
-					{ name: 'lookup', value: 'lookup' },
-					{ name: 'pinglist', value: 'pinglist' },
-					{ name: 'poll', value: 'poll' },
-					{ name: 'roll', value: 'roll' },
-					{ name: 'starter', value: 'starter' },
+					...easyListItems(['anon-note', 'choose', 'doc', 'help', 'lookup', 'pinglist', 'poll', 'roll', 'starter']),
 				).setRequired(false),
 		),
 	async execute(interaction) {

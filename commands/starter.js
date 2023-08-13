@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, T
 const { fetchSQL } = require('../utils/db');
 const { titleCase } = require('../utils/stringy');
 const { starterTypes } = require('../utils/info');
+const { easyListItems } = require('../utils/math');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,12 +12,7 @@ module.exports = {
 			option.setName('option')
 				.setDescription('Which operation do you want to perform?')
 				.addChoices(
-					{ name: 'intro', value: 'intro' },
-					{ name: 'post', value: 'post' },
-					{ name: 'outro', value: 'outro' },
-					{ name: 'add', value: 'add' },
-					{ name: 'edit', value: 'edit' },
-					{ name: 'remove', value: 'remove' },
+					...easyListItems(['intro', 'post', 'outro', 'add', 'edit', 'remove']),
 				).setRequired(true),
 		).addStringOption(option =>
 			option.setName('name')
@@ -41,7 +37,6 @@ module.exports = {
 				if (op === 'add') {
 					query = 'SELECT `content` FROM `starter` WHERE `snowflake` = ? AND `name` = ?';
 					result = await fetchSQL(query, [user, name]);
-					console.log(result);
 					if (result.length) {
 						await interaction.reply({ content: `It seems you already have the alias '${name}'! Use \`/starter edit ${name}\` to change these messages instead.`, ephemeral: true });
 						return;
