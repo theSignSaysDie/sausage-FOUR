@@ -15,7 +15,6 @@ module.exports = {
 		if (!result.length) {
 			embed.setDescription('Looks like you don\'t have any pinglists! You can make one using `/pinglist create name`!');
 		} else {
-			console.log(result);
 			embed.setDescription('You have the following pinglists:\n' + result.map(x => `- \`${x.name}\` (**${x.count - 1}** subscriber${(x.count - 1 === 1 ? '' : 's')})`).join('\n'));
 		}
 		interaction.reply({ embeds: [embed] });

@@ -14,7 +14,6 @@ module.exports = {
 			const rawLie = interaction.fields.getTextInputValue('limeLieRoll_lie');
 			const lie = rawLie.length ? rawLie : truth;
 			const description = interaction.fields.getTextInputValue('limeLieRoll_desc');
-			console.log(`Truth: ${truth}, Lie: ${lie}`);
 			const embed = getDefaultEmbed()
 				.setTitle(`**${description}**`)
 				.setDescription(`🎲 Roll result: ${lie}`)

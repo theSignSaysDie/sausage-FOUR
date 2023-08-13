@@ -33,7 +33,6 @@ module.exports = {
 			const [user, name] = details;
 			const confirm = interaction.fields.getTextInputValue(`${id}_confirm`);
 			let query;
-			console.log(confirm, name);
 			if (confirm.toLowerCase() === name) {
 
 				query = 'DELETE FROM `starter` WHERE `snowflake` = ? AND `name` = ?';

@@ -71,7 +71,6 @@ module.exports = {
 					.setCustomId('limeLieModal')
 					.setTitle('Input lie details')
 					.addComponents(descRow, truthRow, lieRow);
-				console.log('Showing modal....');
 				await interaction.showModal(modal);
 			} else if ((m = regex.exec(raw)) !== null) {
 				const amt = +(m[1] ?? 1);
