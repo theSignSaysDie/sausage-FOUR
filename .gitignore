@@ -138,4 +138,6 @@ img
 events/replies.js
 # commands
 commands/tipjar.js
+# utils
+utils/info.js
 
