@@ -1,3 +1,15 @@
+const activityMessage = 'with my girlboss wife Honey!';
+
+/**
+ * @desc Rules text, as per server rules
+ */
+const rulesText = `
+1. **Play Nice** - Don't shittalk people, interests, or be cruel IC without permission.
+2. **Play Fair** - Don't cheat in fights. What you roll is what you get.
+3. **Play Safe** - Be careful with topics. Some can affect other people more than they affect you.
+4. **Play Fun** - Make sure all players are having fun. Don't make people uncomfortable!
+5. **Keep the Setting Integrity in Mind** - Alternia is a darker setting where death and hemoism are very real things. If something isn't realistic, then don't do it. There can be consequences for characters, since breaking the setting is unfair for those who play the setting correctly.
+6. **Blacklist** - Keep topics on the blacklist in mind! Those are listed in #blacklist.`;
 /**
  * @desc global list of colors for use in embeds and other applications.
  */
@@ -158,23 +170,24 @@ const docDict = {
 /**
  * @desc global list of hard-coded links to fanmade/serverstuck resources.
  */
-const fanmadeLinks = [
-	'**WARNING**: Modified character sheets are NOT accepted upon submission. Please use this as a secondary sheet, or after approval.\nhttps://docs.google.com/document/d/1A6259kYnzmpQ0uLnTmnCQ0XamS-2iOam1ztm8Wl-_do/edit',
-	'https://docs.google.com/spreadsheets/d/17G_Er3M8nht6TBCKXk1197QLU7rFYZ5vryyD8IcUMis/edit#gid=0',
-	'https://docs.google.com/spreadsheets/d/1kFfRbJ0KoTWPOPQO2uUWDu7SKCTAHNtIwuc1IDB2p1Q/edit#gid=0',
-	'https://docs.google.com/spreadsheets/d/1NmJzZ5xV2qfiU7V8Gap80z26JSos_DWyGwxvcJg1nks/edit#gid=0',
-	'https://docs.google.com/document/d/1SMzR8MkBWzHfmpwDfvn0bH3nMUbasgtURqw3CVDi68Y/edit',
-	'https://docs.google.com/document/d/17UsdejnEdKgtgW0zQAjpvT-cJeyylfp-aIMmmN7zkVY/edit',
-	'https://docs.google.com/document/d/1tlfH6U-mBLgN24zZgN-uhNvgC93uIwXBdTx4NgucaJg/edit',
-	'https://docs.google.com/document/d/1USYiHluU3Auit1JsMG1Od7xJshCBNBdzN6_ZBsc_m2A/edit',
-	'https://docs.google.com/spreadsheets/d/1LxWQF_To6Rpxj7uN0PGtBueDtovi582XxB4bouyGCcM/edit#gid=0',
-	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
-	'https://docs.google.com/document/d/1_ifoRJ9xPof9Ka2ZRLw259dKT_ULKX41nocmLJeNbJg/edit',
-	'https://docs.google.com/spreadsheets/d/1K5ETHwd6n9WbQlGKi6-M54Q-_qlI2SzfgI2Gm1aOay0/edit?usp=sharing',
-	'https://mspaintadventures.fandom.com/wiki/Troll_language',
-	'https://docs.google.com/document/d/1gq8z7gtfsAGI0-B0b3-PHz0JFokheneQ1YtNy7XQGU4/edit',
-	'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
-];
+
+const fanmadeLinks = {
+	'Avi\'s Character Sheet Design': '**WARNING**: Modified character sheets are NOT accepted upon submission. Please use this as a secondary sheet, or after approval.\nhttps://docs.google.com/document/d/1A6259kYnzmpQ0uLnTmnCQ0XamS-2iOam1ztm8Wl-_do/edit',
+	'Neo\'s S&S Level Sheet Design': 'https://docs.google.com/spreadsheets/d/17G_Er3M8nht6TBCKXk1197QLU7rFYZ5vryyD8IcUMis/edit#gid=0',
+	'Meme\'s Updating Allowance Sheet Design': 'https://docs.google.com/spreadsheets/d/1kFfRbJ0KoTWPOPQO2uUWDu7SKCTAHNtIwuc1IDB2p1Q/edit#gid=0',
+	'Neo\'s Troll Quad Sheet Design': 'https://docs.google.com/spreadsheets/d/1NmJzZ5xV2qfiU7V8Gap80z26JSos_DWyGwxvcJg1nks/edit#gid=0',
+	'Jade Community Doc': 'https://docs.google.com/document/d/1SMzR8MkBWzHfmpwDfvn0bH3nMUbasgtURqw3CVDi68Y/edit',
+	'Teal Community Doc': 'https://docs.google.com/document/d/17UsdejnEdKgtgW0zQAjpvT-cJeyylfp-aIMmmN7zkVY/edit',
+	'Jr. HET Community Doc': 'https://docs.google.com/document/d/1tlfH6U-mBLgN24zZgN-uhNvgC93uIwXBdTx4NgucaJg/edit',
+	'Jr. SCP Community Doc': 'https://docs.google.com/document/d/1USYiHluU3Auit1JsMG1Od7xJshCBNBdzN6_ZBsc_m2A/edit',
+	'Serverstuck Classpect Sheet': 'https://docs.google.com/spreadsheets/d/1LxWQF_To6Rpxj7uN0PGtBueDtovi582XxB4bouyGCcM/edit#gid=0',
+	'Serverstuck Event Archives': 'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
+	'Ashen Quadrant Explanation': 'https://docs.google.com/document/d/1_ifoRJ9xPof9Ka2ZRLw259dKT_ULKX41nocmLJeNbJg/edit',
+	'Serverstuck Terminology': 'https://docs.google.com/spreadsheets/d/1K5ETHwd6n9WbQlGKi6-M54Q-_qlI2SzfgI2Gm1aOay0/edit?usp=sharing',
+	'Troll Terminology': 'https://mspaintadventures.fandom.com/wiki/Troll_language',
+	'IC Whitelist for Trolls (Upkept by Kids)': 'https://docs.google.com/document/d/1gq8z7gtfsAGI0-B0b3-PHz0JFokheneQ1YtNy7XQGU4/edit',
+	'Serverstuck Thread Archive Directory': 'https://docs.google.com/document/d/1fQOHnW8HqXg4VoueNJEl83cx0cqMyUHdyIzPjKtpX8U/edit',
+};
 
 /**
  * @desc list of tables in Sausage's database.
@@ -305,6 +318,19 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 - \`/doc <docName>\` - Retrieve the document under that ID`,
 };
 
+/**
+ * Birthday beams remain in effect for 18 hours
+ */
+const birthdayBeamTime = 1000 * 60 * 60 * 18;
+
+/**
+ *
+ */
+const MagicImages = {
+	SausageBreakdance: 'https://cdn.discordapp.com/attachments/973998578215292971/1080029136053084230/ezgif-5-5e4aa51e3e.gif',
+	DetectiveDance: '<a:dancedetectivedance:847562900419510283>',
+};
+
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.7.3b',
@@ -317,4 +343,8 @@ module.exports = {
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
 	helpText: helpText,
+	birthdayBeamTime: birthdayBeamTime,
+	MagicImages: MagicImages,
+	rulesText: rulesText,
+	activityMessage: activityMessage,
 };
