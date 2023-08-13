@@ -11,8 +11,6 @@ function renderMove(embed, entry, key) {
 		.setDescription(`${blankNoneOrUndefined(entry.cost, '**', '**\n')}${blankNoneOrUndefined(entry.wealth_level, '**', '**\n')}${blankNoneOrUndefined(entry.tags, '**', '**\n')}${entry.text}`)
 		.setColor(colorDict[entry.color])
 		.setURL(getDocLink(docDict[entry.doc] === undefined ? docDict['MOVE'] : docDict[entry.doc]));
-	console.log(`Tags: "${entry.tags}"`);
-	console.log(`${blankNoneOrUndefined(entry.tags, '**', '**\n')}`);
 	return embed;
 }
 
@@ -50,7 +48,6 @@ module.exports = {
 			} else {
 				const tableKey = targetTable.toUpperCase();
 				let desc = entry.text;
-				console.log(entry);
 				if (entry.cost) {
 					desc = `**${entry.cost} LUX**\n` + desc;
 				}
@@ -66,6 +63,7 @@ module.exports = {
 		} else if (targetTable === 'move') {
 			const terms = key.split(' ');
 			const clauses = [];
+			const subs = [];
 			for (const term in terms) {
 				const t = terms[term];
 				if (t.indexOf('|') >= 0) {
@@ -74,13 +72,15 @@ module.exports = {
 					for (const st in splitTerms) {
 						subTerms.push(`\`tags\` ${splitTerms[st].startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${splitTerms[st].startsWith('!') ? splitTerms[st].substring(1) : splitTerms[st] }"`);
 					}
-					clauses.push(`(${subTerms.join(' OR ')})`);
+					clauses.push(`(${subTerms.map(() => '?').join(' OR ')})`);
+					subs.push(...subTerms);
 				} else {
-					clauses.push(`\`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP "[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }"`);
+					clauses.push(`\`tags\` ${t.startsWith('!') ? 'NOT' : '' } REGEXP ?`);
+					subs.push(`[^\\\\w]${t.startsWith('!') ? t.substring(1) : t }`);
 				}
 			}
-			query = `SELECT \`title\` FROM \`${targetTable}\` WHERE ${clauses.join(' AND ')};`;
-			queryResult = await fetchSQL(query);
+			query = `SELECT \`title\` FROM ?? WHERE ${clauses.join(' AND ')};`;
+			queryResult = await fetchSQL(query, [targetTable, ...subs]);
 			if (queryResult.length) {
 				const finalString = `${queryResult.map((x) => titleCase(x.title)).join(', ')}`;
 				if (finalString.length > CHAR_LIMIT) {
