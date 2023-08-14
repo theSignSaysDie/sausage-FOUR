@@ -9,6 +9,12 @@ const db = require('./utils/db');
 console.log('Initializing client...');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 
+// Establish rate-limit warnings (just in case)
+client.on('rateLimit', (info) => {
+	console.log('Rate limit hit:');
+	console.log(info);
+});
+
 // Load commands
 console.log('Loading commands...');
 client.commands = new Collection();
