@@ -10,6 +10,12 @@ const { isAllowed } = require('./utils/conditions');
 console.log('Initializing client...');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 
+// Establish rate-limit warnings (just in case)
+client.on('rateLimit', (info) => {
+	console.log('Rate limit hit:');
+	console.log(info);
+});
+
 // Load conditions for commands, events
 const eventConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'events/eventConditions.json'), 'utf8'));
 const commandConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'commands/commandConditions.json'), 'utf8'));
