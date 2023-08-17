@@ -11,7 +11,7 @@ module.exports = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		let name = interaction.options.getString('name').replace(/[^-' a-zA-Z?]/, '').toLowerCase();
+		let name = interaction.options.getString('name').replace(/[^-'. 0-9a-zA-Z?]/, '').toLowerCase();
 		if (name.indexOf('the ') === 0) {
 			name = name.substring(4);
 		}
