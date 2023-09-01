@@ -75,12 +75,24 @@ function dictList(stringArr) {
 	return stringArr.map((item) => ({ name: item, value: item }));
 }
 
+/**
+ * @desc Helper method. Converts full text body into excerpt
+ * @param {String} body a full post to convert to an excerpt
+ * @returns a string consisting of only the first 50 words of the first three paragraphs of the post
+ */
+function getExcerpt(body) {
+	const firstThreeParagraphs = body.split('\n\n').slice(0, 3).join('\n\n');
+	const firstFiftyWords = firstThreeParagraphs.split(' ').slice(0, 50).join(' ');
+	return firstFiftyWords + (body.length > firstFiftyWords.length ? '...' : '');
+}
+
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
 	getDefaultEmbed: getDefaultEmbed,
 	getHelpEmbed: getHelpEmbed,
 	blankNoneOrUndefined: blankNoneOrUndefined,
+	getExcerpt: getExcerpt,
 	titleCase: titleCase,
 	dictList : dictList,
 };
