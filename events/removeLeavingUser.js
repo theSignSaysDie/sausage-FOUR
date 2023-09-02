@@ -20,6 +20,10 @@ module.exports = {
 		query = 'DELETE FROM `pinglist` WHERE `snowflake` = ?';
 		await fetchSQL(query, [bannedUserSnowflake]);
 
+		// Delete banned user's troll call
+		query = 'DELETE FROM `trollcall` WHERE `snowflake` = ?';
+		await fetchSQL(query, [bannedUserSnowflake]);
+
 		// Delete banned user's card binder
 		query = 'DELETE FROM `player` WHERE `snowflake` = ?';
 		await fetchSQL(query, [bannedUserSnowflake]);
