@@ -14,7 +14,7 @@ module.exports = {
 				.setLabel('Note')
 				.setPlaceholder('What\'s on your mind?')
 				.setStyle(TextInputStyle.Paragraph)
-				.setMaxLength(3200)
+				.setMaxLength(2000)
 				.setRequired(true);
 			noteRow.addComponents(noteBox);
 			const modal = new ModalBuilder()
