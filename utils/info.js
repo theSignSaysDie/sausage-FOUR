@@ -189,9 +189,10 @@ const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emoti
  */
 const birthdays = [];
 const cardCache = {};
-const currentSet = 'kaiju_2023';
-const cardDropWaitTime = 60 * 60;
-const cardDropChance = 0.01;
+const cardSetList = ['shoggothball'];
+const currentPool = ['shoggothball'];
+const cardDropWaitTime = 15;
+const cardDropChance = 0.9;
 
 /**
  * @desc help text for the `/help` command.
@@ -307,10 +308,6 @@ Just this! No other arguments. A modal will pop up where you can type your messa
 - \`/doc <docName>\` - Retrieve the document under that ID`,
 };
 
-const setData = {
-	2023: 'kaiju_2023',
-};
-
 module.exports = {
 	CHAR_LIMIT: 4000,
 	versionNum: 'v3.7.3b',
@@ -323,9 +320,9 @@ module.exports = {
 	starterTypes: ['intro', 'post', 'outro'],
 	birthdays: birthdays,
 	cardCache: cardCache,
-	currentSet: currentSet,
+	currentPool: currentPool,
 	cardDropChance: cardDropChance,
 	cardDropWaitTime: cardDropWaitTime,
 	helpText: helpText,
-	setData: setData,
+	cardSetList: cardSetList,
 };

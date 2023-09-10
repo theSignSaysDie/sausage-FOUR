@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Events, AttachmentBuilder } = require('discord.js');
 const { getRandomCard, handlePlayerReward } = require('../utils/cards');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { colorDict, currentSet, cardDropWaitTime, cardDropChance } = require('../utils/info');
+const { colorDict, currentPool, cardDropWaitTime, cardDropChance } = require('../utils/info');
 const { fetchSQL } = require('../utils/db');
 const { rollFloat } = require('../utils/dice');
 
@@ -29,7 +29,8 @@ module.exports = {
 		if (rollFloat() > cardDropChance) return;
 
 		// Generate card or retrieve from cache
-		const { name, image } = await getRandomCard(currentSet);
+		// TODO amend to draw from master file in info.js rather than current set
+		const { name, image, set } = await getRandomCard(currentPool);
 		// Send embed
 		const attachment = new AttachmentBuilder(image, { name: 'card.png' });
 		const embed = getDefaultEmbed()
@@ -41,6 +42,6 @@ module.exports = {
 		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
 		await botherChannel.send({ content: `<@${interaction.author.id}>`, embeds: [embed], files: [attachment] });
 
-		await handlePlayerReward(interaction.author.id, currentSet, name, now);
+		await handlePlayerReward(interaction.author.id, set, name, now);
 	},
 };

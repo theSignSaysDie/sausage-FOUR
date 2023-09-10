@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { zip, objectToListMap, toString64 } = require('./math');
 const { rollWeighted } = require('./dice');
-const { cardCache, currentSet } = require('./info');
+const { cardCache, cardSetList } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
@@ -49,6 +49,7 @@ function loadWeightTable(raw) {
 	return result;
 }
 
+// TODO amend to fetch with style and name information
 function getCardData(style) {
 	return JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
 }
@@ -58,14 +59,14 @@ function getCardData(style) {
  * @param {String} style the card set to roll from
  * @returns a randomly selected card from the current set according to drop weights
  */
-async function getRandomCard(style) {
-	const { card_info } = getCardData(style);
+async function getRandomCard(pool) {
+	const cardSet = rollWeighted(pool);
+	const { card_info } = getCardData(cardSet);
 	const { drop_table } = card_info;
-	const weightTable = loadWeightTable(drop_table);
-	const cardChoice = rollWeighted(weightTable);
-	console.log(`Card selected: ${cardChoice}`);
-	const cardImage = await getCardImage(style, cardChoice);
-	return { name: cardChoice, image: cardImage };
+	const cardChoice = rollWeighted(drop_table);
+	console.log(`From set ${cardSet}, selected: ${cardChoice}`);
+	const cardImage = await getCardImage(cardSet, cardChoice);
+	return { name: cardChoice, image: cardImage, set: cardSet };
 }
 
 /**
@@ -99,13 +100,28 @@ async function generateCard(style, name) {
 	return result;
 }
 
+async function makeNewBinder() {
+	const result = {};
+	for (const style of cardSetList) {
+		result[style] = {};
+		const data = getCardData(style);
+		const { drop_table } = data['card_info'];
+		console.log(data, drop_table);
+		const cardList = Array.isArray(drop_table) ? drop_table : Object.keys(drop_table);
+		for (const card of cardList) {
+			result[style][card] = 0;
+		}
+	}
+	return result;
+}
+
 /**
  * @param {String} snowflake the snowflake of the player whose binder is being accessed
  * @returns an Object representing the player's binder, or the empty object if no binder exists under that name
  */
 async function fetchBinder(snowflake) {
 	const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [snowflake]);
-	return queryResult.length ? JSON.parse(queryResult[0]['binder']) : {};
+	return queryResult.length ? JSON.parse(queryResult[0]['binder']) : makeNewBinder();
 }
 
 /**
@@ -130,10 +146,10 @@ async function addCard(binder, set, name, quantity = 1) {
  * @param {Integer} quantity the amount of cards to remove (default 1)
  */
 async function removeCard(binder, set, name, quantity = 1) {
+	console.log(`Removing ${set}:${name} x${quantity} from: ${binder}`);
 	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
 	if (!binder[set][name]) throw Error('This binder doesn\'t have any of the card being removed.');
 	binder[set][name] -= quantity;
-	clearEmptiesInBinder(binder);
 }
 
 /**
@@ -144,27 +160,6 @@ async function removeCard(binder, set, name, quantity = 1) {
 async function pushBinder(snowflake, binder) {
 	const blob = JSON.stringify(binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
-}
-
-/**
- * @desc Removes empty sets or cards with 0 amount in sets
- * @param {Object} binder the binder to clean up
- * @returns a cleaned-up binder
- */
-async function clearEmptiesInBinder(binder) {
-	for (const [set_, cards] of Object.entries(binder)) {
-		let emptySet = true;
-		for (const [card, amount] of Object.entries(cards)) {
-			if (amount === 0) {
-				delete binder[set_][card];
-			} else {
-				emptySet = false;
-			}
-		}
-		if (emptySet) {
-			delete binder[set_];
-		}
-	}
 }
 
 /**
@@ -210,17 +205,19 @@ async function postCard(set, name) {
  * @param {String} binder the binder to showcase
  * @returns a string of newline-separated list items
  */
-// TODO These should be sorted before printing
-async function getPrettyBinderSummary(set, binder) {
-	if (!binder[set]) {
-		return 'You don\'t have any cards in this year\'s set yet!';
+async function getPrettyBinderSummary(binder) {
+	if (!binder) {
+		return 'You don\'t have a binder yet! Also, if you\'re reading this, something went wrong. This isn\'t supposed to happen. Ping Meme and they\'ll fix it.';
 	} else {
-		const { card_info } = getCardData(set);
-		const { cards } = card_info;
-		const summary = objectToListMap(Object.keys(cards), function(card) {
-			return `- \`${cards[card]['card_name']}\`: x${binder[currentSet][card] ?? 0}`;
-		}).join('\n');
-		return summary;
+		const summary = [];
+		for (const set of cardSetList) {
+			const { card_info } = getCardData(set);
+			const { cards } = card_info;
+			summary.push(`## ${set}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
+				return `- \`${cards[card]['card_name']}\`: x${binder[set][card] ?? 0}`;
+			}).join('\n'));
+		}
+		return summary.join('\n\n');
 	}
 }
 
@@ -241,13 +238,13 @@ module.exports = {
 	loadWeightTable: loadWeightTable,
 	getRandomCard: getRandomCard,
 	fetchBinder: fetchBinder,
+	makeNewBinder: makeNewBinder,
 	handlePlayerReward: handlePlayerReward,
 	postCard: postCard,
 	getPrettyBinderSummary: getPrettyBinderSummary,
 	addCard: addCard,
 	removeCard: removeCard,
 	pushBinder: pushBinder,
-	clearEmptiesInBinder: clearEmptiesInBinder,
 	checkSessionConflict: checkSessionConflict,
 	SessionStatus: SessionStatus,
 };
