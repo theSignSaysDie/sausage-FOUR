@@ -1,0 +1,38 @@
+{
+	"style": "classic",
+	"card_info": {
+		"drop_table": [
+			"banansa",
+			"cringeAssNaeNaeBaby"
+		],
+		"cards": {
+			"banansa": {
+				"card_name": "Banansa",
+				"art_path": "banansa.png",
+				"card_border_color": "#00BB00",
+				"bg_grd_start": "#008800", 
+				"bg_grd_end": "#003300",
+				"bg_hex_start": "#006600", 
+				"bg_hex_end": "#002200",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 3,
+				"card_art_border_color": "#00BB00",
+				"drop_shadow_color": "#000000"
+			}, "cringeAssNaeNaeBaby": {
+				"card_name": "Cringe Ass Nae Nae Baby",
+				"art_path": "cringe ass nae nae baby (cross).png",
+				"card_border_color": "#00BB00",
+				"bg_grd_start": "#008800", 
+				"bg_grd_end": "#003300",
+				"bg_hex_start": "#006600", 
+				"bg_hex_end": "#002200",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 3,
+				"card_art_border_color": "#00BB00",
+				"drop_shadow_color": "#000000"
+			}
+		}
+	}
+}
