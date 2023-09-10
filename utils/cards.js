@@ -77,10 +77,10 @@ async function getRandomCard(pool) {
  */
 // TODO add error handling for set/card misses
 // TODO add reply deferral in case of long generation time
-async function getCardImage(style, name) {
-	const target = `${style}_${name}`;
+async function getCardImage(set, name) {
+	const target = `${set}_${name}`;
 	if (!(target in cardCache)) {
-		cardCache[target] = await generateCard(style, name);
+		cardCache[target] = await generateCard(set, name);
 	}
 	return cardCache[target];
 }
@@ -91,11 +91,12 @@ async function getCardImage(style, name) {
  * @param {String} name the card to retrieve an image for
  * @returns the card image as a `.png` file
  */
-async function generateCard(style, name) {
-	const data = getCardData(style);
-	const { paintCard } = require(`../cards/${style}/paint.js`);
+async function generateCard(set, name) {
+	const data = getCardData(set);
+	console.log(data);
+	const { paintCard } = require(`../cards/style/${data['style']}/paint.js`);
 	console.log('Painting card...');
-	const result = await paintCard(data, name);
+	const result = await paintCard(data, set, name);
 	console.log('Returning card...');
 	return result;
 }
