@@ -9,17 +9,24 @@ const random = RNG();
 
 
 /**
- * @desc Selects randomly from a weighted list of choices. `args` can either be an object `{}` or two lists `[] []`.
- * @returns a randomly selected weighted choice from the list
- * @example const choiceFromTwoLists = rollWeighted(["apples", "bananas", "grapes"], [2, 4, 3]);
+ * @desc Selects randomly from a weighted list of choices. `args` can either be a list `[]`, two lists `[] []`, or an object `{}`.
+ * @returns a randomly selected weighted choice from the list, or a random choice if no weights are provided (single list)
+ * @example const choiceFromList = rollWeighted(["apples", "bananas", "grapes"]);
+ * const choiceFromTwoLists = rollWeighted(["apples", "bananas", "grapes"], [2, 4, 3]);
  * const choiceFromObject = rollWeighted({apples: 2, bananas: 4, grapes: 3})
  */
 function rollWeighted() {
 	let cumulativeWeights;
 	let myChoices;
 	if (arguments.length === 1) {
-		myChoices = Object.keys(arguments[0]);
-		cumulativeWeights = Object.values(arguments[0]).map((sum => value => sum += value)(0));
+		if (Array.isArray(arguments[0])) {
+			myChoices = arguments[0];
+			// What an annoying way to generate a list from 1..N
+			cumulativeWeights = [...Array(arguments[0].length).keys()].map(i => i + 1);
+		} else {
+			myChoices = Object.keys(arguments[0]);
+			cumulativeWeights = Object.values(arguments[0]).map((sum => value => sum += value)(0));
+		}
 	} else if (arguments.length === 2) {
 		myChoices = arguments[0];
 		cumulativeWeights = arguments[1].map((sum => value => sum += value)(0));
