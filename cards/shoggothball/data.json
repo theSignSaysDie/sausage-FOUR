@@ -20,8 +20,8 @@
 	},
 	"card_info": {
 		"drop_table": [
-			["banansa"],
-			["cringeAssNaeNaeBaby"]
+			"banansa",
+			"cringeAssNaeNaeBaby"
 		],
 		"cards": {
 			"banansa": {

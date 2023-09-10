@@ -12,7 +12,7 @@ async function paintCard(data, name) {
 
 	// Hex svg mask
 	const hexes = await Canvas.loadImage(path.join(__dirname, './art/hex_final.svg'));
-	const sns_logo = await Canvas.loadImage(path.join(__dirname, './art/sns.png'));
+	const shoggothball_logo = await Canvas.loadImage(path.join(__dirname, '../global/Shoggothball_Icon.png'));
 
 	// Hex background layer
 	const canvas_hex = Canvas.createCanvas(card_width, card_height);
@@ -112,30 +112,9 @@ async function paintCard(data, name) {
 	ctx_info.restore();
 
 	// Format logo
-	ctx_noshadow.globalCompositeOperation = 'source-over';
-	ctx_noshadow.beginPath();
-	ctx_noshadow.lineWidth = card_art_border_thickness;
-	ctx_noshadow.roundRect((card_width - art_size_x) / 2 + nameplate_width + vert_info_space, art_top + art_size_y + vert_info_space, info_height, info_height, [0, 0, info_corner_roundness, 0]);
-	ctx_noshadow.fill();
-	ctx_noshadow.stroke();
-	ctx_noshadow.closePath();
-	ctx_noshadow.globalCompositeOperation = 'source-atop';
-	ctx_noshadow.drawImage(sns_logo,
-		0, 0, sns_logo.width, sns_logo.height,
+	ctx_noshadow.drawImage(shoggothball_logo,
+		0, 0, shoggothball_logo.width, shoggothball_logo.height,
 		(card_width - art_size_x) / 2 + nameplate_width + vert_info_space - card_art_border_thickness / 2, art_top + art_size_y + vert_info_space - card_art_border_thickness / 2, info_height + card_art_border_thickness, info_height + card_art_border_thickness);
-
-	// Put logo on otherbox
-	ctx_info.globalCompositeOperation = 'source-over';
-	ctx_info.save();
-	ctx_info.beginPath();
-	ctx_info.lineWidth = card_art_border_thickness;
-	ctx_info.shadowColor = drop_shadow_color;
-	ctx_info.shadowBlur = drop_shadow_blur;
-	ctx_info.roundRect((card_width - art_size_x) / 2 + nameplate_width + vert_info_space, art_top + art_size_y + vert_info_space, info_height, info_height, [0, 0, info_corner_roundness, 0]);
-	ctx_info.fill();
-	ctx_info.stroke();
-	ctx_info.closePath();
-	ctx_info.restore();
 	ctx_info.drawImage(canvas_noshadow, 0, 0);
 
 	// Add nametext
