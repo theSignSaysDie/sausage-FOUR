@@ -24,7 +24,7 @@ const global_settings = {
 async function paintCard(data, set, name) {
 	const { card_info } = data;
 	const { card_width, card_height, card_border_offset, card_border_thickness, card_corner_roundness, grd_start, art_size_x, art_size_y, art_top, card_art_border_thickness, drop_shadow_blur, vert_info_space, info_height, info_corner_roundness, text_font_size, text_modifiers, text_font } = global_settings;
-	const { card_name, art_path, card_border_color, bg_grd_start, bg_grd_end, bg_hex_start, bg_hex_end, art_offset_x, art_offset_y, art_scale, card_art_border_color, drop_shadow_color } = card_info.cards[name];
+	const { card_name, art_path, card_border_color, bg_grd_start, bg_grd_end, bg_hex_start, bg_hex_end, art_offset_x, art_offset_y, art_scale, text_color, card_art_border_color, drop_shadow_color } = card_info.cards[name];
 	const text_format = `${text_modifiers} ${text_font_size}px ${text_font}`;
 	const nameplate_width = art_size_x - vert_info_space - info_height;
 	const max_text_width = nameplate_width - card_border_thickness * 4;
@@ -119,6 +119,19 @@ async function paintCard(data, set, name) {
 		(card_art.width - (art_size_x / art_scale)) / 2 + art_offset_x, (card_art.height - (art_size_y / art_scale)) / 2 + art_offset_y, art_size_x / art_scale, art_size_y / art_scale,
 		(card_width - art_size_x) / 2, art_top, art_size_x, art_size_y);
 
+	// Add fuzzy background to card art
+	ctx_info.save();
+	ctx_info.globalCompositeOperation = 'destination-over';
+	ctx_info.beginPath();
+	ctx_info.fillStyle = 'rgba(255, 255, 255, 0.20)';
+	ctx_info.fillRect((card_width - art_size_x) / 2, art_top, art_size_x, art_size_y);
+	ctx_info.shadowColor = drop_shadow_color;
+	ctx_info.shadowBlur = drop_shadow_blur;
+	ctx_info.fill();
+	ctx_info.closePath();
+	ctx_info.restore();
+
+
 	// Add namebox
 	ctx_info.save();
 	ctx_info.globalCompositeOperation = 'source-over';
@@ -142,7 +155,7 @@ async function paintCard(data, set, name) {
 
 	// Add nametext
 	ctx_info.beginPath();
-	ctx_info.fillStyle = card_art_border_color;
+	ctx_info.fillStyle = text_color;
 	ctx_info.shadowColor = drop_shadow_color;
 	ctx_info.shadowBlur = drop_shadow_blur;
 	ctx_info.font = text_format;
