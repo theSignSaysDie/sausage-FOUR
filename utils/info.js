@@ -189,8 +189,8 @@ const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emoti
  */
 const birthdays = [];
 const cardCache = {};
-const cardSetList = ['shoggothball'];
-const currentPool = ['shoggothball'];
+const cardSetList = ['shoggothball', 'galactakaiju', 'mechakaiju', 'kaijuball'];
+const currentPool = ['shoggothball', 'galactakaiju', 'mechakaiju', 'kaijuball'];
 const cardDropWaitTime = 15;
 const cardDropChance = 0.9;
 
