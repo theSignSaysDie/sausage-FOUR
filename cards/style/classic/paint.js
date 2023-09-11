@@ -17,7 +17,7 @@ const global_settings = {
 	vert_info_space: 50,
 	info_height: 100,
 	info_corner_roundness: 25,
-	text_font_size: 50,
+	text_font_size: 64,
 	text_modifiers: 'bold',
 	text_font: 'Courier New',
 };
@@ -153,17 +153,32 @@ async function paintCard(data, set, name) {
 		(card_width - art_size_x) / 2 + nameplate_width + vert_info_space - card_art_border_thickness / 2, art_top + art_size_y + vert_info_space - card_art_border_thickness / 2, info_height + card_art_border_thickness, info_height + card_art_border_thickness);
 	ctx_info.drawImage(canvas_noshadow, 0, 0);
 
-	// Add nametext
+	// Add nametext drop shadow
+	ctx_info.globalCompositeOperation = 'source-over';
+	ctx_info.save();
 	ctx_info.beginPath();
-	ctx_info.fillStyle = text_color;
+	ctx_info.fillStyle = drop_shadow_color;
 	ctx_info.shadowColor = drop_shadow_color;
 	ctx_info.shadowBlur = drop_shadow_blur;
 	ctx_info.font = text_format;
 	ctx_info.fillText(card_name,
 		(card_width - art_size_x) / 2 + nameplate_width / 2,
-		art_top + art_size_y + vert_info_space + info_height / 2 + card_art_border_thickness / 2,
+		art_top + art_size_y + vert_info_space + info_height - text_font_size / 2,
 		max_text_width);
 	ctx_info.closePath();
+	ctx_info.restore();
+
+	// Add nametext
+	ctx_info.save();
+	ctx_info.beginPath();
+	ctx_info.fillStyle = text_color;
+	ctx_info.font = text_format;
+	ctx_info.fillText(card_name,
+		(card_width - art_size_x) / 2 + nameplate_width / 2,
+		art_top + art_size_y + vert_info_space + info_height - text_font_size / 2,
+		max_text_width);
+	ctx_info.closePath();
+	ctx_info.restore();
 
 	// Layer collapse
 	context.globalCompositeOperation = 'source-atop';
