@@ -54,7 +54,8 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
-			await interaction.reply(await postCard(cardSet, interaction.options.getString('name')));
+			await interaction.deferReply();
+			await interaction.editReply(await postCard(cardSet, interaction.options.getString('name')));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
 			const targetPlayer = interaction.options.getUser('player');
