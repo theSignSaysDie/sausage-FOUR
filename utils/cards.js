@@ -143,7 +143,7 @@ async function addCard(binder, set, name, quantity = 1) {
  */
 async function removeCard(binder, set, name, quantity = 1) {
 	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
-	if (!binder[set][name]) throw Error(`This binder doesn\'t have any of the card being removed: ${set}, ${name}.`);
+	if (!binder[set][name]) throw Error(`This binder doesn't have any of the card being removed: ${set}, ${name}.`);
 	binder[set][name] -= quantity;
 }
 
