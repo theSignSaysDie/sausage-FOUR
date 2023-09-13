@@ -32,9 +32,7 @@ async function paintCard(data, set, name) {
 	const art_dir = path.join(__dirname, '../../', `${set}/art/`);
 
 	// Hex svg mask
-	console.log('BFBFBFH   ', __dirname);
 	const hexes = await Canvas.loadImage(path.join(__dirname, 'assets/hex_final.svg'));
-	console.log(art_dir);
 	const logo = await Canvas.loadImage(path.join(art_dir, 'logo.png'));
 
 	// Hex background layer
@@ -113,7 +111,6 @@ async function paintCard(data, set, name) {
 
 	// Add card art
 	ctx_info.globalCompositeOperation = 'destination-over';
-	console.log(__dirname, art_dir, art_path);
 	const card_art = await Canvas.loadImage(path.join(art_dir, '/', art_path));
 	ctx_info.drawImage(card_art,
 		(card_art.width - (art_size_x / art_scale)) / 2 + art_offset_x, (card_art.height - (art_size_y / art_scale)) / 2 + art_offset_y, art_size_x / art_scale, art_size_y / art_scale,
