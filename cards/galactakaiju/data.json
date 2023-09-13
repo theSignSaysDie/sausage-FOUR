@@ -16,7 +16,7 @@
 			"ummDamnBattleTank",
 			"xenopustulusOne",
 			"xenoripperMarkFive",
-			"oitty"
+			"stalktitanQuillbot"
 		],
 		"cards": {
 			"arachnidRexotron80k": {
@@ -229,9 +229,9 @@
 				"card_art_border_color": "hsl(120, 21%, 70%)",
 				"drop_shadow_color": "hsl(0, 0%, 0%)"
 			},
-			"oitty": {
-				"card_name": "oitty",
-				"art_path": "oitty.png",
+			"stalktitanQuillbot": {
+				"card_name": "Stalktitan Quillbot",
+				"art_path": "Stalktitan Quillbot.png",
 				"card_border_color": "hsl(82, 100%, 40%)",
 				"bg_grd_start": "hsl(82, 57%, 71%)",
 				"bg_grd_end": "hsl(150, 60%, 82%)",
