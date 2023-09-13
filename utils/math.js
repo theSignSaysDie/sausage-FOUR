@@ -130,6 +130,18 @@ function easyListItems(values) {
 	return values.map((v) => ({ name: v, value: v }));
 }
 
+function sum(arr) {
+	return arr.reduce((a, c) => a + c);
+}
+
+function any(arr) {
+	return arr.reduce((a, c) => a || c);
+}
+
+function all(arr) {
+	return arr.reduce((a, c) => a && c);
+}
+
 module.exports = {
 	round: round,
 	zip: zip,
@@ -140,4 +152,7 @@ module.exports = {
 	getCurrentTimestamp: getCurrentTimestamp,
 	clamp: clamp,
 	easyListItems: easyListItems,
+	sum: sum,
+	any: any,
+	all: all,
 };
