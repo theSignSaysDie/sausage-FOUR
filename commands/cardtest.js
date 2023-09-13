@@ -51,7 +51,7 @@ module.exports = {
 			const embed = getDefaultEmbed()
 				.setTitle('Binder Contents')
 				.setDescription(summary);
-			await interaction.reply({ embeds: [embed] });
+			await interaction.reply({ embeds: [embed], ephemeral: true });
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
 			await interaction.deferReply();
