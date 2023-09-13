@@ -1,6 +1,6 @@
 // Const Canvas = require('@napi-rs/canvas');
 const fs = require('fs');
-const { zip, objectToListMap, toString64 } = require('./math');
+const { zip, objectToListMap, toString64, sum, all } = require('./math');
 const { rollWeighted } = require('./dice');
 const { cardCache, cardSetList } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
@@ -64,7 +64,6 @@ async function getRandomCard(pool) {
 	const { card_info } = getCardData(cardSet);
 	const { drop_table } = card_info;
 	const cardChoice = rollWeighted(drop_table);
-	console.log(`From set ${cardSet}, selected: ${cardChoice}`);
 	const cardImage = await getCardImage(cardSet, cardChoice);
 	return { name: cardChoice, image: cardImage, set: cardSet };
 }
@@ -93,11 +92,8 @@ async function getCardImage(set, name) {
  */
 async function generateCard(set, name) {
 	const data = getCardData(set);
-	console.log(data);
 	const { paintCard } = require(`../cards/style/${data['style']}/paint.js`);
-	console.log('Painting card...');
 	const result = await paintCard(data, set, name);
-	console.log('Returning card...');
 	return result;
 }
 
@@ -107,7 +103,6 @@ async function makeNewBinder() {
 		result[style] = {};
 		const data = getCardData(style);
 		const { drop_table } = data['card_info'];
-		console.log(data, drop_table);
 		const cardList = Array.isArray(drop_table) ? drop_table : Object.keys(drop_table);
 		for (const card of cardList) {
 			result[style][card] = 0;
@@ -147,9 +142,8 @@ async function addCard(binder, set, name, quantity = 1) {
  * @param {Integer} quantity the amount of cards to remove (default 1)
  */
 async function removeCard(binder, set, name, quantity = 1) {
-	console.log(`Removing ${set}:${name} x${quantity} from: ${binder}`);
 	if (!binder[set]) throw Error('The binder you are trying to remove a card from does not exist.');
-	if (!binder[set][name]) throw Error('This binder doesn\'t have any of the card being removed.');
+	if (!binder[set][name]) throw Error(`This binder doesn\'t have any of the card being removed: ${set}, ${name}.`);
 	binder[set][name] -= quantity;
 }
 
@@ -225,12 +219,19 @@ async function getPrettyBinderSummary(binder) {
 function checkSessionConflict(initiatingPlayer, targetPlayer) {
 	const initString = toString64(initiatingPlayer.id, 64);
 	const targetString = toString64(targetPlayer.id, 64);
-	console.log(cardTradeSessions);
 	for (const session of Object.keys(cardTradeSessions)) {
 		if (session.startsWith(initString) || session.includes(`.${initString}.`)) {return SessionStatus.InitiatorBusy;}
 		if (session.startsWith(targetString) || session.includes(`.${targetString}.`)) {return SessionStatus.TargetBusy;}
 	}
 	return SessionStatus.SessionPossible;
+}
+
+function isEmptySet(binder, set) {
+	return (sum(Object.values(binder[set])) === 0);
+}
+
+function isEmptyBinder(binder) {
+	return all(Object.keys(binder).map((x) => isEmptySet(binder, x)));
 }
 
 module.exports = {
@@ -247,5 +248,7 @@ module.exports = {
 	removeCard: removeCard,
 	pushBinder: pushBinder,
 	checkSessionConflict: checkSessionConflict,
+	isEmptySet: isEmptySet,
+	isEmptyBinder: isEmptyBinder,
 	SessionStatus: SessionStatus,
 };
