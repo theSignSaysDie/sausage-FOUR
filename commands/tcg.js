@@ -1,6 +1,6 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet, getCardData } = require('../utils/cards');
+const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
 const { cardSetList, setTranslate, cardTranslate } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
@@ -9,7 +9,7 @@ const { easyListItems } = require('../utils/math');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('cardtest')
+		.setName('tcg')
 		.setDescription('Simple card test command')
 		.addSubcommand(subcommand =>
 			subcommand
@@ -22,7 +22,7 @@ module.exports = {
 				.addStringOption(option =>
 					option
 						.setName('set')
-						.setDescription('Which card do you want to see?')
+						.setDescription('Which set do you want to pick from?')
 						.setChoices(...easyListItems(cardSetList))
 						.setRequired(true),
 				).addStringOption(option =>
