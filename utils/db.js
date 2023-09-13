@@ -6,6 +6,7 @@ const doc = new GoogleSpreadsheet(process.env.TROLL_CALL_DOC_ID);
 const trollFullNameDict = {};
 const trollFirstNameDict = {};
 const trollTitleDict = {};
+const cardTradeSessions = {};
 
 /** Global MySQL Connection Pool.
  * This definition pulls details from the .env file to establish a connection,
@@ -118,4 +119,5 @@ module.exports = {
 	trollFullNameDict: trollFullNameDict,
 	trollFirstNameDict: trollFirstNameDict,
 	trollTitleDict: trollTitleDict,
+	cardTradeSessions: cardTradeSessions,
 };

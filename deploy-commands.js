@@ -1,6 +1,10 @@
 const { REST, Routes } = require('discord.js');
 require('dotenv').config();
 const fs = require('node:fs');
+const path = require('node:path');
+const { isAllowed } = require('./utils/conditions');
+
+const argv = require('minimist')(process.argv.slice(2));
 
 const commandsGlobal = [];
 const commandsLocal = [];
@@ -8,23 +12,30 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 const globalBlacklist = ['banish.js', 'patch.js'];
 
+const commandConditions = JSON.parse(fs.readFileSync(path.join(__dirname, 'commands/commandConditions.json'), 'utf8'));
+
 for (const file of commandFiles) {
+	const commandName = file.slice(0, -3);
+	if (commandConditions[commandName] && !isAllowed(commandConditions[commandName])) {
+		console.log(`Skipped ${commandName}`);
+		continue;
+	}
 	const command = require(`./commands/${file}`);
-	console.log(file);
 	if (globalBlacklist.includes(`${file}`)) {
 		commandsLocal.push(command.data.toJSON());
-		console.log('!!!');
+		console.log(`Pushed ${file} with no visibility`);
 	} else {
 		commandsGlobal.push(command.data.toJSON());
-		console.log('?');
+		console.log(`Pushed ${file}`);
 	}
 }
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
-const clear = false;
+// Const clear = false;
 
-if (!clear) {
+if (!(argv._.includes('clear'))) {
+	console.log(argv._);
 	(async () => {
 		try {
 			console.log(`Started refreshing ${commandsLocal.length} LOCAL application (/) commands.`);
