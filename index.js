@@ -4,6 +4,8 @@ const { schedule } = require('node-cron');
 const fs = require('node:fs');
 const path = require('node:path');
 const db = require('./utils/db');
+const info = require('./utils/info');
+const { getCardData } = require('./utils/cards');
 const { isAllowed } = require('./utils/conditions');
 
 // Initialize client
@@ -11,9 +13,9 @@ console.log('Initializing client...');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 
 // Establish rate-limit warnings (just in case)
-client.on('rateLimit', (info) => {
+client.on('rateLimit', (msg) => {
 	console.log('Rate limit hit:');
-	console.log(info);
+	console.log(msg);
 });
 
 // Load conditions for commands, events
@@ -75,6 +77,13 @@ schedule(`${seconds} ${minutes} * * * *`, function() {
 	db.trollFirstNameDict, db.trollFullNameDict, db.trollTitleDict = db.loadTrollCall();
 });
 
+for (const set of info.cardSetList) {
+	const { card_info, set_name } = getCardData(set);
+	info.setTranslate[set] = set_name;
+	for (const card of card_info.drop_table) {
+		info.cardTranslate[card] = card_info.cards[card].card_name;
+	}
+}
 
 // Login!
 console.log('Logging in...');

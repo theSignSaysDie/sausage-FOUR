@@ -1,5 +1,6 @@
 {
 	"style": "classic",
+	"set_name": "Kaijuball",
 	"card_info": {
 		"drop_table": [
 			"laviahydra",
@@ -9,7 +10,7 @@
 			"skyemother",
 			"drakkosaur",
 			"sparkonaut",
-			"gorrilizon",
+			"gorillizon",
 			"cackledemon",
 			"kamohoalii"
 		],

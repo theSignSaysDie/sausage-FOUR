@@ -189,8 +189,10 @@ const lookupTableNames = ['abstrata', 'affliction', 'downtime', 'effect', 'emoti
  */
 const birthdays = [];
 const cardCache = {};
-const cardSetList = ['shoggothball', 'galactakaiju', 'mechakaiju', 'kaijuball'];
-const currentPool = ['shoggothball', 'galactakaiju', 'mechakaiju', 'kaijuball'];
+const cardSetList = ['galactakaiju', 'shoggothball', 'mechakaiju', 'kaijuball'];
+const currentPool = { 'galactakaiju': 15, 'shoggothball': 12, 'mechakaiju': 9, 'kaijuball': 10 };
+const setTranslate = {};
+const cardTranslate = {};
 const cardDropWaitTime = 15;
 const cardDropChance = 0.9;
 
@@ -325,4 +327,6 @@ module.exports = {
 	cardDropWaitTime: cardDropWaitTime,
 	helpText: helpText,
 	cardSetList: cardSetList,
+	setTranslate: setTranslate,
+	cardTranslate: cardTranslate,
 };

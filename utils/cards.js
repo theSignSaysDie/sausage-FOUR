@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { zip, objectToListMap, toString64, sum, all } = require('./math');
 const { rollWeighted } = require('./dice');
-const { cardCache, cardSetList } = require('./info');
+const { cardCache, cardSetList, setTranslate, cardTranslate } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
@@ -208,8 +208,8 @@ async function getPrettyBinderSummary(binder) {
 		for (const set of cardSetList) {
 			const { card_info } = getCardData(set);
 			const { cards } = card_info;
-			summary.push(`## ${set}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
-				return `- \`${cards[card]['card_name']}\`: x${binder[set][card] ?? 0}`;
+			summary.push(`## ${setTranslate[set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
+				return `- \`${cardTranslate[card]}\`: x${binder[set][card] ?? 0}`;
 			}).join('\n'));
 		}
 		return summary.join('\n\n');
@@ -250,5 +250,6 @@ module.exports = {
 	checkSessionConflict: checkSessionConflict,
 	isEmptySet: isEmptySet,
 	isEmptyBinder: isEmptyBinder,
+	getCardData: getCardData,
 	SessionStatus: SessionStatus,
 };

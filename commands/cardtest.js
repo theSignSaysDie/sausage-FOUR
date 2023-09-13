@@ -1,8 +1,8 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
+const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet, getCardData } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
-const { cardSetList } = require('../utils/info');
+const { cardSetList, setTranslate, cardTranslate } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
@@ -54,30 +54,30 @@ module.exports = {
 			await interaction.reply({ embeds: [embed], ephemeral: true });
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
-			await interaction.deferReply();
-			await interaction.editReply(await postCard(cardSet, interaction.options.getString('name')));
+			await interaction.reply(await postCard(cardSet, interaction.options.getString('name')));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
+			await interaction.deferReply();
 			const targetPlayer = interaction.options.getUser('player');
 			const initiatingPlayer = interaction.user;
 			// No trades with bots
 			if (targetPlayer.bot) {
-				await interaction.reply({ content: 'You can\'t trade with bots!', ephemeral: true });
+				await interaction.editReply({ content: 'You can\'t trade with bots!', ephemeral: true });
 				return;
 			}
 			if (targetPlayer.id === initiatingPlayer.id) {
-				await interaction.reply({ content: 'You can\'t trade with yourself!', ephemeral: true });
+				await interaction.editReply({ content: 'You can\'t trade with yourself!', ephemeral: true });
 				return;
 			}
 
 			// Block new sessions where either participant is busy
 			const sessionInfo = checkSessionConflict(initiatingPlayer, targetPlayer);
 			if (sessionInfo === SessionStatus.InitiatorBusy) {
-				await interaction.reply({ content: 'You\'re already busy with another trade!', ephemeral: true });
+				await interaction.editReply({ content: 'You\'re already busy with another trade!', ephemeral: true });
 				return;
 			}
 			if (sessionInfo === SessionStatus.TargetBusy) {
-				await interaction.reply({ content: 'Your target trade partner is currently busy trading with someone else!', ephemeral: true });
+				await interaction.editReply({ content: 'Your target trade partner is currently busy trading with someone else!', ephemeral: true });
 				return;
 			}
 			// Collect information
@@ -104,7 +104,7 @@ module.exports = {
 			for (const set of cardSetList) {
 				setSelect.addOptions(
 					new StringSelectMenuOptionBuilder()
-						.setLabel(set)
+						.setLabel(setTranslate[set])
 						.setValue(set)
 						.setDefault(isDefault),
 				);
@@ -128,7 +128,7 @@ module.exports = {
 			for (const card in initiatorHasCards ? yourBinder[focusSet] : { 'No cards!': 0 }) {
 				yourCardSelect.addOptions(
 					new StringSelectMenuOptionBuilder()
-						.setLabel((isDefault ? '➡️ ' : '') + card)
+						.setLabel((isDefault ? '➡️ ' : '') + cardTranslate[card])
 						.setValue(card)
 						.setDefault(isDefault),
 				);
@@ -170,7 +170,7 @@ module.exports = {
 			for (const card in targetHasCards ? theirBinder[focusSet] : { 'No cards!': 0 }) {
 				theirCardSelect.addOptions(
 					new StringSelectMenuOptionBuilder()
-						.setLabel((isDefault ? '⬅️ ' : '') + card)
+						.setLabel((isDefault ? '⬅️ ' : '') + cardTranslate[card])
 						.setValue(card)
 						.setDefault(isDefault),
 				);
@@ -215,7 +215,7 @@ module.exports = {
 			cardTradeSessions[sessionID] = { offer: await makeNewBinder(), payment: await makeNewBinder(), setFocus: focusSet, initiatorFocus: focusInitiator, targetFocus: focusTarget, closing: false };
 			// Respond to player command with embed
 			// TODO Defer reply
-			const response = await interaction.reply({ embeds: [embed], components: [setSelectRow, yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
+			const response = await interaction.editReply({ embeds: [embed], components: [setSelectRow, yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 
 			// ========
 			// Set up collectors
@@ -265,15 +265,15 @@ module.exports = {
 
 						const bYourOfferStringArr = [];
 						for (const bySet in cardTradeSessions[bSession]['offer']) {
-							bYourOfferStringArr.push(!isEmptySet(cardTradeSessions[bSession]['offer'], bySet) ? `- **${bySet}**\n` + objectToListMap(Object.entries(cardTradeSessions[bSession]['offer'][bySet]), (i) => (i[1] > 0 ? ` - ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n') : '');
+							bYourOfferStringArr.push(!isEmptySet(cardTradeSessions[bSession]['offer'], bySet) ? `- **${setTranslate[bySet]}**\n` + objectToListMap(Object.entries(cardTradeSessions[bSession]['offer'][bySet]), (i) => (i[1] > 0 ? ` - \`${cardTranslate[i[0]]}\` x${i[1]}` : '')).filter(i => i.length).join('\n') : '');
 						}
 						let bYourOfferString = bYourOfferStringArr.filter(i => i.length).join('\n\n');
 
 						const bTheirOfferStringArr = [];
 						for (const btSet in cardTradeSessions[bSession]['payment']) {
-							bTheirOfferStringArr.push(!isEmptySet(cardTradeSessions[bSession]['payment'], btSet) ? `- **${btSet}**\n` + objectToListMap(Object.entries(cardTradeSessions[bSession]['payment'][btSet]), (i) => (i[1] > 0 ? ` - ${i[0]} x${i[1]}` : '')).filter(i => i.length).join('\n') : '');
+							bTheirOfferStringArr.push(!isEmptySet(cardTradeSessions[bSession]['payment'], btSet) ? `- **${setTranslate[btSet]}**\n` + objectToListMap(Object.entries(cardTradeSessions[bSession]['payment'][btSet]), (i) => (i[1] > 0 ? ` - \`${cardTranslate[i[0]]}\` x${i[1]}` : '')).filter(i => i.length).join('\n') : '');
 						}
-						let bTheirOfferString = bTheirOfferStringArr.filter(i => i.length).join('\n\n');
+						let bTheirOfferString = bTheirOfferStringArr.filter(i => i.length).join('\n');
 
 						confirmButton.setDisabled(!(bYourOfferString.length + bTheirOfferString.length));
 						if (!bYourOfferString.length) bYourOfferString = '- nothing';
@@ -344,7 +344,7 @@ module.exports = {
 						for (const set of cardSetList) {
 							setSelect.addOptions(
 								new StringSelectMenuOptionBuilder()
-									.setLabel(set)
+									.setLabel(setTranslate[set])
 									.setValue(set)
 									.setDefault(set === chosenSet),
 							);
@@ -356,7 +356,7 @@ module.exports = {
 						for (const card in yourBinder[chosenSet]) {
 							yourCardSelect.addOptions(
 								new StringSelectMenuOptionBuilder()
-									.setLabel((yDefault ? '➡️ ' : '') + card)
+									.setLabel((yDefault ? '➡️ ' : '') + cardTranslate[card])
 									.setValue(card)
 									.setDefault(yDefault),
 							);
@@ -370,7 +370,7 @@ module.exports = {
 						for (const card in theirBinder[chosenSet]) {
 							theirCardSelect.addOptions(
 								new StringSelectMenuOptionBuilder()
-									.setLabel((tDefault ? '⬅️ ' : '') + card)
+									.setLabel((tDefault ? '⬅️ ' : '') + cardTranslate[card])
 									.setValue(card)
 									.setDefault(tDefault),
 							);
@@ -402,7 +402,7 @@ module.exports = {
 							for (const card in yourBinder[sSet]) {
 								yourCardSelect.addOptions(
 									new StringSelectMenuOptionBuilder()
-										.setLabel((card === sChoice ? '➡️ ' : '') + card)
+										.setLabel((card === sChoice ? '➡️ ' : '') + cardTranslate[card])
 										.setValue(card)
 										.setDefault(card === sChoice),
 								);
@@ -412,7 +412,7 @@ module.exports = {
 							for (const card in theirBinder[sSet]) {
 								theirCardSelect.addOptions(
 									new StringSelectMenuOptionBuilder()
-										.setLabel((card === sChoice ? '⬅️ ' : '') + card)
+										.setLabel((card === sChoice ? '⬅️ ' : '') + cardTranslate[card])
 										.setValue(card)
 										.setDefault(card === sChoice),
 								);
