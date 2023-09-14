@@ -176,9 +176,9 @@ async function updateCooldown(snowflake, time) {
  */
 async function handlePlayerReward(snowflake, set, name, time) {
 	const binder = await fetchBinder(snowflake);
-	addCard(binder, set, name);
-	pushBinder(snowflake, binder);
-	updateCooldown(snowflake, time);
+	await addCard(binder, set, name);
+	await pushBinder(snowflake, binder);
+	await updateCooldown(snowflake, time);
 }
 
 /**
