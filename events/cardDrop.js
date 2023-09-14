@@ -21,7 +21,8 @@ module.exports = {
 		const now = Date.now();
 		const queryResult = await fetchSQL('SELECT `last_drop` FROM `player` WHERE `snowflake` = ?', [interaction.author.id]);
 		if (queryResult.length) {
-			const lastDropTime = parseInt(queryResult[0]['last_drop']);
+			let lastDropTime = parseInt(queryResult[0]['last_drop']);
+			lastDropTime = isNaN(lastDropTime) ? 0 : lastDropTime;
 			console.log('Checking drop time. Last:', lastDropTime, '; now:', now, ';', now - lastDropTime, 'vs.', cardDropWaitTime);
 			if (now - lastDropTime < cardDropWaitTime) {
 				console.log('Player has not gotten past their cooldown.');
