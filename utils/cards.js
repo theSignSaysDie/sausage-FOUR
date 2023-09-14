@@ -163,6 +163,7 @@ async function pushBinder(snowflake, binder) {
  * @param {Integer} time the time in milliseconds since world epoch
  */
 async function updateCooldown(snowflake, time) {
+	console.log('Updating cooldown for', snowflake, 'to', time);
 	await fetchSQL('UPDATE `player` SET `last_drop` = ? WHERE `snowflake` = ?', [time, snowflake]);
 }
 
@@ -175,6 +176,7 @@ async function updateCooldown(snowflake, time) {
  */
 async function handlePlayerReward(snowflake, set, name, time) {
 	const binder = await fetchBinder(snowflake);
+	console.log('Binder:', binder);
 	addCard(binder, set, name);
 	pushBinder(snowflake, binder);
 	updateCooldown(snowflake, time);

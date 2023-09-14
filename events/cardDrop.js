@@ -22,6 +22,7 @@ module.exports = {
 		const queryResult = await fetchSQL('SELECT `last_drop` FROM `player` WHERE `snowflake` = ?', [interaction.author.id]);
 		if (queryResult.length) {
 			const lastDropTime = parseInt(queryResult[0]['last_drop']);
+			console.log('Checking drop time. Last:', lastDropTime, '; now:', now, ';', now - lastDropTime, 'vs.', cardDropWaitTime);
 			if (now - lastDropTime < cardDropWaitTime) return;
 		}
 
@@ -42,6 +43,7 @@ module.exports = {
 		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
 		await botherChannel.send({ content: `<@${interaction.author.id}>`, embeds: [embed], files: [attachment] });
 
+		console.log('Handling player reward:', interaction.author.id, set, name, now);
 		await handlePlayerReward(interaction.author.id, set, name, now);
 	},
 };
