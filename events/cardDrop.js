@@ -34,7 +34,7 @@ module.exports = {
 
 		// Don't reward unlucky players
 		if (rollFloat() > cardDropChance) return;
-		console.log('Proceeding with drop.');
+		console.log('Proceeding with drop for', interaction.author.id);
 
 		// Generate card or retrieve from cache
 		// TODO amend to draw from master file in info.js rather than current set
