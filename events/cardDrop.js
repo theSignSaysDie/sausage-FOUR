@@ -18,10 +18,10 @@ module.exports = {
 		if (interaction.author.bot) return;
 
 		// Don't reward players on cooldown
-		const now = Math.floor(Date.now() / 1000);
+		const now = Date.now();
 		const queryResult = await fetchSQL('SELECT `last_drop` FROM `player` WHERE `snowflake` = ?', [interaction.author.id]);
 		if (queryResult.length) {
-			const lastDropTime = queryResult[0]['last_drop'];
+			const lastDropTime = parseInt(queryResult[0]['last_drop']);
 			if (now - lastDropTime < cardDropWaitTime) return;
 		}
 
