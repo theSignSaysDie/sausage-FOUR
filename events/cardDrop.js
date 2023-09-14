@@ -27,8 +27,6 @@ module.exports = {
 			if (now - lastDropTime < cardDropWaitTime) {
 				console.log('Player has not gotten past their cooldown.');
 				return;
-			} else {
-				console.log('Cooldown satisfied. Proceeding with drop.');
 			}
 		} else {
 			console.log('Player does not have a binder!');
@@ -36,6 +34,7 @@ module.exports = {
 
 		// Don't reward unlucky players
 		if (rollFloat() > cardDropChance) return;
+		console.log('Proceeding with drop.');
 
 		// Generate card or retrieve from cache
 		// TODO amend to draw from master file in info.js rather than current set
