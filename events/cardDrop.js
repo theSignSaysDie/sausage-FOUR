@@ -23,7 +23,14 @@ module.exports = {
 		if (queryResult.length) {
 			const lastDropTime = parseInt(queryResult[0]['last_drop']);
 			console.log('Checking drop time. Last:', lastDropTime, '; now:', now, ';', now - lastDropTime, 'vs.', cardDropWaitTime);
-			if (now - lastDropTime < cardDropWaitTime) return;
+			if (now - lastDropTime < cardDropWaitTime) {
+				console.log('Player has not gotten past their cooldown.');
+				return;
+			} else {
+				console.log('Cooldown satisfied. Proceeding with drop.');
+			}
+		} else {
+			console.log('Player does not have a binder!');
 		}
 
 		// Don't reward unlucky players
