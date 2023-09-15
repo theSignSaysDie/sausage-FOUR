@@ -17,7 +17,7 @@ module.exports = {
 			console.log(procChannels, interaction.channel.parent.id);
 			return;
 		} else {
-			console.log('Valid proc target');
+			console.log('Valid proc target:', interaction.channel.parent.id);
 		}
 		// Ignore bot messages
 		if (interaction.author.bot) return;
