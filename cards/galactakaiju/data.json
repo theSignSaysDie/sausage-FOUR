@@ -16,7 +16,7 @@
 			"ULTR4JUSTICIAR",
 			"ummDamnBattleTank",
 			"xenopustulusOne",
-			"xenoripperMarkFive",
+			"battlefiendMarkFive",
 			"stalktitanQuillbot"
 		],
 		"cards": {
@@ -215,9 +215,9 @@
 				"card_art_border_color": "hsl(0, 0%, 71%)",
 				"drop_shadow_color": "hsl(0, 0%, 0%)"
 			},
-			"xenoripperMarkFive": {
-				"card_name": "Xenoripper Mk. V",
-				"art_path": "Xenoripper Mk V.png",
+			"battlefiendMarkFive": {
+				"card_name": "Battlefiend Mk. V",
+				"art_path": "Battlefiend Mk V.png",
 				"card_border_color": "hsl(120, 21%, 70%)",
 				"bg_grd_start": "hsl(120, 71%, 72%)",
 				"bg_grd_end": "hsl(120, 72%, 36%)",
