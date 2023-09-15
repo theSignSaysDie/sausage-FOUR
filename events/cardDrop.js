@@ -13,7 +13,12 @@ module.exports = {
 		if (interaction.guildId !== process.env.GUILD_ID) return;
 		// Ignore channels off whitelist
 		const procChannels = process.env.BLOCKED_PROC_CATEGORIES.split(' ');
-		if (procChannels.includes(interaction.channel.parent.id)) return;
+		if (procChannels.includes(interaction.channel.parent.id)) {
+			console.log(procChannels, interaction.channel.parent.id);
+			return;
+		} else {
+			console.log('Valid proc target');
+		}
 		// Ignore bot messages
 		if (interaction.author.bot) return;
 
