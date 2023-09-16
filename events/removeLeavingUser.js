@@ -21,7 +21,7 @@ module.exports = {
 		await fetchSQL(query, [bannedUserSnowflake]);
 
 		// Delete banned user's troll call
-		query = 'DELETE FROM `trollcall` WHERE `snowflake` = ?';
+		query = 'DELETE FROM `trollcall` WHERE `userID` = ?';
 		await fetchSQL(query, [bannedUserSnowflake]);
 
 		// Delete banned user's card binder
