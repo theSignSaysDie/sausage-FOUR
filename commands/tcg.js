@@ -335,6 +335,7 @@ module.exports = {
 
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
 			selectCollector.on('collect', async selectInteraction => {
+				console.log(selectInteraction.customId);
 				if (selectInteraction.user.id === initiatingPlayer.id) {
 					await selectInteraction.deferUpdate();
 					const [, , sSession, sTrader, ,] = selectInteraction.customId.split('_');
