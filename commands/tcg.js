@@ -217,6 +217,7 @@ module.exports = {
 			// TODO Defer reply
 			const response = await interaction.editReply({ embeds: [embed], components: [setSelectRow, yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 
+			console.log(cardTradeSessions[sessionID]);
 			// ========
 			// Set up collectors
 			// ========
@@ -329,6 +330,7 @@ module.exports = {
 					await buttonInteraction.reply({ content: 'Those buttons aren\'t for you! Shoo, shoo!', ephemeral: true });
 					return;
 				}
+				console.log(cardTradeSessions[bSession]);
 			});
 
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
@@ -428,6 +430,7 @@ module.exports = {
 				} else {
 					await selectInteraction.reply({ content: 'Those dropdowns aren\'t for you! Shoo, shoo!', ephemeral: true });
 				}
+				console.log(cardTradeSessions[sessionID]);
 			});
 		}
 	},
