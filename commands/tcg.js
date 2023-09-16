@@ -339,6 +339,7 @@ module.exports = {
 				if (selectInteraction.user.id === initiatingPlayer.id) {
 					await selectInteraction.deferUpdate();
 					const [, , sSession, sTrader, ,] = selectInteraction.customId.split('_');
+					console.log('SESSIONS ACTIVE:', cardTradeSessions);
 					const chosenSet = selectInteraction.values[0];
 					if (sTrader === 'system') {
 						cardTradeSessions[sSession]['setFocus'] = chosenSet;
