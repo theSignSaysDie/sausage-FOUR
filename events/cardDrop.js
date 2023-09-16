@@ -13,12 +13,7 @@ module.exports = {
 		if (interaction.guildId !== process.env.GUILD_ID) return;
 		// Ignore channels off whitelist
 		const procChannels = process.env.BLOCKED_PROC_CATEGORIES.split(' ');
-		if (procChannels.includes(interaction.channel.parent.id) || procChannels.includes((interaction.channel.parent.parent ?? { id: 'nada' }).id)) {
-			console.log(procChannels, interaction.channel.parent.id);
-			return;
-		} else {
-			console.log('Valid proc target:', interaction.channel.parent.id);
-		}
+		if (procChannels.includes(interaction.channel.parent.id) || procChannels.includes((interaction.channel.parent.parent ?? { id: 'nada' }).id)) return;
 		// Ignore bot messages
 		if (interaction.author.bot) return;
 
@@ -28,18 +23,11 @@ module.exports = {
 		if (queryResult.length) {
 			let lastDropTime = parseInt(queryResult[0]['last_drop']);
 			lastDropTime = isNaN(lastDropTime) ? 0 : lastDropTime;
-			console.log('Checking drop time. Last:', lastDropTime, '; now:', now, ';', now - lastDropTime, 'vs.', cardDropWaitTime);
-			if (now - lastDropTime < cardDropWaitTime) {
-				console.log('Player has not gotten past their cooldown.');
-				return;
-			}
-		} else {
-			console.log('Player does not have a binder!');
+			if (now - lastDropTime < cardDropWaitTime) return;
 		}
 
 		// Don't reward unlucky players
 		if (rollFloat() > cardDropChance) return;
-		console.log('Proceeding with drop for', interaction.author.id);
 
 		// Generate card or retrieve from cache
 		// TODO amend to draw from master file in info.js rather than current set
@@ -55,7 +43,6 @@ module.exports = {
 		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
 		await botherChannel.send({ content: `<@${interaction.author.id}>`, embeds: [embed], files: [attachment] });
 
-		console.log('Handling player reward:', interaction.author.id, set, name, now);
 		await handlePlayerReward(interaction.author.id, set, name, now);
 	},
 };
