@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fanmadeLinks } = require('../utils/info');
+const { easyListItems } = require('../utils/math');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
 				.setDescription('The name of the document to retrieve')
 				.setRequired(true)
 				.addChoices(
-					...Object.keys(fanmadeLinks).map((doc) => ({ name: doc, value: doc })),
+					...easyListItems(Object.keys(fanmadeLinks)),
 				),
 		),
 	async execute(interaction) {
