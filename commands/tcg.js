@@ -109,7 +109,6 @@ module.exports = {
 						.setDefault(isDefault),
 				);
 				focusSet = isDefault ? set : focusSet;
-				console.log(focusSet);
 				isDefault = isDefault && false;
 			}
 			const setSelectRow = new ActionRowBuilder()
@@ -217,7 +216,6 @@ module.exports = {
 			// TODO Defer reply
 			const response = await interaction.editReply({ embeds: [embed], components: [setSelectRow, yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 
-			console.log(cardTradeSessions[sessionID]);
 			// ========
 			// Set up collectors
 			// ========
@@ -262,7 +260,6 @@ module.exports = {
 						(bDecider ? yourUpButton : theirUpButton).setDisabled(bNewValue === bBinder[bSet][bFocus]);
 						(bDecider ? yourDownButton : theirDownButton).setDisabled(bNewValue === 0);
 						cardTradeSessions[bSession][bDealSide][bSet][bFocus] = bNewValue;
-						console.log(cardTradeSessions[bSession]);
 
 						const bYourOfferStringArr = [];
 						for (const bySet in cardTradeSessions[bSession]['offer']) {
@@ -296,11 +293,9 @@ module.exports = {
 					}
 					if (bDirection === 'confirm') {
 						if (cardTradeSessions[bSession]['closing']) {
-							console.log('Closing deal...');
 							for (const set in cardTradeSessions[bSession]['offer']) {
 								for (const card in cardTradeSessions[bSession]['offer'][set]) {
 									if (cardTradeSessions[bSession]['offer'][set][card] > 0) {
-										console.log(`Paying ${card} card`);
 										removeCard(yourBinder, set, card, cardTradeSessions[bSession]['offer'][set][card]);
 										addCard(theirBinder, set, card, cardTradeSessions[bSession]['offer'][set][card]);
 									}
@@ -309,13 +304,11 @@ module.exports = {
 							for (const set in cardTradeSessions[bSession]['payment']) {
 								for (const card in cardTradeSessions[bSession]['payment'][set]) {
 									if (cardTradeSessions[bSession]['payment'][set][card] > 0) {
-										console.log(`Receiving ${card} card`);
 										removeCard(theirBinder, set, card, cardTradeSessions[bSession]['payment'][set][card]);
 										addCard(yourBinder, set, card, cardTradeSessions[bSession]['payment'][set][card]);
 									}
 								}
 							}
-							console.log('Deal closed.');
 							await pushBinder(initiatingPlayer.id, yourBinder);
 							await pushBinder(targetPlayer.id, theirBinder);
 							delete cardTradeSessions[bSession];
@@ -330,20 +323,16 @@ module.exports = {
 					await buttonInteraction.reply({ content: 'Those buttons aren\'t for you! Shoo, shoo!', ephemeral: true });
 					return;
 				}
-				console.log(cardTradeSessions[bSession]);
 			});
 
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
 			selectCollector.on('collect', async selectInteraction => {
-				console.log(selectInteraction.customId);
 				if (selectInteraction.user.id === initiatingPlayer.id) {
 					await selectInteraction.deferUpdate();
 					const [, , sSession, sTrader, ,] = selectInteraction.customId.split('_');
-					console.log('SESSIONS ACTIVE:', cardTradeSessions);
 					const chosenSet = selectInteraction.values[0];
 					if (sTrader === 'system') {
 						cardTradeSessions[sSession]['setFocus'] = chosenSet;
-						console.log('Chose set', chosenSet);
 						setSelect.setOptions();
 						for (const set of cardSetList) {
 							setSelect.addOptions(
@@ -385,9 +374,6 @@ module.exports = {
 						cardTradeSessions[sSession]['initiatorFocus'] = yCard;
 						cardTradeSessions[sSession]['targetFocus'] = tCard;
 
-						console.log(yCard, cardTradeSessions[sSession]['offer'][chosenSet][yCard], yourBinder[chosenSet][yCard]);
-						console.log(tCard, cardTradeSessions[sSession]['payment'][chosenSet][tCard], theirBinder[chosenSet][tCard]);
-						console.log('\n');
 						yourUpButton.setDisabled(cardTradeSessions[sSession]['offer'][chosenSet][yCard] === yourBinder[chosenSet][yCard]);
 						yourDownButton.setDisabled(cardTradeSessions[sSession]['offer'][chosenSet][yCard] === 0);
 						theirUpButton.setDisabled(cardTradeSessions[sSession]['payment'][chosenSet][tCard] === theirBinder[chosenSet][tCard]);
@@ -432,7 +418,6 @@ module.exports = {
 				} else {
 					await selectInteraction.reply({ content: 'Those dropdowns aren\'t for you! Shoo, shoo!', ephemeral: true });
 				}
-				console.log(cardTradeSessions[sessionID]);
 			});
 		}
 	},
