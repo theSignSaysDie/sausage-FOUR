@@ -4,17 +4,33 @@ const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, push
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
 const { cardSetList, setTranslate, cardTranslate } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { cardTradeSessions } = require('../utils/db');
+const { cardTradeSessions, fetchSQL } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('tcg')
-		.setDescription('Simple card test command')
+		.setDescription('Trading Card Game Command Suite')
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('binder')
-				.setDescription('View the cards you\'ve collected'),
+				.setDescription('View your card collection - or someone else\'s')
+				.addUserOption(option =>
+					option
+						.setName('target')
+						.setDescription('Select a user whose binder you want to view')
+						.setRequired(false),
+				),
+		).addSubcommand(subcommand =>
+			subcommand
+				.setName('visibility')
+				.setDescription('Set your binder visibility')
+				.addBooleanOption(option =>
+					option
+						.setName('value')
+						.setDescription('Set your binder visibility. Leave blank to view your visibility.')
+						.setRequired(false),
+				),
 		).addSubcommand(subcommand =>
 			subcommand
 				.setName('card')
@@ -46,12 +62,36 @@ module.exports = {
 		// Player wants to see their binder contents
 		const cardSet = interaction.options.getString('set');
 		if (interaction.options.getSubcommand() === 'binder') {
-			const binder = await fetchBinder(interaction.user.id);
-			const summary = await getPrettyBinderSummary(binder);
-			const embed = getDefaultEmbed()
-				.setTitle('Binder Contents')
-				.setDescription(summary);
-			await interaction.reply({ embeds: [embed], ephemeral: true });
+			let target = interaction.options.getUser('target');
+			if (target === null) target = interaction.user;
+			if (target.bot) {
+				await interaction.reply({ content: 'Bots don\'t trade cards! There\'s nothing here for you.', ephemeral: true });
+			} else {
+				const isBinderViewable = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [target.id]);
+				console.log(isBinderViewable[0].binderViewable);
+				console.log(target);
+				if (target === interaction.user || isBinderViewable[0].binderViewable) {
+					const binder = await fetchBinder(target.id);
+					const summary = await getPrettyBinderSummary(binder);
+					const embed = getDefaultEmbed()
+						.setTitle('Binder Contents')
+						.setDescription(summary);
+					await interaction.reply({ embeds: [embed], ephemeral: true });
+				} else {
+					await interaction.reply({ content: 'Sorry, this user\'s binder is private!', ephemeral: true });
+				}
+			}
+		} else if (interaction.options.getSubcommand() === 'visibility') {
+			const value = interaction.options.getBoolean('value');
+			if (value === undefined) {
+				const visibility = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [interaction.user.id]);
+				const message = `Your binder is currently ${visibility[0].binderViewable ? '' : 'not '}visible to others.`;
+				await interaction.reply({ content: message, ephemeral: true });
+			} else {
+				await fetchSQL('UPDATE `player` SET `binderViewable` = ? WHERE `snowflake` = ?', [+value, interaction.user.id]);
+				const message = `Your binder visibility has been set to ${value ? 'on' : 'off'}`;
+				await interaction.reply({ content: message, ephemeral: true });
+			}
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
 			await interaction.reply(await postCard(cardSet, interaction.options.getString('name')));
