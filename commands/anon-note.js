@@ -18,7 +18,7 @@ module.exports = {
 				.setRequired(true);
 			noteRow.addComponents(noteBox);
 			const modal = new ModalBuilder()
-				.setCustomId('anonNoteModal')
+				.setCustomId(`anonNoteModal_${interaction.user.id}`)
 				.setTitle('Submit Anonymous Note')
 				.addComponents(noteRow);
 			await interaction.showModal(modal);
