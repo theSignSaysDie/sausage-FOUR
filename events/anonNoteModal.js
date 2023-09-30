@@ -9,7 +9,6 @@ module.exports = {
 		if (id.startsWith('anonNoteModal')) {
 			const details = id.replace('anonNoteModal_', '').split('_');
 			const [snowflake] = details;
-			console.log('E>', details, snowflake);
 			const noteText = interaction.fields.getTextInputValue('anonNote_content');
 			const row = new ActionRowBuilder()
 				.addComponents(
@@ -24,7 +23,6 @@ module.exports = {
 		} else if (id.startsWith('anonNoteReplyModal')) {
 			const details = id.replace('anonNoteReplyModal_', '').split('_');
 			const [snowflake] = details;
-			console.log(details, snowflake);
 			const noteText = interaction.fields.getTextInputValue('anonNoteReply_content');
 			const payload = { content: noteText };
 			await interaction.client.users.fetch(snowflake, false).then((user) => {

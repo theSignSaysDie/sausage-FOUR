@@ -68,8 +68,6 @@ module.exports = {
 				await interaction.reply({ content: 'Bots don\'t trade cards! There\'s nothing here for you.', ephemeral: true });
 			} else {
 				const isBinderViewable = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [target.id]);
-				console.log(isBinderViewable[0].binderViewable);
-				console.log(target);
 				if (target === interaction.user || isBinderViewable[0].binderViewable) {
 					const binder = await fetchBinder(target.id);
 					const summary = await getPrettyBinderSummary(binder);
