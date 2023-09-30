@@ -76,8 +76,8 @@ module.exports = {
 			const userList = [];
 			await interaction.guild.members.fetch();
 			for (const i in result) {
-				const userName = (await interaction.guild.members.fetch(result[i].snowflake)) ?? 'Unknown User';
-				userList.push(`- \`${userName.user.username}#${userName.user.discriminator}\``);
+				const userName = (await interaction.guild.members.fetch(result[i].snowflake)) ?? null;
+				userList.push(userName !== null ? `- \`${userName.user.username}#${userName.user.discriminator}\`` : '- `UNKNOWN USER`');
 			}
 			const userNames = userList.map(x => x).join('\n');
 			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userNames}`, ephemeral: true });
