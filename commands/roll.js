@@ -13,11 +13,11 @@ module.exports = {
 			option.setName('talent')
 				.setDescription('Specify Talent (default normal)')
 				.addChoices(
-					{ name: '😐 normal',	value: 0 },
-					{ name: '🙂 talented', value: 1 },
-					{ name: '😃 legendary',	value: 2 },
-					{ name: '🙁 inept',	value: -1 },
-					{ name: '😧 godawful', value: -2 },
+					{ name: 'normal 😐',	value: 0 },
+					{ name: 'talented 🙂', value: 1 },
+					{ name: 'legendary 😃',	value: 2 },
+					{ name: 'inept 🙁',	value: -1 },
+					{ name: 'godawful 😧', value: -2 },
 				),
 		).addIntegerOption(option =>
 			option.setName('modifier')
