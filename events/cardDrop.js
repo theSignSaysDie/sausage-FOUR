@@ -2,13 +2,14 @@ require('dotenv').config();
 const { Events, AttachmentBuilder } = require('discord.js');
 const { getRandomCard, handlePlayerReward } = require('../utils/cards');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { colorDict, currentPool, cardDropWaitTime, cardDropChance } = require('../utils/info');
+const { colorDict, currentPool, cardDropWaitTime, cardDropChance, droppingCards } = require('../utils/info');
 const { fetchSQL } = require('../utils/db');
 const { rollFloat } = require('../utils/dice');
 
 module.exports = {
 	name: Events.MessageCreate,
 	async execute(interaction) {
+		if (!droppingCards) return;
 		// Ignore all other servers
 		if (interaction.guildId !== process.env.GUILD_ID) return;
 		// Ignore channels off whitelist
