@@ -2,7 +2,7 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
 const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
-const { cardSetList, setTranslate, cardTranslate } = require('../utils/info');
+const { cardSetList, setTranslate, cardTranslate, tradingOn } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions, fetchSQL } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
@@ -95,6 +95,10 @@ module.exports = {
 			await interaction.reply(await postCard(cardSet, interaction.options.getString('name')));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
+			if (!tradingOn) {
+				await interaction.reply({ content: 'No event is being hosted currently. Try again another time!', ephemeral: true });
+				return;
+			}
 			await interaction.deferReply();
 			const targetPlayer = interaction.options.getUser('player');
 			const initiatingPlayer = interaction.user;
