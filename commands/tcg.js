@@ -15,7 +15,15 @@ module.exports = {
 			subcommand
 				.setName('binder')
 				.setDescription('View your card collection - or someone else\'s')
-				.addUserOption(option =>
+				.addStringOption(option =>
+					option
+						.setName('set')
+						.setDescription('Which set do you want to view? (Leave blank for all holdings)')
+						.setRequired(false)
+						.addChoices(
+							...easyListItems(cardSetList),
+						),
+				).addUserOption(option =>
 					option
 						.setName('target')
 						.setDescription('Select a user whose binder you want to view')
@@ -70,9 +78,10 @@ module.exports = {
 				const isBinderViewable = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [target.id]);
 				if (target === interaction.user || isBinderViewable[0].binderViewable) {
 					const binder = await fetchBinder(target.id);
-					const summary = await getPrettyBinderSummary(binder);
+					const set = interaction.options.getString('set') ?? 'all';
+					const summary = await getPrettyBinderSummary(binder, set);
 					const embed = getDefaultEmbed()
-						.setTitle('Binder Contents')
+						.setTitle(`\`${target.username}\`'s Binder Contents`)
 						.setDescription(summary);
 					await interaction.reply({ embeds: [embed], ephemeral: true });
 				} else {

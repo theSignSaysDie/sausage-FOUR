@@ -200,16 +200,24 @@ async function postCard(set, name) {
  * @param {String} binder the binder to showcase
  * @returns a string of newline-separated list items
  */
-async function getPrettyBinderSummary(binder) {
+async function getPrettyBinderSummary(binder, _set) {
 	if (!binder) {
 		return 'You don\'t have a binder yet! Also, if you\'re reading this, something went wrong. This isn\'t supposed to happen. Ping Meme and they\'ll fix it.';
 	} else {
 		const summary = [];
-		for (const set of cardSetList) {
-			const { card_info } = getCardData(set);
+		if (_set === 'all') {
+			for (const set of cardSetList) {
+				const { card_info } = getCardData(set);
+				const { cards } = card_info;
+				summary.push(`## ${setTranslate[set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
+					return `- \`${cardTranslate[card]}\`: x${binder[set][card] ?? 0}`;
+				}).join('\n'));
+			}
+		} else {
+			const { card_info } = getCardData(_set);
 			const { cards } = card_info;
-			summary.push(`## ${setTranslate[set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
-				return `- \`${cardTranslate[card]}\`: x${binder[set][card] ?? 0}`;
+			summary.push(`## ${setTranslate[_set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
+				return `- \`${cardTranslate[card]}\`: x${binder[_set][card] ?? 0}`;
 			}).join('\n'));
 		}
 		return summary.join('\n\n');
