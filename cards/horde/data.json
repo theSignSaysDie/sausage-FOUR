@@ -1,0 +1,78 @@
+{
+	"style": "classic",
+	"set_name": "Horde",
+	"card_info": {
+		"drop_table": [
+			"commander",
+			"drone",
+			"soldier",
+			"worker"
+		],
+		"cards": {
+			"commander": {
+				"card_name": "Infected Commander",
+				"art_path": "Infected Commander.png",
+				"description": null,
+				"card_border_color": "hsl(358, 22%, 70%)",
+				"bg_grd_start": "hsl(358, 74%, 73%)",
+				"bg_grd_end": "hsl(358, 74%, 37%)",
+				"bg_hex_start": "hsl(358, 74%, 37%)",
+				"bg_hex_end": "hsl(358, 76%, 18%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 0.7,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(358, 22%, 70%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"drone": {
+				"card_name": "Infected Drone",
+				"art_path": "Infected Drone.png",
+				"description": null,
+				"card_border_color": "hsl(26, 26%, 72%)",
+				"bg_grd_start": "hsl(26, 89%, 80%)",
+				"bg_grd_end": "hsl(26, 89%, 40%)",
+				"bg_hex_start": "hsl(26, 89%, 40%)",
+				"bg_hex_end": "hsl(26, 90%, 19%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 0.9,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(26, 26%, 72%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"soldier": {
+				"card_name": "Infected Soldier",
+				"art_path": "Infected Soldier.png",
+				"description": null,
+				"card_border_color": "hsl(57, 28%, 72%)",
+				"bg_grd_start": "hsl(57, 96%, 82%)",
+				"bg_grd_end": "hsl(57, 96%, 41%)",
+				"bg_hex_start": "hsl(57, 96%, 41%)",
+				"bg_hex_end": "hsl(56, 98%, 20%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 0.8,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(57, 28%, 72%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"worker": {
+				"card_name": "Infected Worker",
+				"art_path": "Infected Worker.png",
+				"description": null,
+				"card_border_color": "hsl(120, 21%, 70%)",
+				"bg_grd_start": "hsl(120, 71%, 72%)",
+				"bg_grd_end": "hsl(120, 72%, 36%)",
+				"bg_hex_start": "hsl(120, 72%, 36%)",
+				"bg_hex_end": "hsl(120, 73%, 17%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 0.55,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(120, 21%, 70%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			}
+		}
+	}
+}
