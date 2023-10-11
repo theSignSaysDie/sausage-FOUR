@@ -2,7 +2,7 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
 const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
-const { cardSetList, setTranslate, cardTranslate, tradingOn } = require('../utils/info');
+const { cardSetList, visibleCardSetList, setTranslate, cardTranslate, tradingOn } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions, fetchSQL } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
@@ -47,7 +47,7 @@ module.exports = {
 					option
 						.setName('set')
 						.setDescription('Which set do you want to pick from?')
-						.setChoices(...easyListItems(cardSetList))
+						.setChoices(...easyListItems(visibleCardSetList))
 						.setRequired(true),
 				).addStringOption(option =>
 					option
