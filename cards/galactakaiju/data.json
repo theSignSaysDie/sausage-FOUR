@@ -23,6 +23,7 @@
 			"arachnidRexotron80k": {
 				"card_name": "Arachnid Rexotron 80k",
 				"art_path": "Arachnid Rexotron 80k.png",
+				"description": null,
 				"card_border_color": "hsl(210, 100%, 43%)",
 				"bg_grd_start": "hsl(207, 100%, 53%)", 
 				"bg_grd_end": "hsl(210, 100%, 30%)",
@@ -38,6 +39,7 @@
 			"beautyOfTheSeas": {
 				"card_name": "Beauty of the Seas",
 				"art_path": "Beauty of the Seas.png",
+				"description": null,
 				"card_border_color": "hsl(300, 28%, 62%)",
 				"bg_grd_start": "hsl(300, 100%, 42%)", 
 				"bg_grd_end": "hsl(300, 100%, 21%)",
@@ -53,6 +55,7 @@
 			"gargatholTheDestroyer": {
 				"card_name": "Gargathol the Destroyer",
 				"art_path": "Gargathol the Destroyer.png",
+				"description": null,
 				"card_border_color": "hsl(0, 0%, 40%)",
 				"bg_grd_start": "hsl(0, 0%, 33%)", 
 				"bg_grd_end": "hsl(0, 0%, 7%)",
@@ -68,6 +71,7 @@
 			"knightedFantasmagore": {
 				"card_name": "Knighted Fantasmagore",
 				"art_path": "Knighted Fantasmagore.png",
+				"description": null,
 				"card_border_color": "hsl(230, 100%, 40%)",
 				"bg_grd_start": "hsl(240, 35%, 57%)", 
 				"bg_grd_end": "hsl(240, 27%, 28%)",
@@ -83,6 +87,7 @@
 			"princessStarskyOfCuteness": {
 				"card_name": "Princess Starsky of Cuteness",
 				"art_path": "Princess Starsky of Cuteness.png",
+				"description": null,
 				"card_border_color": "hsl(330, 31%, 48%)",
 				"bg_grd_start": "hsl(330, 100%, 23%)", 
 				"bg_grd_end": "hsl(329, 100%, 11%)",
@@ -98,6 +103,7 @@
 			"puremetalOxIIde": {
 				"card_name": "Puremetal OxIIde",
 				"art_path": "Puremetal OxIIde.png",
+				"description": null,
 				"card_border_color": "hsl(0, 100%, 30%)",
 				"bg_grd_start": "hsl(0, 60%, 43%)", 
 				"bg_grd_end": "hsl(29, 58%, 43%)",
@@ -113,6 +119,7 @@
 			"SNTServox": {
 				"card_name": "SNT Servox",
 				"art_path": "SNT Servox.png",
+				"description": null,
 				"card_border_color": "hsl(150, 100%, 45%)",
 				"bg_grd_start": "hsl(150, 80%, 35%)", 
 				"bg_grd_end": "hsl(150, 60%, 25%)",
@@ -128,6 +135,7 @@
 			"starCrxssed": {
 				"card_name": "Star Crxssed",
 				"art_path": "Star Crxssed.png",
+				"description": null,
 				"card_border_color": "hsl(57, 28%, 72%)",
 				"bg_grd_start": "hsl(57, 96%, 82%)",
 				"bg_grd_end": "hsl(57, 96%, 41%)",
@@ -143,6 +151,7 @@
 			"taxiarchKomodrian": {
 				"card_name": "Taxiarch Komodrian",
 				"art_path": "Taxiarch Komodrian (powerous).png",
+				"description": null,
 				"card_border_color": "hsl(26, 26%, 72%)",
 				"bg_grd_start": "hsl(26, 89%, 25%)",
 				"bg_grd_end": "hsl(26, 89%, 18%)",
@@ -158,6 +167,7 @@
 			"threeRing": {
 				"card_name": "Three Ring",
 				"art_path": "Three Ring.png",
+				"description": null,
 				"card_border_color": "hsl(273, 29%, 73%)",
 				"bg_grd_start": "hsl(274, 100%, 42%)",
 				"bg_grd_end": "hsl(274, 100%, 31%)",
@@ -173,6 +183,7 @@
 			"ULTR4JUSTICIAR": {
 				"card_name": "ULTR4 JUSTICIAR",
 				"art_path": "ULTR4 JUSTICIAR.png",
+				"description": null,
 				"card_border_color": "hsl(184, 29%, 73%)",
 				"bg_grd_start": "hsl(184, 100%, 20%)",
 				"bg_grd_end": "hsl(184, 100%, 12%)",
@@ -188,6 +199,7 @@
 			"ummDamnBattleTank": {
 				"card_name": "UmmDamn BattleTank",
 				"art_path": "UmmDamn BattleTank.png",
+				"description": null,
 				"card_border_color": "hsl(208, 100%, 51%)",
 				"bg_grd_start": "hsl(246, 82%, 62%)",
 				"bg_grd_end": "hsl(275, 81%, 61%)",
@@ -203,6 +215,7 @@
 			"xenopustulusOne": {
 				"card_name": "Xenopustulus I",
 				"art_path": "Xenopustulus I.png",
+				"description": null,
 				"card_border_color": "hsl(0, 0%, 71%)",
 				"bg_grd_start": "hsl(0, 0%, 56%)",
 				"bg_grd_end": "hsl(0, 0%, 36%)",
@@ -218,6 +231,7 @@
 			"battlefiendMarkFive": {
 				"card_name": "Battlefiend Mk. V",
 				"art_path": "Battlefiend Mk V.png",
+				"description": null,
 				"card_border_color": "hsl(120, 21%, 70%)",
 				"bg_grd_start": "hsl(120, 71%, 72%)",
 				"bg_grd_end": "hsl(120, 72%, 36%)",
@@ -233,6 +247,7 @@
 			"stalktitanQuillbot": {
 				"card_name": "Stalktitan Quillbot",
 				"art_path": "Stalktitan Quillbot.png",
+				"description": null,
 				"card_border_color": "hsl(82, 100%, 40%)",
 				"bg_grd_start": "hsl(82, 57%, 71%)",
 				"bg_grd_end": "hsl(150, 60%, 82%)",

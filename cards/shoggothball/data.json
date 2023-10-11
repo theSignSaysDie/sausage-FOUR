@@ -20,6 +20,7 @@
 			"aeistherou": {
 				"card_name": "Aeistherou",
 				"art_path": "Aeistherou.png",
+				"description": null,
 				"card_border_color": "hsl(43, 100%, 79%)",
 				"bg_grd_start": "hsl(43, 100%, 79%)",
 				"bg_grd_end": "hsl(43, 100%, 69%)",
@@ -35,6 +36,7 @@
 			"annulczov": {
 				"card_name": "Annulczov",
 				"art_path": "Annulczov.png",
+				"description": null,
 				"card_border_color": "hsl(225, 100%, 15%)",
 				"bg_grd_start": "hsl(225, 100%, 15%)",
 				"bg_grd_end": "hsl(225, 100%, 10%)",
@@ -50,6 +52,7 @@
 			"carnacorrup": {
 				"card_name": "Carnacorrup",
 				"art_path": "Carnacorrup.png",
+				"description": null,
 				"card_border_color": "hsl(358, 84%, 40%)",
 				"bg_grd_start": "hsl(358, 84%, 40%)",
 				"bg_grd_end": "hsl(358, 84%, 30%)",
@@ -65,6 +68,7 @@
 			"cerublord": {
 				"card_name": "Cerublord",
 				"art_path": "Cerublord.png",
+				"description": null,
 				"card_border_color": "hsl(167, 100%, 51%)",
 				"bg_grd_start": "hsl(167, 100%, 51%)",
 				"bg_grd_end": "hsl(167, 100%, 41%)",
@@ -80,6 +84,7 @@
 			"gastrolusix": {
 				"card_name": "Gastrolusix",
 				"art_path": "Gastrolusix.png",
+				"description": null,
 				"card_border_color": "hsl(188, 100%, 53%)",
 				"bg_grd_start": "hsl(188, 100%, 53%)",
 				"bg_grd_end": "hsl(188, 100%, 43%)",
@@ -95,6 +100,7 @@
 			"goressegal": {
 				"card_name": "Goressegal",
 				"art_path": "Goressegal.png",
+				"description": null,
 				"card_border_color": "hsl(289, 38%, 49%)",
 				"bg_grd_start": "hsl(289, 38%, 49%)",
 				"bg_grd_end": "hsl(289, 38%, 39%)",
@@ -110,6 +116,7 @@
 			"junf": {
 				"card_name": "Junf",
 				"art_path": "Junf.png",
+				"description": null,
 				"card_border_color": "hsl(140, 37%, 14%)",
 				"bg_grd_start": "hsl(140, 37%, 14%)",
 				"bg_grd_end": "hsl(140, 37%, 9%)",
@@ -125,6 +132,7 @@
 			"kefukefukefukefu": {
 				"card_name": "Kefukefukefukefu",
 				"art_path": "Kefukefukefukefu.png",
+				"description": null,
 				"card_border_color": "hsl(99, 49%, 54%)",
 				"bg_grd_start": "hsl(99, 49%, 54%)",
 				"bg_grd_end": "hsl(99, 49%, 44%)",
@@ -140,6 +148,7 @@
 			"lacunophidia": {
 				"card_name": "Lacunophidia",
 				"art_path": "Lacunophidia.png",
+				"description": null,
 				"card_border_color": "hsl(0, 0%, 100%)",
 				"bg_grd_start": "hsl(0, 0%, 100%)",
 				"bg_grd_end": "hsl(0, 0%, 50%)",
@@ -155,6 +164,7 @@
 			"oculustrous": {
 				"card_name": "Oculustrous",
 				"art_path": "Oculustrous.png",
+				"description": null,
 				"card_border_color": "hsl(61, 95%, 64%)",
 				"bg_grd_start": "hsl(61, 95%, 64%)",
 				"bg_grd_end": "hsl(61, 95%, 44%)",
@@ -170,6 +180,7 @@
 			"palpityrant": {
 				"card_name": "Palpityrant",
 				"art_path": "Palpityrant.png",
+				"description": null,
 				"card_border_color": "hsl(332, 77%, 42%)",
 				"bg_grd_start": "hsl(332, 77%, 42%)",
 				"bg_grd_end": "hsl(332, 77%, 32%)",
@@ -185,6 +196,7 @@
 			"terrapanultimate": {
 				"card_name": "Terrapanultimate",
 				"art_path": "Terrapanultimate.png",
+				"description": null,
 				"card_border_color": "hsl(7, 100%, 51%)",
 				"bg_grd_start": "hsl(7, 100%, 51%)",
 				"bg_grd_end": "hsl(7, 100%, 41%)",
