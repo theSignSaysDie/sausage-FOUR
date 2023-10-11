@@ -30,7 +30,7 @@ module.exports = {
 		if (rollFloat() > cardDropChance) return;
 
 		// Generate card or retrieve from cache
-		// TODO amend to draw from master file in info.js rather than current set
+
 		const { name, set, desc } = await getRandomCard(currentPool);
 		// Send embed
 		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
