@@ -1,8 +1,8 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
+const { getRandomCard, handlePlayerReward, postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
-const { cardSetList, visibleCardSetList, setTranslate, cardTranslate, tradingOn } = require('../utils/info');
+const { cardSetList, currentPool, visibleCardSetList, setTranslate, cardTranslate, tradingOn, droppingCards } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions, fetchSQL } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
@@ -57,6 +57,11 @@ module.exports = {
 				),
 		).addSubcommand(subcommand =>
 			subcommand
+				.setName('daily')
+				.setDescription('Claim a daily bonus card!'),
+
+		).addSubcommand(subcommand =>
+			subcommand
 				.setName('trade')
 				.setDescription('Trade cards with another user')
 				.addUserOption(option =>
@@ -69,7 +74,42 @@ module.exports = {
 	async execute(interaction) {
 		// Player wants to see their binder contents
 		const cardSet = interaction.options.getString('set');
-		if (interaction.options.getSubcommand() === 'binder') {
+		if (interaction.options.getSubcommand() === 'daily') {
+			if (!droppingCards) {
+				await interaction.reply({ content: 'No dailies are available to claim. Check again when there\'s an event!', ephemeral: true });
+				return;
+			}
+			const today = new Date();
+			const year = today.getFullYear();
+			const month = today.getMonth() + 1;
+			const day = today.getDay() + 1;
+			const query = await fetchSQL(
+				'SELECT EXTRACT(YEAR FROM `last_daily`) AS `last_year`, \
+				 EXTRACT(MONTH FROM `last_daily`) as `last_month`, \
+				 EXTRACT(DAY FROM `last_daily`) as `last_day` \
+				 FROM `player` WHERE `snowflake` = ?', [interaction.user.id],
+			);
+
+
+			let isEligible = true;
+			if (query.length > 0) {
+				const { last_year, last_month, last_day } = query[0];
+				isEligible = !(last_year === year && last_month === month && last_day === day);
+			}
+
+			if (isEligible) {
+				const { name, set, desc } = await getRandomCard(currentPool);
+				const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
+				const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
+				await botherChannel.send(await botherChannel.send(await postCard(set, name, desc, `<@${interaction.author.id}>`, `Here's your drop for the day, \`${interaction.user.username}\`!`)));
+				await handlePlayerReward(interaction.user.id, set, name);
+				await fetchSQL('UPDATE `player` SET `last_daily` = ? WHERE `snowflake` = ?', [`${year}-${month}-${day}`, interaction.user.id]);
+				await interaction.reply({ content: 'You picked up your daily!', ephemeral: true });
+			} else {
+				await interaction.reply({ content: 'Your next daily is available tomorrow!', ephemeral: true });
+			}
+
+		} else if (interaction.options.getSubcommand() === 'binder') {
 			let target = interaction.options.getUser('target');
 			if (target === null) target = interaction.user;
 			if (target.bot) {
