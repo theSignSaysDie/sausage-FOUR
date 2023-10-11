@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { zip, objectToListMap, toString64, sum, all } = require('./math');
 const { rollWeighted } = require('./dice');
-const { cardCache, cardSetList, setTranslate, cardTranslate } = require('./info');
+const { cardCache, cardSetList, visibleCardSetList, setTranslate, cardTranslate, colorDict } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
@@ -64,8 +64,7 @@ async function getRandomCard(pool) {
 	const { card_info } = getCardData(cardSet);
 	const { drop_table } = card_info;
 	const cardChoice = rollWeighted(drop_table);
-	const cardImage = await getCardImage(cardSet, cardChoice);
-	return { name: cardChoice, image: cardImage, set: cardSet };
+	return { name: cardChoice, set: cardSet, desc: card_info.cards[cardChoice].description };
 }
 
 /**
@@ -186,12 +185,15 @@ async function handlePlayerReward(snowflake, set, name, time) {
  * @param {String} name the name of the card
  * @returns an Object representing a valid Discord interaction reply message containing card art and congratulations
  */
-async function postCard(set, name) {
+async function postCard(set, name, desc, content = '', title = null, fake = false, color = colorDict.OTHER) {
 	const card = await getCardImage(set, name);
 	const attachment = new AttachmentBuilder(card, { name: 'card.png' });
 	const embed = getDefaultEmbed()
+		.setColor(color)
+		.setTitle(title ?? cardTranslate[name])
+		.setDescription(desc ?? 'This card has been automatically added to your binder!')
 		.setImage('attachment://card.png');
-	return { embeds: [embed], files: [attachment], ephemeral: true };
+	return { content: content, embeds: [embed], files: [attachment], desc: desc, ephemeral: fake };
 }
 
 /**
@@ -206,7 +208,7 @@ async function getPrettyBinderSummary(binder, _set) {
 	} else {
 		const summary = [];
 		if (_set === 'all') {
-			for (const set of cardSetList) {
+			for (const set of visibleCardSetList) {
 				const { card_info } = getCardData(set);
 				const { cards } = card_info;
 				summary.push(`## ${setTranslate[set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
