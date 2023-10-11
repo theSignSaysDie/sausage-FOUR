@@ -151,8 +151,8 @@ async function removeCard(binder, set, name, quantity = 1) {
  * @param {String} snowflake the snowflake ID of the player to whom the binder belongs
  * @param {Object} binder the binder
  */
-async function pushBinder(snowflake, binder) {
-	const blob = JSON.stringify(binder);
+async function pushBinder(snowflake, binder = null) {
+	const blob = JSON.stringify(binder === null ? makeNewBinder() : binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
 }
 
@@ -172,11 +172,13 @@ async function updateCooldown(snowflake, time) {
  * @param {String} name the name of the card
  * @param {Integer} time the time of the dorp in milliseconds since world epoch
  */
-async function handlePlayerReward(snowflake, set, name, time) {
+async function handlePlayerReward(snowflake, set, name, time = 0) {
 	const binder = await fetchBinder(snowflake);
 	await addCard(binder, set, name);
 	await pushBinder(snowflake, binder);
-	await updateCooldown(snowflake, time);
+	if (time > 0) {
+		await updateCooldown(snowflake, time);
+	}
 }
 
 /**
