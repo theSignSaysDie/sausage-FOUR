@@ -12,7 +12,7 @@
 			"commander": {
 				"card_name": "Infected Commander",
 				"art_path": "Infected Commander.png",
-				"description": null,
+				"description": "🎨 Art by **Red**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
 				"card_border_color": "hsl(358, 22%, 70%)",
 				"bg_grd_start": "hsl(358, 74%, 73%)",
 				"bg_grd_end": "hsl(358, 74%, 37%)",
@@ -44,7 +44,7 @@
 			"soldier": {
 				"card_name": "Infected Soldier",
 				"art_path": "Infected Soldier.png",
-				"description": null,
+				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
 				"card_border_color": "hsl(57, 28%, 72%)",
 				"bg_grd_start": "hsl(57, 96%, 82%)",
 				"bg_grd_end": "hsl(57, 96%, 41%)",
@@ -60,7 +60,7 @@
 			"worker": {
 				"card_name": "Infected Worker",
 				"art_path": "Infected Worker.png",
-				"description": null,
+				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
 				"card_border_color": "hsl(120, 21%, 70%)",
 				"bg_grd_start": "hsl(120, 71%, 72%)",
 				"bg_grd_end": "hsl(120, 72%, 36%)",
