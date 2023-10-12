@@ -193,8 +193,8 @@ async function postCard(set, name, desc, content = '', title = null, fake = fals
 	const embed = getDefaultEmbed()
 		.setColor(color)
 		.setTitle(title ?? cardTranslate[name])
-		.setDescription(desc ?? 'This card has been automatically added to your binder!')
 		.setImage('attachment://card.png');
+	if (desc !== null) embed.setDescription(desc);
 	return { content: content, embeds: [embed], files: [attachment], desc: desc, ephemeral: fake };
 }
 
