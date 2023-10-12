@@ -1,6 +1,6 @@
 /* eslint-disable capitalized-comments */
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { getRandomCard, handlePlayerReward, postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet } = require('../utils/cards');
+const { getRandomCard, handlePlayerReward, postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet, getCardData } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
 const { cardSetList, currentPool, visibleCardSetList, setTranslate, cardTranslate, tradingOn, droppingCards } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
@@ -47,7 +47,7 @@ module.exports = {
 					option
 						.setName('set')
 						.setDescription('Which set do you want to pick from?')
-						.setChoices(...easyListItems(visibleCardSetList))
+						.setChoices(...easyListItems(cardSetList))
 						.setRequired(true),
 				).addStringOption(option =>
 					option
@@ -141,7 +141,10 @@ module.exports = {
 			}
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
-			await interaction.reply(await postCard(cardSet, interaction.options.getString('name')));
+			await interaction.deferReply();
+			const name = interaction.options.getString('name');
+			const desc = await getCardData(cardSet).card_info.cards[name].description;
+			await interaction.editReply(await postCard(cardSet, name, desc));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
 			if (!tradingOn) {
