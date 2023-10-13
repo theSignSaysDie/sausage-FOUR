@@ -2,7 +2,7 @@
 const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
 const { getRandomCard, handlePlayerReward, postCard, fetchBinder, getPrettyBinderSummary, addCard, removeCard, pushBinder, checkSessionConflict, SessionStatus, makeNewBinder, isEmptyBinder, isEmptySet, getCardData } = require('../utils/cards');
 const { parseInt64, toString64, getCurrentTimestamp, clamp, objectToListMap } = require('../utils/math');
-const { cardSetList, currentPool, visibleCardSetList, setTranslate, cardTranslate, tradingOn, droppingCards } = require('../utils/info');
+const { cardSetList, currentPool, visibleCardSetList, setTranslate, cardTranslate, tradingOn, droppingCards, cardDropWaitTime, dailyBlocker } = require('../utils/info');
 const { getDefaultEmbed } = require('../utils/stringy');
 const { cardTradeSessions, fetchSQL } = require('../utils/db');
 const { easyListItems } = require('../utils/math');
@@ -86,27 +86,36 @@ module.exports = {
 			const query = await fetchSQL(
 				'SELECT EXTRACT(YEAR FROM `last_daily`) AS `last_year`, \
 				 EXTRACT(MONTH FROM `last_daily`) as `last_month`, \
-				 EXTRACT(DAY FROM `last_daily`) as `last_day` \
+				 EXTRACT(DAY FROM `last_daily`) as `last_day`, \
+				 `last_drop` \
 				 FROM `player` WHERE `snowflake` = ?', [interaction.user.id],
 			);
 
 
-			let isEligible = true;
+			let isEligibleDay = true;
+			let isEligibleBlocker = true;
+			const now = Date.now();
 			if (query.length > 0) {
-				const { last_year, last_month, last_day } = query[0];
-				isEligible = !(last_year === year && last_month === month && last_day === day);
+				const { last_year, last_month, last_day, last_drop } = query[0];
+				isEligibleDay = !(last_year === year && last_month === month && last_day === day);
+				let lastDropTime = parseInt(last_drop);
+				lastDropTime = isNaN(lastDropTime) ? 0 : lastDropTime;
+				isEligibleBlocker = (now - lastDropTime) >= cardDropWaitTime;
+				console.log(now, lastDropTime, cardDropWaitTime, now - lastDropTime, isEligibleBlocker);
 			}
 
-			if (isEligible) {
+			if (isEligibleDay && isEligibleBlocker) {
 				const { name, set, desc, spoiler } = await getRandomCard(currentPool);
 				const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 				const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
-				await botherChannel.send(await botherChannel.send(await postCard({ set: set, name: name, desc: desc, content: `<@${interaction.author.id}>`, title: `Here's your drop for the day, \`${interaction.user.username}\`!`, spoiler: spoiler })));
+				await botherChannel.send(await postCard({ set: set, name: name, desc: desc, content: `<@${interaction.user.id}>`, title: `Here's your drop for the day, \`${interaction.user.username}\`!`, spoiler: spoiler }));
 				await handlePlayerReward(interaction.user.id, set, name);
 				await fetchSQL('UPDATE `player` SET `last_daily` = ? WHERE `snowflake` = ?', [`${year}-${month}-${day}`, interaction.user.id]);
 				await interaction.reply({ content: 'You picked up your daily!', ephemeral: true });
-			} else {
+			} else if (!isEligibleDay) {
 				await interaction.reply({ content: 'Your next daily is available tomorrow!', ephemeral: true });
+			} else {
+				await interaction.reply({ content: `You've already obtained a random card drop within the last \`${dailyBlocker / 60 / 60 / 1000}\` hours!`, ephemeral: true });
 			}
 
 		} else if (interaction.options.getSubcommand() === 'binder') {
