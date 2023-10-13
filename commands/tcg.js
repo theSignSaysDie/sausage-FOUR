@@ -98,10 +98,10 @@ module.exports = {
 			}
 
 			if (isEligible) {
-				const { name, set, desc } = await getRandomCard(currentPool);
+				const { name, set, desc, spoiler } = await getRandomCard(currentPool);
 				const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 				const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
-				await botherChannel.send(await botherChannel.send(await postCard(set, name, desc, `<@${interaction.author.id}>`, `Here's your drop for the day, \`${interaction.user.username}\`!`)));
+				await botherChannel.send(await botherChannel.send(await postCard({ set: set, name: name, desc: desc, content: `<@${interaction.author.id}>`, title: `Here's your drop for the day, \`${interaction.user.username}\`!`, spoiler: spoiler })));
 				await handlePlayerReward(interaction.user.id, set, name);
 				await fetchSQL('UPDATE `player` SET `last_daily` = ? WHERE `snowflake` = ?', [`${year}-${month}-${day}`, interaction.user.id]);
 				await interaction.reply({ content: 'You picked up your daily!', ephemeral: true });
@@ -144,7 +144,8 @@ module.exports = {
 			await interaction.deferReply();
 			const name = interaction.options.getString('name');
 			const desc = await getCardData(cardSet).card_info.cards[name].description;
-			await interaction.editReply(await postCard(cardSet, name, desc));
+			const spoiler = await getCardData(cardSet).card_info.cards[name].spoiler;
+			await interaction.editReply(await postCard({ set: cardSet, name: name, desc: desc, spoiler: spoiler }));
 		// Player wants to trade with someone else
 		} else if (interaction.options.getSubcommand() === 'trade') {
 			if (!tradingOn) {

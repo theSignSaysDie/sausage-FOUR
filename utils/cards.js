@@ -64,7 +64,7 @@ async function getRandomCard(pool) {
 	const { card_info } = getCardData(cardSet);
 	const { drop_table } = card_info;
 	const cardChoice = rollWeighted(drop_table);
-	return { name: cardChoice, set: cardSet, desc: card_info.cards[cardChoice].description };
+	return { name: cardChoice, set: cardSet, desc: card_info.cards[cardChoice].description, spoiler: card_info.cards[cardChoice].spoiler };
 }
 
 /**
@@ -183,13 +183,22 @@ async function handlePlayerReward(snowflake, set, name, time = 0) {
 
 /**
  * @desc formulates a message with which to present card drops
- * @param {String} set the set to which the dropped card belongs
- * @param {String} name the name of the card
+ * @param {Object} properties the properties of the card drop
  * @returns an Object representing a valid Discord interaction reply message containing card art and congratulations
  */
-async function postCard(set, name, desc, content = '', title = null, fake = false, color = colorDict.OTHER) {
+async function postCard(properties) {
+	const set = properties.set;
+	const name = properties.name;
+	const desc = properties.desc;
+	const content = properties.content ?? '';
+	const title = properties.title ?? cardTranslate[name];
+	const fake = properties.fake ?? false;
+	const color = properties.color ?? colorDict.OTHER;
+	const spoiler = properties.spoiler ?? false;
+
 	const card = await getCardImage(set, name);
-	const attachment = new AttachmentBuilder(card, { name: 'card.png' });
+	console.log(spoiler);
+	const attachment = new AttachmentBuilder(card, { name: 'card.png' }).setSpoiler(spoiler);
 	const embed = getDefaultEmbed()
 		.setColor(color)
 		.setTitle(title ?? cardTranslate[name])

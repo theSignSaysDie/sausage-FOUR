@@ -31,11 +31,11 @@ module.exports = {
 
 		// Generate card or retrieve from cache
 
-		const { name, set, desc } = await getRandomCard(currentPool);
+		const { name, set, desc, spoiler } = await getRandomCard(currentPool);
 		// Send embed
 		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
-		await botherChannel.send(await postCard(set, name, desc, `<@${interaction.author.id}>`));
+		await botherChannel.send(await postCard({ set: set, name: name, desc: desc, content: `<@${interaction.author.id}>`, spoiler: spoiler }));
 
 		await handlePlayerReward(interaction.author.id, set, name, now);
 	},
