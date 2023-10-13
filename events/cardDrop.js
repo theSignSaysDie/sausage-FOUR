@@ -1,8 +1,7 @@
 require('dotenv').config();
-const { Events, AttachmentBuilder } = require('discord.js');
-const { getRandomCard, handlePlayerReward } = require('../utils/cards');
-const { getDefaultEmbed } = require('../utils/stringy');
-const { colorDict, currentPool, cardDropWaitTime, cardDropChance, droppingCards } = require('../utils/info');
+const { Events } = require('discord.js');
+const { getRandomCard, handlePlayerReward, postCard } = require('../utils/cards');
+const { currentPool, cardDropWaitTime, cardDropChance, droppingCards } = require('../utils/info');
 const { fetchSQL } = require('../utils/db');
 const { rollFloat } = require('../utils/dice');
 
@@ -31,18 +30,12 @@ module.exports = {
 		if (rollFloat() > cardDropChance) return;
 
 		// Generate card or retrieve from cache
-		// TODO amend to draw from master file in info.js rather than current set
-		const { name, image, set } = await getRandomCard(currentPool);
+
+		const { name, set, desc, spoiler } = await getRandomCard(currentPool);
 		// Send embed
-		const attachment = new AttachmentBuilder(image, { name: 'card.png' });
-		const embed = getDefaultEmbed()
-			.setColor(colorDict.OTHER)
-			.setTitle('Congrats, you just found a card!')
-			.setDescription('This card has been automatically added to your binder!')
-			.setImage('attachment://card.png');
 		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 		const botherChannel = await guild.channels.cache.get(process.env.BOTHER_CHANNEL);
-		await botherChannel.send({ content: `<@${interaction.author.id}>`, embeds: [embed], files: [attachment] });
+		await botherChannel.send(await postCard({ set: set, name: name, desc: desc, content: `<@${interaction.author.id}>`, spoiler: spoiler }));
 
 		await handlePlayerReward(interaction.author.id, set, name, now);
 	},

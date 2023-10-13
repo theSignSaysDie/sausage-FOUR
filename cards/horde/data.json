@@ -1,0 +1,82 @@
+{
+	"style": "classic",
+	"set_name": "Horde",
+	"card_info": {
+		"drop_table": [
+			"commander",
+			"drone",
+			"soldier",
+			"worker"
+		],
+		"cards": {
+			"commander": {
+				"card_name": "Infected Commander",
+				"art_path": "Infected Commander.png",
+				"description": "🎨 Art by **Red**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
+				"spoiler": true,
+				"card_border_color": "hsl(216, 9%, 58%)",
+				"bg_grd_start": "hsl(216, 23%, 67%)",
+				"bg_grd_end": "hsl(216, 45%, 37%)",
+				"bg_hex_start": "hsl(216, 45%, 37%)",
+				"bg_hex_end": "hsl(216, 47%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(216, 9%, 58%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"drone": {
+				"card_name": "Infected Drone",
+				"art_path": "Infected Drone.png",
+				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
+				"spoiler": true,
+				"card_border_color": "hsl(180, 9%, 58%)",
+				"bg_grd_start": "hsl(180, 23%, 67%)",
+				"bg_grd_end": "hsl(180, 45%, 37%)",
+				"bg_hex_start": "hsl(180, 45%, 37%)",
+				"bg_hex_end": "hsl(180, 47%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(180, 9%, 58%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"soldier": {
+				"card_name": "Infected Soldier",
+				"art_path": "Infected Soldier.png",
+				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
+				"spoiler": true,
+				"card_border_color": "hsl(294, 6%, 67%)",
+				"bg_grd_start": "hsl(293, 14%, 74%)",
+				"bg_grd_end": "hsl(294, 28%, 43%)",
+				"bg_hex_start": "hsl(294, 28%, 43%)",
+				"bg_hex_end": "hsl(292, 30%, 21%)",				
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(294, 6%, 67%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"worker": {
+				"card_name": "Infected Worker",
+				"art_path": "Infected Worker.png",
+				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
+				"spoiler": true,
+				"card_border_color": "hsl(150, 9%, 68%)",
+				"bg_grd_start": "hsl(150, 21%, 76%)",
+				"bg_grd_end": "hsl(150, 42%, 46%)",
+				"bg_hex_start": "hsl(150, 42%, 46%)",
+				"bg_hex_end": "hsl(150, 42%, 23%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(150, 9%, 68%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			}
+		}
+	}
+}

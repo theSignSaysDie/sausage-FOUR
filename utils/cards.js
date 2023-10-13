@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { zip, objectToListMap, toString64, sum, all } = require('./math');
 const { rollWeighted } = require('./dice');
-const { cardCache, cardSetList, setTranslate, cardTranslate } = require('./info');
+const { cardCache, cardSetList, visibleCardSetList, setTranslate, cardTranslate, colorDict } = require('./info');
 const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
@@ -64,8 +64,7 @@ async function getRandomCard(pool) {
 	const { card_info } = getCardData(cardSet);
 	const { drop_table } = card_info;
 	const cardChoice = rollWeighted(drop_table);
-	const cardImage = await getCardImage(cardSet, cardChoice);
-	return { name: cardChoice, image: cardImage, set: cardSet };
+	return { name: cardChoice, set: cardSet, desc: card_info.cards[cardChoice].description, spoiler: card_info.cards[cardChoice].spoiler };
 }
 
 /**
@@ -152,8 +151,8 @@ async function removeCard(binder, set, name, quantity = 1) {
  * @param {String} snowflake the snowflake ID of the player to whom the binder belongs
  * @param {Object} binder the binder
  */
-async function pushBinder(snowflake, binder) {
-	const blob = JSON.stringify(binder);
+async function pushBinder(snowflake, binder = null) {
+	const blob = JSON.stringify(binder === null ? makeNewBinder() : binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
 }
 
@@ -173,25 +172,39 @@ async function updateCooldown(snowflake, time) {
  * @param {String} name the name of the card
  * @param {Integer} time the time of the dorp in milliseconds since world epoch
  */
-async function handlePlayerReward(snowflake, set, name, time) {
+async function handlePlayerReward(snowflake, set, name, time = 0) {
 	const binder = await fetchBinder(snowflake);
 	await addCard(binder, set, name);
 	await pushBinder(snowflake, binder);
-	await updateCooldown(snowflake, time);
+	if (time > 0) {
+		await updateCooldown(snowflake, time);
+	}
 }
 
 /**
  * @desc formulates a message with which to present card drops
- * @param {String} set the set to which the dropped card belongs
- * @param {String} name the name of the card
+ * @param {Object} properties the properties of the card drop
  * @returns an Object representing a valid Discord interaction reply message containing card art and congratulations
  */
-async function postCard(set, name) {
+async function postCard(properties) {
+	const set = properties.set;
+	const name = properties.name;
+	const desc = properties.desc;
+	const content = properties.content ?? '';
+	const title = properties.title ?? cardTranslate[name];
+	const fake = properties.fake ?? false;
+	const color = properties.color ?? colorDict.OTHER;
+	const spoiler = properties.spoiler ?? false;
+
 	const card = await getCardImage(set, name);
-	const attachment = new AttachmentBuilder(card, { name: 'card.png' });
+	console.log(spoiler);
+	const attachment = new AttachmentBuilder(card, { name: 'card.png' }).setSpoiler(spoiler);
 	const embed = getDefaultEmbed()
+		.setColor(color)
+		.setTitle(title ?? cardTranslate[name])
 		.setImage('attachment://card.png');
-	return { embeds: [embed], files: [attachment], ephemeral: true };
+	if (desc !== null) embed.setDescription(desc);
+	return { content: content, embeds: [embed], files: [attachment], desc: desc, ephemeral: fake };
 }
 
 /**
@@ -206,7 +219,7 @@ async function getPrettyBinderSummary(binder, _set) {
 	} else {
 		const summary = [];
 		if (_set === 'all') {
-			for (const set of cardSetList) {
+			for (const set of visibleCardSetList) {
 				const { card_info } = getCardData(set);
 				const { cards } = card_info;
 				summary.push(`## ${setTranslate[set]}\n` + objectToListMap(Object.keys(cards).sort(), function(card) {
