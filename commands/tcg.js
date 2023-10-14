@@ -79,10 +79,10 @@ module.exports = {
 				await interaction.reply({ content: 'No dailies are available to claim. Check again when there\'s an event!', ephemeral: true });
 				return;
 			}
-			const today = new Date();
-			const year = today.getFullYear();
-			const month = today.getMonth() + 1;
-			const day = today.getDay() + 1;
+			const today = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }).split(' ')[0].slice(0, -1).split('/');
+			// operate Regex to this
+			// 10/13/2023
+			const [month, day, year] = today.map(num => parseInt(num, 10));
 			const query = await fetchSQL(
 				'SELECT EXTRACT(YEAR FROM `last_daily`) AS `last_year`, \
 				 EXTRACT(MONTH FROM `last_daily`) as `last_month`, \
@@ -94,14 +94,13 @@ module.exports = {
 
 			let isEligibleDay = true;
 			let isEligibleBlocker = true;
-			const now = Date.now();
+			const nowMS = Date.now();
 			if (query.length > 0) {
 				const { last_year, last_month, last_day, last_drop } = query[0];
 				isEligibleDay = !(last_year === year && last_month === month && last_day === day);
 				let lastDropTime = parseInt(last_drop);
 				lastDropTime = isNaN(lastDropTime) ? 0 : lastDropTime;
-				isEligibleBlocker = (now - lastDropTime) >= cardDropWaitTime;
-				console.log(now, lastDropTime, cardDropWaitTime, now - lastDropTime, isEligibleBlocker);
+				isEligibleBlocker = (nowMS - lastDropTime) >= cardDropWaitTime;
 			}
 
 			if (isEligibleDay && isEligibleBlocker) {
