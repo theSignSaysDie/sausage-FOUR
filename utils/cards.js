@@ -197,7 +197,6 @@ async function postCard(properties) {
 	const spoiler = properties.spoiler ?? false;
 
 	const card = await getCardImage(set, name);
-	console.log(spoiler);
 	const attachment = new AttachmentBuilder(card, { name: 'card.png' }).setSpoiler(spoiler);
 	const embed = getDefaultEmbed()
 		.setColor(color)
