@@ -81,12 +81,8 @@ module.exports = {
 				.catch(error => console.error('Failed to clear reactions:', error));
 			const resultEmbed = getDefaultEmbed()
 				.setDescription(`# ${title}\nPoll closed!\n\n${description}\n\n${choices.map(x => `${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}${x[0]} ${x[1]} (${reactCounts[x[0]] ?? 0} vote${(reactCounts[x[0]] ?? 0) === 1 ? '' : 's'})${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}`).join('\n')}`);
-			if (interaction.options.getInteger('time') < 15) {
-				await interaction.editReply({ embeds: [resultEmbed] });
-			} else {
-				await message.delete();
-				await channel.send({ embeds: [resultEmbed] });
-			}
+			await message.delete();
+			await channel.send({ embeds: [resultEmbed] });
 		});
 
 
