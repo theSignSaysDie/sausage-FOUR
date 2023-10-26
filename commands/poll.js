@@ -30,7 +30,7 @@ module.exports = {
 					{ name: '30m', value: 30 },
 					{ name: '1hr', value: 60 },
 					{ name: '4hr', value: 240 },
-					{ name: '12hr', value: 720},
+					{ name: '12hr', value: 720 },
 					{ name: '24hr', value: 1440 },
 				)
 				.setRequired(true),
