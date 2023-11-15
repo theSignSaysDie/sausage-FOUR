@@ -80,7 +80,7 @@ schedule(`${seconds} ${minutes} * * * *`, function() {
 for (const set of info.cardSetList) {
 	const { card_info, set_name } = getCardData(set);
 	info.setTranslate[set] = set_name;
-	for (const card of card_info.drop_table) {
+	for (const card of card_info.card_names) {
 		info.cardTranslate[card] = card_info.cards[card].card_name;
 	}
 }

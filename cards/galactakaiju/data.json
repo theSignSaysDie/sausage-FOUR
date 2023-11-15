@@ -2,6 +2,23 @@
 	"style": "classic",
 	"set_name": "Galactakaijuball",
 	"card_info": {
+		"card_names": [
+			"arachnidRexotron80k",
+			"beautyOfTheSeas",
+			"gargatholTheDestroyer",
+			"knightedFantasmagore",
+			"princessStarskyOfCuteness",
+			"puremetalOxIIde",
+			"SNTServox",
+			"starCrxssed",
+			"taxiarchKomodrian",
+			"threeRing",
+			"ULTR4JUSTICIAR",
+			"ummDamnBattleTank",
+			"xenopustulusOne",
+			"battlefiendMarkFive",
+			"stalktitanQuillbot"
+		],
 		"drop_table": [
 			"arachnidRexotron80k",
 			"beautyOfTheSeas",

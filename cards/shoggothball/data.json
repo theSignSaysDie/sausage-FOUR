@@ -2,6 +2,20 @@
 	"style": "classic",
 	"set_name": "Shoggothball",
 	"card_info": {
+		"card_names": [
+			"aeistherou",
+			"annulczov",
+			"carnacorrup",
+			"cerublord",
+			"gastrolusix",
+			"goressegal",
+			"junf",
+			"kefukefukefukefu",
+			"lacunophidia",
+			"oculustrous",
+			"palpityrant",
+			"terrapanultimate"
+		],
 		"drop_table": [
 			"aeistherou",
 			"annulczov",

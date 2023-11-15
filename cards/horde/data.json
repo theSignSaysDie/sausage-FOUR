@@ -2,11 +2,19 @@
 	"style": "classic",
 	"set_name": "Horde",
 	"card_info": {
+		"card_names":
+			["commander",
+				"drone",
+				"soldier",
+				"worker",
+				"vitahive"],
 		"drop_table": [
-			"commander",
-			"drone",
-			"soldier",
-			"worker"
+			["commander",
+				"drone",
+				"soldier",
+				"worker",
+				"vitahive"],
+			[1,1,1,1,0]
 		],
 		"cards": {
 			"commander": {
@@ -64,6 +72,23 @@
 				"card_name": "Infected Worker",
 				"art_path": "Infected Worker.png",
 				"description": "🎨 Art by **Honey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
+				"spoiler": true,
+				"card_border_color": "hsl(150, 9%, 68%)",
+				"bg_grd_start": "hsl(150, 21%, 76%)",
+				"bg_grd_end": "hsl(150, 42%, 46%)",
+				"bg_hex_start": "hsl(150, 42%, 46%)",
+				"bg_hex_end": "hsl(150, 42%, 23%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "hsl(150, 9%, 68%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"vitahive": {
+				"card_name": "The Vitahive",
+				"art_path": "The Vitahive.png",
+				"description": "🎨 Art by **Joey**\n:fire: Eye Trauma, Eye Contact, Body Horror, Disturbing Imagery",
 				"spoiler": true,
 				"card_border_color": "hsl(150, 9%, 68%)",
 				"bg_grd_start": "hsl(150, 21%, 76%)",

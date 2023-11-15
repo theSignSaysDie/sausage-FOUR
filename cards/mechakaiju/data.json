@@ -2,6 +2,17 @@
 	"style": "classic",
 	"set_name": "Mechakaijuball",
 	"card_info": {
+		"card_names": [
+			"interiorCrocodileFrogigator",
+			"electrakiel",
+			"swampkingSarcozard",
+			"timeEaterMechadrak",
+			"grubmatriarchSlitherina",
+			"painslingerScorpanoid",
+			"indomitableUnstoppableMadBeastOfhorse",
+			"theGreatMechacackliacchi",
+			"krakenColossusSeaQueen"
+		],
 		"drop_table": [
 			"interiorCrocodileFrogigator",
 			"electrakiel",

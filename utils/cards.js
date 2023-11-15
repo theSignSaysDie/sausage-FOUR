@@ -101,9 +101,8 @@ async function makeNewBinder() {
 	for (const style of cardSetList) {
 		result[style] = {};
 		const data = getCardData(style);
-		const { drop_table } = data['card_info'];
-		const cardList = Array.isArray(drop_table) ? drop_table : Object.keys(drop_table);
-		for (const card of cardList) {
+		const { card_names } = data['card_info'];
+		for (const card of card_names) {
 			result[style][card] = 0;
 		}
 	}

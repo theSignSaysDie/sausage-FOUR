@@ -2,6 +2,18 @@
 	"style": "classic",
 	"set_name": "Kaijuball",
 	"card_info": {
+		"card_names":[
+			"laviahydra",
+			"bruxaneer",
+			"cahuillant",
+			"pardufrost",
+			"skyemother",
+			"drakkosaur",
+			"sparkonaut",
+			"gorillizon",
+			"cackledemon",
+			"kamohoalii"
+		],
 		"drop_table": [
 			"laviahydra",
 			"bruxaneer",
