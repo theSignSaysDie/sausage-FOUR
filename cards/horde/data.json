@@ -8,14 +8,12 @@
 				"soldier",
 				"worker",
 				"vitahive"],
-		"drop_table": [
-			["commander",
-				"drone",
-				"soldier",
-				"worker",
-				"vitahive"],
-			[1,1,1,1,0]
-		],
+		"drop_table": 
+			{"commander":1,
+				"drone":1,
+				"soldier":1,
+				"worker":1,
+				"vitahive":0},
 		"cards": {
 			"commander": {
 				"card_name": "Infected Commander",
