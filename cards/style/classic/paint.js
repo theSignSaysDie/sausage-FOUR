@@ -8,7 +8,6 @@ const global_settings = {
 	card_border_offset: 20,
 	card_border_thickness: 16,
 	card_corner_roundness: 80,
-	grd_start: 0.5,
 	art_size_x: 700,
 	art_size_y: 850,
 	art_top: 100,
@@ -23,8 +22,8 @@ const global_settings = {
 };
 async function paintCard(data, set, name) {
 	const { card_info } = data;
-	const { card_width, card_height, card_border_offset, card_border_thickness, card_corner_roundness, grd_start, art_size_x, art_size_y, art_top, card_art_border_thickness, drop_shadow_blur, vert_info_space, info_height, info_corner_roundness, text_font_size, text_modifiers, text_font } = global_settings;
-	const { card_name, art_path, card_border_color, bg_grd_start, bg_grd_end, bg_hex_start, bg_hex_end, art_offset_x, art_offset_y, art_scale, text_color, card_art_border_color, drop_shadow_color } = card_info.cards[name];
+	const { card_width, card_height, card_border_offset, card_border_thickness, card_corner_roundness, art_size_x, art_size_y, art_top, card_art_border_thickness, drop_shadow_blur, vert_info_space, info_height, info_corner_roundness, text_font_size, text_modifiers, text_font } = global_settings;
+	const { card_name, art_path, card_border_color, grd_start, bg_grd_start, bg_grd_end, bg_hex_start, bg_hex_end, art_offset_x, art_offset_y, art_scale, text_color, card_art_border_color, drop_shadow_color } = card_info.cards[name];
 	const text_format = `${text_modifiers} ${text_font_size}px ${text_font}`;
 	const nameplate_width = art_size_x - vert_info_space - info_height;
 	const max_text_width = nameplate_width - card_border_thickness * 4;
@@ -56,11 +55,15 @@ async function paintCard(data, set, name) {
 	const context = canvas.getContext('2d');
 	context.imageSmoothingEnabled = true;
 
+	// Nasty backwards compatibility hack for gradient stop movement
+	// TODO PROPERLY IMPLEMENT THIS
+	const movable_grd_start = grd_start ?? 0.5;
+
 	// Card background gradient
-	const grd_base = makeGradient(context, canvas, 'vertical', [0, grd_start, 1], [bg_grd_start, bg_grd_start, bg_grd_end]);
+	const grd_base = makeGradient(context, canvas, 'vertical', [0, movable_grd_start, 1], [bg_grd_start, bg_grd_start, bg_grd_end]);
 
 	// Card hex gradient
-	const grd_hex = makeGradient(ctx_hex, canvas_hex, 'vertical', [0, grd_start, 1], [bg_hex_start, bg_hex_start, bg_hex_end]);
+	const grd_hex = makeGradient(ctx_hex, canvas_hex, 'vertical', [0, movable_grd_start, 1], [bg_hex_start, bg_hex_start, bg_hex_end]);
 
 	// Draw hexes with gradient
 	ctx_hex.fillStyle = grd_hex;
