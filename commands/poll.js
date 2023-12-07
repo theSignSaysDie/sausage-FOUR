@@ -34,6 +34,10 @@ module.exports = {
 					{ name: '24hr', value: 1440 },
 				)
 				.setRequired(true),
+		).addBooleanOption(option =>
+			option.setName('multiple-responses')
+				.setDescription('Are users allowed to vote for multiple options? Default: False')
+				.setRequired(false),
 		),
 	async execute(interaction) {
 		// Setup
@@ -42,6 +46,7 @@ module.exports = {
 		const description = interaction.options.getString('description');
 		const rawChoices = interaction.options.getString('choices');
 		const title = interaction.options.getString('title');
+		const multipleResponses = interaction.options.getBoolean('multiple-responses') ?? false;
 		const channel = await interaction.client.channels.cache.get(interaction.channelId);
 		const regex = emojiRegex();
 		const matches = Array.from(rawChoices.matchAll(regex));
@@ -65,18 +70,30 @@ module.exports = {
 		};
 		const whoReacted = {};
 		const emojiCollector = message.createReactionCollector({ filter: collectorFilter, time: rawTime });
-		emojiCollector.on('collect', (reaction, user) => {
-			whoReacted[user.tag] = reaction.emoji.name;
-		});
+		if (!multipleResponses) {
+			emojiCollector.on('collect', (reaction, user) => {
+				whoReacted[user.tag] = reaction.emoji.name;
+			});
+		}
 		emojiCollector.on('end', async () => {
 			const reactCounts = {};
 			let maxVotes = -1;
-			for (const e of Object.values(whoReacted)) {
-				reactCounts[e] = reactCounts[e] ? reactCounts[e] + 1 : 1;
-				if (reactCounts[e] > maxVotes) {
-					maxVotes = reactCounts[e];
+			if (multipleResponses) {
+				for (const e of emoji) {
+					reactCounts[e] = message.reactions.cache.get(e).count - 1;
+					if (reactCounts[e] > maxVotes) {
+						maxVotes = reactCounts[e];
+					}
+				}
+			} else {
+				for (const e of Object.values(whoReacted)) {
+					reactCounts[e] = reactCounts[e] ? reactCounts[e] + 1 : 1;
+					if (reactCounts[e] > maxVotes) {
+						maxVotes = reactCounts[e];
+					}
 				}
 			}
+
 			message.reactions.removeAll()
 				.catch(error => console.error('Failed to clear reactions:', error));
 			const resultEmbed = getDefaultEmbed()
@@ -89,7 +106,7 @@ module.exports = {
 		// Display actual poll
 		const timestamp = await makeRelativeTimestamp(rawTime);
 		const pollEmbed = getDefaultEmbed()
-			.setDescription(`# ${title}\nEnding ${timestamp}.\n\n${description}\n\n${choices.map(x => `${x[0]} ${x[1]}`).join('\n')}`);
+			.setDescription(`# ${title}\nEnding ${timestamp}.\n\n${description}\n\n**${multipleResponses ? 'Multiple' : 'Single'} Response**\n${choices.map(x => `${x[0]} ${x[1]}`).join('\n')}`);
 		await interaction.editReply({ embeds: [pollEmbed] });
 	},
 };
