@@ -86,6 +86,19 @@ function getExcerpt(body) {
 	return firstFiftyWords + (body.length > firstFiftyWords.length ? '...' : '');
 }
 
+/**
+ * @desc Helper method. Cuts off text at threshold and adds ellipsis where required
+ * @param {String} text a line of text to process
+ * @param {int} maxLen the max length of the string
+ * @returns `text`, truncated and with ellipsis appended if needed
+ */
+function cutoffWithEllipsis(text, maxLen) {
+	if (text.length > maxLen) {
+		text = text.slice(0, maxLen - 3) + '...';
+	}
+	return text;
+}
+
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
@@ -93,6 +106,7 @@ module.exports = {
 	getHelpEmbed: getHelpEmbed,
 	blankNoneOrUndefined: blankNoneOrUndefined,
 	getExcerpt: getExcerpt,
+	cutoffWithEllipsis: cutoffWithEllipsis,
 	titleCase: titleCase,
 	dictList : dictList,
 };
