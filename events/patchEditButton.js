@@ -1,6 +1,7 @@
 const { Events, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js');
 const { fetchSQL } = require('../utils/db');
 const { CHAR_LIMIT } = require('../utils/info');
+const { cutoffWithEllipsis } = require('../utils/stringy');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -12,7 +13,7 @@ module.exports = {
 			const [table, key, column] = details;
 			const modal = new ModalBuilder()
 				.setCustomId(`patchEditModal_${table}_${key}_${column}`)
-				.setTitle(`Edit ${column} for ${key}`);
+				.setTitle(cutoffWithEllipsis(`Edit ${column} for ${key}`, 45));
 			const query = 'SELECT ?? FROM ?? where `key` = ?';
 			const queryResult = await fetchSQL(query, [column, table, key]);
 			const initialText = queryResult[0][column];
