@@ -428,6 +428,11 @@ module.exports = {
 				}
 			});
 
+			buttonCollector.on('end', async () => {
+				await interaction.editReply({ embeds: [], components: [], content: 'Trade expired due to inactivity.' });
+				delete cardTradeSessions[sessionID];
+			});
+
 			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
 			selectCollector.on('collect', async selectInteraction => {
 				if (selectInteraction.user.id === initiatingPlayer.id) {
