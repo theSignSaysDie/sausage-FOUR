@@ -322,7 +322,8 @@ module.exports = {
 			// ========
 			// Set up collectors
 			// ========
-			const buttonCollector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: 3_600_000 });
+			const tradeExpiryTime = 600_000;
+			const buttonCollector = response.createMessageComponentCollector({ componentType: ComponentType.Button, time: tradeExpiryTime });
 			buttonCollector.on('collect', async buttonInteraction => {
 				const [, , bSession, bTrader, bDirection] = buttonInteraction.customId.split('_');
 				const bSet = cardTradeSessions[bSession]['setFocus'];
@@ -433,7 +434,7 @@ module.exports = {
 				delete cardTradeSessions[sessionID];
 			});
 
-			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:3_600_000 });
+			const selectCollector = response.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time:tradeExpiryTime });
 			selectCollector.on('collect', async selectInteraction => {
 				if (selectInteraction.user.id === initiatingPlayer.id) {
 					await selectInteraction.deferUpdate();
