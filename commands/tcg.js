@@ -337,6 +337,7 @@ module.exports = {
 					if (bTrader === 'system') {
 						if (bDirection === 'cancel') {
 							buttonInteraction.update({ embeds: [], components: [], content: 'Trade canceled by initiator!' });
+							buttonCollector.stop('Trade canceled by initiator!');
 							delete cardTradeSessions[bSession];
 							return;
 						} else if (bDirection === 'confirm') {
@@ -391,6 +392,7 @@ module.exports = {
 					if (bTrader === 'system') {
 						if (bDirection === 'cancel') {
 							buttonInteraction.update({ embeds: [], components: [], content: 'Trade canceled by target!' });
+							buttonCollector.stop('Trade canceled by target');
 							delete cardTradeSessions[bSession];
 							return;
 						}
@@ -430,7 +432,8 @@ module.exports = {
 			});
 
 			buttonCollector.on('end', async () => {
-				await interaction.editReply({ embeds: [], components: [], content: 'Trade expired due to inactivity.' });
+				console.log(buttonCollector.endreason);
+				await interaction.editReply({ embeds: [], components: [], content: buttonCollector.endreason });
 				delete cardTradeSessions[sessionID];
 			});
 
