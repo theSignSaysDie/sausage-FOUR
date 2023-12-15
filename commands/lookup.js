@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { fetchSQL, getDocLink } = require('../utils/db');
-const { camelize, titleCase, getDefaultEmbed, blankNoneOrUndefined, dictList } = require('../utils/stringy');
+const { camelize, titleCase, getDefaultEmbed, blankNoneOrUndefined, dictList, pluralS } = require('../utils/stringy');
 const { CHAR_LIMIT, colorDict, docDict, lookupTableNames } = require('../utils/info');
 
 function renderMove(embed, entry, key) {
@@ -92,7 +92,7 @@ module.exports = {
 					const entry = queryResult[0];
 					embed = renderMove(embed, entry, key);
 				} else {
-					embed.setTitle(`List of moves with tags similar to '${terms.join(', ')}'`)
+					embed.setTitle(`Found ${queryResult.length} result${pluralS(queryResult.length, 's', '')} for moves with tags similar to '${terms.join(', ')}'`)
 						.setDescription(`${queryResult.map((x) => titleCase(x.title)).join(', ')}`)
 						.setColor(colorDict.OTHER || colorDict[key.toUpperCase()]);
 				}
