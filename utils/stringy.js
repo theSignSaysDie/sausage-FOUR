@@ -99,6 +99,17 @@ function cutoffWithEllipsis(text, maxLen) {
 	return text;
 }
 
+/**
+ * @desc Helper method. returns
+ * @param {int} num the number of items
+ * @param {String} pluralSuffix the suffix to use for the plural form
+ * @param {String} singleSuffix the suffix to use for the singular form
+ * @returns the correct suffix for the number of items
+ */
+function pluralS(num, pluralSuffix, singleSuffix) {
+	return num > 1 ? pluralSuffix : singleSuffix;
+}
+
 module.exports = {
 	capitalize: capitalize,
 	camelize: camelize,
@@ -109,4 +120,5 @@ module.exports = {
 	cutoffWithEllipsis: cutoffWithEllipsis,
 	titleCase: titleCase,
 	dictList : dictList,
+	pluralS : pluralS,
 };
