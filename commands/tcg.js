@@ -432,7 +432,7 @@ module.exports = {
 			});
 
 			buttonCollector.on('end', async () => {
-				console.log(buttonCollector.endreason);
+				console.log(buttonCollector.endreason ?? 'Something went wrong with this trade!');
 				await interaction.editReply({ embeds: [], components: [], content: buttonCollector.endreason });
 				delete cardTradeSessions[sessionID];
 			});
