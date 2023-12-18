@@ -64,6 +64,9 @@ for (const file of eventFiles) {
 	}
 }
 
+// Database events
+db.fetchSQL('SET NAMES \'utf8mb4\'');
+
 console.log('Initializing Troll Call...');
 const now = new Date();
 const minutes = now.getMinutes();
