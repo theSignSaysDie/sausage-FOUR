@@ -21,7 +21,7 @@ module.exports = {
 	async execute(interaction) {
 		const amount = interaction.options.getNumber('amount');
 		const units = interaction.options.getString('units');
-		const result = round(units.valueOf() === 'years'.valueOf() ? amount / 2.16 : amount * 2.16, 2);
+		const result = round(units.valueOf() === 'years'.valueOf() ? amount / (13/6) : amount * (13/6), 2);
 		const messageContent = `\`${amount}\` ${units} is approximately equal to ${result} ${units.valueOf() === 'years'.valueOf() ? 'sweeps' : 'years'}.`;
 		await interaction.reply({ content: messageContent, ephemeral: true });
 	},
