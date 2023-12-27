@@ -52,7 +52,7 @@ module.exports = {
 					desc = `**${entry.cost} LUX**\n` + desc;
 				}
 				embed.setTitle(entry.title)
-					.setDescription(desc);
+					.setDescription(desc.length <= 4096 ? desc : `Sorry! Due to Discord's embed limitations, I can't show you the full text for the entry \`${key}\`. Please use the link in the title to view the full text.`);
 				if (entry.doc) {
 					embed.setURL(getDocLink(docDict[entry.doc]));
 				} else {
