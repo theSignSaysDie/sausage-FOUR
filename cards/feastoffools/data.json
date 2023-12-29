@@ -109,7 +109,7 @@
 				"drop_shadow_color": "hsl(0, 0%, 0%)"
 			},
 			"spiritsFuture": {
-				"card_name": "Spirits of 12th Perigee's Future",
+				"card_name": "Spirit of 12th Perigee's Future",
 				"art_path": "SpiritFuture.png",
 				"description": "🎨 Art by **Fable**",
 				"card_border_color": "hsl(0, 100%, 100%)",
@@ -126,7 +126,7 @@
 				"drop_shadow_color": "hsl(0, 0%, 0%)"
 			},
 			"spiritsPast": {
-				"card_name": "Spirits of 12th Perigee's Past",
+				"card_name": "Spirit of 12th Perigee's Past",
 				"art_path": "SpiritPast.png",
 				"description": "🎨 Art by **Fable**",
 				"card_border_color": "hsl(0, 100%, 100%)",
@@ -143,7 +143,7 @@
 				"drop_shadow_color": "hsl(0, 0%, 0%)"
 			},
 			"spiritsPresent": {
-				"card_name": "Spirits of 12th Perigee's Present",
+				"card_name": "Spirit of 12th Perigee's Present",
 				"art_path": "SpiritPresent.png",
 				"description": "🎨 Art by **Fable**",
 				"card_border_color": "hsl(0, 100%, 100%)",
