@@ -93,7 +93,7 @@
 			},
 			"spirits": {
 				"card_name": "Spirits of 12th Perigee's Eve",
-				"art_path": "Spirit.png",
+				"art_path": "Spirits.png",
 				"description": "🎨 Art by **Fable**",
 				"card_border_color": "hsl(0, 100%, 100%)",
 				"bg_grd_start": "hsl(0, 55%, 53%)", 
