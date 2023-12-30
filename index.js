@@ -10,7 +10,7 @@ const { isAllowed } = require('./utils/conditions');
 
 // Initialize client
 console.log('Initializing client...');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers] });
 
 // Establish rate-limit warnings (just in case)
 client.on('rateLimit', (msg) => {
@@ -91,3 +91,31 @@ for (const set of info.cardSetList) {
 // Login!
 console.log('Logging in...');
 client.login(process.env.DISCORD_TOKEN);
+
+// Start role processing jobs
+const CronJob = require('cron').CronJob;
+
+const wrigglerRemovalJob = new CronJob(
+	// Check at midnight. Midnight where? Who knows
+	'0 0 * * *',
+	async function() {
+		console.log('Checking for old wrigglers.');
+		const guild = client.guilds.cache.get(process.env.GUILD_ID);
+		console.log('Fetching roles...');
+		await guild.roles.fetch();
+		await guild.members.fetch();
+		console.log('Collecting Wriggler role...');
+		const wrigglerRole = guild.roles.cache.find(role => role.id === process.env.WRIGGLER_ROLE_ID);
+		guild.roles.cache.forEach(x => console.log(x.id, x.members));
+		wrigglerRole.members.map(async m => {
+			console.log('Checking', m.id);
+			const time = Date.now();
+			// Wrigglers older than thirty days are mature
+			if (time - m.joinedAt > (1000 * 60 * 60 * 24 * 30)) {
+				console.log('Found someone! Time to remove the role for', m.id, '!');
+				m.roles.remove(process.env.WRIGGLER_ROLE_ID);
+			}
+		});
+	},
+);
+wrigglerRemovalJob.start();
