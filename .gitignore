@@ -134,6 +134,7 @@ dist
 # Bot-specific ignores
 # folders
 img
+memdump
 # events
 events/replies.js
 # commands
