@@ -122,8 +122,8 @@ const wrigglerRemovalJob = new CronJob(
 wrigglerRemovalJob.start();
 
 const memoryProfilerJob = new CronJob(
-	// Dump heap on the hour
-	'0 * * * *',
+	// Dump at midnight
+	'0 0 * * *',
 	async function() {
 		// Let users know there's something happening
 		client.user.setActivity('Taking a brief nap, please wait!', { type: 0 });
