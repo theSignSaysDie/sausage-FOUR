@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Options, Collection, GatewayIntentBits } = require('discord.js');
 const { schedule } = require('node-cron');
 const heapdump = require('heapdump');
 const fs = require('node:fs');
@@ -11,7 +11,17 @@ const { isAllowed } = require('./utils/conditions');
 
 // Initialize client
 console.log('Initializing client...');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers] });
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers],
+	sweepers: {
+		...Options.DefaultSweeperSettings,
+		// Every hour, flush messages older than half an hour
+		messages: {
+			interval: 3_600,
+			lifetime: 1_800,
+		},
+	},
+});
 
 // Establish rate-limit warnings (just in case)
 client.on('rateLimit', (msg) => {
