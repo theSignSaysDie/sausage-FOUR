@@ -24,7 +24,7 @@ module.exports = {
 			await interaction.showModal(modal);
 		} catch (e) {
 			console.log('Error while showing anon-note modal: ', e);
-			await interaction.reply('Sorry, but you don\'t have permission to use this command.');
+			await interaction.reply('Sorry, something went wrong. If this error persists, ping Meme or a mod.');
 		}
 	},
 };
