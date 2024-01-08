@@ -130,27 +130,3 @@ const wrigglerRemovalJob = new CronJob(
 	},
 );
 wrigglerRemovalJob.start();
-
-const memoryProfilerJob = new CronJob(
-	// Dump at midnight
-	'0 0 * * *',
-	async function() {
-		// Let users know there's something happening
-		client.user.setActivity('Taking a brief nap, please wait!', { type: 0 });
-
-		// Profile memory
-		const filename = `./memdump/${Date.now()}.heapsnapshot`;
-		heapdump.writeSnapshot(filename, (err, fn) => {
-			if (err) {
-				console.error(err);
-			} else {
-				console.log(`Heap snapshot written to ${fn}`);
-			}
-		});
-
-		// Reset status message
-		client.user.setActivity(info.activityMessage, { type: 0 });
-
-	},
-);
-memoryProfilerJob.start();
