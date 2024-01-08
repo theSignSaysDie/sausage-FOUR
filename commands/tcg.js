@@ -74,16 +74,14 @@ module.exports = {
 	async execute(interaction) {
 		// Player wants to see their binder contents
 		const cardSet = interaction.options.getString('set');
-		if (!cardSetList.includes(cardSet)) {
-			await interaction.reply({ content: `The set \`${cardSet}\` does not exist. Please double-check your spelling and try again.`, ephemeral: true });
-			return;
-		}
 		if (interaction.options.getSubcommand() === 'daily') {
 			if (!droppingCards) {
 				await interaction.reply({ content: 'No dailies are available to claim. Check again when there\'s an event!', ephemeral: true });
 				return;
 			}
 			const today = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }).split(' ')[0].slice(0, -1).split('/');
+			// operate Regex to this
+			// 10/13/2023
 			const [month, day, year] = today.map(num => parseInt(num, 10));
 			const query = await fetchSQL(
 				'SELECT EXTRACT(YEAR FROM `last_daily`) AS `last_year`, \
@@ -151,18 +149,9 @@ module.exports = {
 			}
 		// Dev wants to view a particular card
 		} else if (interaction.options.getSubcommand() === 'card') {
-			const name = interaction.options.getString('name');
-			const cardData = await getCardData(cardSet);
-			if (!Object.keys(cardData.card_info.cards).includes(name)) {
-				await interaction.reply({ content: `The card \`${cardSet}:${name}\` does not exist. Please double-check your spelling and try again.`, ephemeral: true });
-				return;
-			}
-			/*
-				Not best practices, but the latency of the lines above shouldn't exceed the Discord
-				time limit for undeferred messages since retrieval occurs from the filesystem
-			*/
 			await interaction.deferReply();
-			const desc = cardData.card_info.cards[name].description;
+			const name = interaction.options.getString('name');
+			const desc = await getCardData(cardSet).card_info.cards[name].description;
 			const spoiler = await getCardData(cardSet).card_info.cards[name].spoiler;
 			await interaction.editReply(await postCard({ set: cardSet, name: name, desc: desc, spoiler: spoiler }));
 		// Player wants to trade with someone else
@@ -209,7 +198,7 @@ module.exports = {
 			/*
 				Because of the way Discord's API works, string select menus don't persist
 				between clicks by default. Each time an option is selected, the select box's
-				default option must be changed. This maintains the illusion of a persistent menu.
+				default option must be changed. This confers the illusion of a persistent menu.
 			*/
 
 			const setSelect = new StringSelectMenuBuilder()
@@ -247,6 +236,7 @@ module.exports = {
 				);
 				// No if statement here.
 				// Optimization to prevent incorrect branching at machine level
+				// TODO does this actually make a difference?
 				focusInitiator = isDefault ? card : focusInitiator;
 				isDefault = isDefault && false;
 			}
@@ -326,6 +316,7 @@ module.exports = {
 			// Push session to global session tracker
 			cardTradeSessions[sessionID] = { offer: await makeNewBinder(), payment: await makeNewBinder(), setFocus: focusSet, initiatorFocus: focusInitiator, targetFocus: focusTarget, closing: false };
 			// Respond to player command with embed
+			// TODO Defer reply
 			const response = await interaction.editReply({ embeds: [embed], components: [setSelectRow, yourCardSelectRow, yourCardSelectArrowRow, theirCardSelectRow, theirCardSelectArrowRow] });
 
 			// ========
@@ -506,7 +497,7 @@ module.exports = {
 						const [sInitiator, sTarget, ,] = sSession.split('.').map(x => parseInt64(x, 64));
 						const sChoice = selectInteraction.values[0];
 						cardTradeSessions[sSession][sDecider ? 'initiatorFocus' : 'targetFocus'] = sChoice;
-
+						// TODO ternarize this, like on the line before the update statement
 						if (sDecider) {
 							yourCardSelect.setOptions();
 							for (const card in yourBinder[sSet]) {
