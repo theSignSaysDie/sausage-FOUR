@@ -7,14 +7,29 @@ const { getDefaultEmbed } = require('./stringy');
 const { fetchSQL, cardTradeSessions } = require('./db');
 const { AttachmentBuilder } = require('discord.js');
 
+/**
+ * Represents a possible alignment for a gradient in card drawing.
+ * @readonly
+ * @enum {String}
+*/
 const GradientAlignment = {
 	VERTICAL: 'vertical',
 	HORIZONTAL: 'horizontal',
 };
 
+
+/**
+ * Represents one of three possible states for a session,
+ *   returned in reply to a session initiation.
+ * @readonly
+ * @enum {String}
+*/
 const SessionStatus = {
+	/** Initiator is already trading cards */
 	InitiatorBusy: 'init_busy',
+	/** Target is already trading cards */
 	TargetBusy: 'target_busy',
+	/** Both the initiator and target are idle */
 	SessionPossible: 'session_ok',
 };
 
@@ -49,7 +64,11 @@ function loadWeightTable(raw) {
 	return result;
 }
 
-// TODO amend to fetch with style and name information
+/**
+ * @desc retrieves stylistic information for drawing a card in a given style
+ * @param {String} style the card style to retrieve data for
+ * @returns a JSON blob from a file corresponding to the selected style
+ */
 function getCardData(style) {
 	return JSON.parse(fs.readFileSync(`./cards/${style}/data.json`, 'utf8'));
 }

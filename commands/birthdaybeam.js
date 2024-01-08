@@ -4,7 +4,7 @@ const { birthdays, birthdayBeamTime } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('birthdaybeam')
-		.setDescription('Woe. Cake be upon ye')
+		.setDescription('Woe. Cake be upon your target')
 		.addUserOption(option =>
 			option
 				.setName('target')

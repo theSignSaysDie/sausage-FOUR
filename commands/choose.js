@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { roll1ToX } = require('../utils/dice');
+const { roll1ToX, rollWeighted } = require('../utils/dice');
 
 const delimiters = ';/, ';
 module.exports = {
@@ -36,8 +36,9 @@ module.exports = {
 			await interaction.reply({ content: 'dude.', ephemeral: true });
 			return;
 		}
-		const choiceList = [];
 		const displayList = [];
+		const weightedChoices = {};
+		let numberOfChoices = 0;
 		for (const s in delimiters) {
 			if (choiceString.indexOf(delimiters[s]) !== -1) {
 				choices = choiceString.split(delimiters[s]).map(x => x.trim());
@@ -46,21 +47,20 @@ module.exports = {
 					if (match) {
 						const processedString = choices[i].substring(0, choices[i].length - match[0].length);
 						displayList.push(`- \`${processedString}\` (${match[1]})`);
-						// TODO [LOW] incorporate weighted rolling methods from dice.js
-						for (let j = 0; j < parseInt(match[1]); j++) {
-							choiceList.push(processedString);
-						}
+						const weight = parseInt(match[1]);
+						weightedChoices[processedString] = weight;
+						numberOfChoices += weight;
 					} else {
 						displayList.push(`- \`${choices[i]}\``);
-						choiceList.push(choices[i]);
+						weightedChoices[choices[i]] = 1;
+						numberOfChoices += 1;
 					}
 				}
 				break;
 			}
 		}
-
-		if (choiceList.length <= pick) {
-			await interaction.reply({ content: `You can't pick ${pick} choices from a list ${choices.length} elements long.`, ephemeral: true });
+		if (numberOfChoices <= pick) {
+			await interaction.reply({ content: `You can't pick ${pick} choices from a list ${numberOfChoices} elements long.`, ephemeral: true });
 			return;
 		} else if (pick <= 0) {
 			await interaction.reply({ content: `You can't pick ${pick} choices from a list.`, ephemeral: true });
@@ -68,9 +68,9 @@ module.exports = {
 
 		const result = [];
 		while (pick > result.length) {
-			const select = roll1ToX(choiceList.length) - 1;
-			result.push(choiceList[select].trim());
-			choiceList.splice(select, 1);
+			const select = rollWeighted(weightedChoices);
+			result.push(select);
+			weightedChoices[select] -= 1;
 		}
 
 		await interaction.reply({ content: `Choices: \n${displayList.join('\n')}\n\nChoice${ pick !== 1 ? 's' : '' } selected: \`${result.join(', ')}\``, ephemeral: secrecy });

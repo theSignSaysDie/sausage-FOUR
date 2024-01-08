@@ -25,8 +25,8 @@ const con = mysql.createPool({
 
 /**
  * @description Simplified wrapper for the `mysql.Pool.query` method.
- * @param {String} [query=[]] Query string formatted with MariaDB syntax
- * @param {Array} params Escaped query values. More info {@link https://github.com/mysqljs/mysql#escaping-query-values here}.
+ * @param {String} query Query string formatted with MariaDB syntax
+ * @param {Array} [params=[]] Escaped query values. More info {@link https://github.com/mysqljs/mysql#escaping-query-values here}.
  * @returns an array of query result objects, or an empty list.
  * @example let queryResult = await fetchSQL("SELECT ? FROM ??", ["title", "move"]);
  */
