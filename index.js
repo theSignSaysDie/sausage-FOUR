@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Client, Options, Collection, GatewayIntentBits } = require('discord.js');
 const { schedule } = require('node-cron');
-const heapdump = require('heapdump');
 const fs = require('node:fs');
 const path = require('node:path');
 const db = require('./utils/db');
