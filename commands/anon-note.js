@@ -8,7 +8,7 @@ module.exports = {
 			const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 			// Throws error if user isn't in the guild
 			console.log(guild.id, interaction.guild.id);
-			if (guild.id !== interaction.guild.id) {
+			if (guild.id !== process.env.GUILD_ID) {
 				await interaction.reply({ content: 'Sorry, you can\'t use that command here.', ephemeral: true });
 			} else {
 				await guild.members.fetch(interaction.user.id);
