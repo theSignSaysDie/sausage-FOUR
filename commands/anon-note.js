@@ -7,6 +7,10 @@ module.exports = {
 		try {
 			const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 			// Throws error if user isn't in the guild
+			console.log(guild.id, interaction.guild.id);
+			if (guild.id !== interaction.guild.id) {
+				await interaction.reply({ content: 'Sorry, you can\'t use that command here.', ephemeral: true });
+			}
 			await guild.members.fetch(interaction.user.id);
 			const noteRow = new ActionRowBuilder();
 			const noteBox = new TextInputBuilder()
