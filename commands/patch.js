@@ -2,6 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Modal
 const { fetchSQL } = require('../utils/db');
 const { camelize, dictList } = require('../utils/stringy');
 const { tableNames } = require('../utils/info');
+require('dotenv').config();
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -58,9 +59,8 @@ module.exports = {
 				),
 		).setDefaultMemberPermissions(0),
 	async execute(interaction) {
-		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 		// Rejects attempt if user isn't in guild
-		if (guild.id !== process.env.GUILD_ID) {
+		if (interaction.guildId !== process.env.GUILD_ID) {
 			await interaction.reply({ content: 'Sorry, you can\'t use that command here.', ephemeral: true });
 		} else if (interaction.options.getSubcommand() === 'add') {
 			const table = camelize(interaction.options.getString('table'));
