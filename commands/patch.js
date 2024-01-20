@@ -58,7 +58,11 @@ module.exports = {
 				),
 		).setDefaultMemberPermissions(0),
 	async execute(interaction) {
-		if (interaction.options.getSubcommand() === 'add') {
+		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
+		// Rejects attempt if user isn't in guild
+		if (guild.id !== process.env.GUILD_ID) {
+			await interaction.reply({ content: 'Sorry, you can\'t use that command here.', ephemeral: true });
+		} else if (interaction.options.getSubcommand() === 'add') {
 			const table = camelize(interaction.options.getString('table'));
 			const query = 'SHOW COLUMNS FROM ??';
 			const queryResult = await fetchSQL(query, [table]);
