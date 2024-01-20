@@ -24,7 +24,7 @@ module.exports = {
 			await interaction.showModal(modal);
 		} catch (e) {
 			console.log('Error while showing anon-note modal: ', e);
-			await interaction.reply('Sorry, something went wrong. If this error persists, ping Meme or a mod.');
+			await interaction.reply({ content: 'Sorry, something went wrong. If this error persists, ping Meme or a mod.', ephemeral: true });
 		}
 	},
 };
