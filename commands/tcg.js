@@ -72,9 +72,8 @@ module.exports = {
 				),
 		),
 	async execute(interaction) {
-		const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);
 		// Rejects attempt if user isn't in guild
-		if (guild.id !== process.env.GUILD_ID) {
+		if (interaction.guildId !== process.env.GUILD_ID) {
 			await interaction.reply({ content: 'Sorry, you can\'t use that command here.', ephemeral: true });
 		} else {
 		// Player wants to see their binder contents
