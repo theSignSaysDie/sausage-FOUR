@@ -116,7 +116,7 @@ const wrigglerRemovalJob = new CronJob(
 		await guild.members.fetch();
 		console.log('Collecting Wriggler role...');
 		const wrigglerRole = guild.roles.cache.find(role => role.id === process.env.WRIGGLER_ROLE_ID);
-		guild.roles.cache.forEach(x => console.log(x.id, x.members));
+		// Guild.roles.cache.forEach(x => console.log(x.id, x.members));
 		wrigglerRole.members.map(async m => {
 			console.log('Checking', m.id);
 			const time = Date.now();
