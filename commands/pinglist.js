@@ -28,50 +28,50 @@ module.exports = {
 		const name = interaction.options.getString('name').replace(/[^ a-zA-Z0-9?]/g, '').toLowerCase();
 		const operation = interaction.options.getString('operation');
 		const user = interaction.user.id;
+		const serverID = interaction.guild.id;
 		let query, result;
-
 		const buttonRow = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
-					.setCustomId(`pinglist_join_${name}`)
+					.setCustomId(`pinglist_join_${name}_${serverID}`)
 					.setLabel('Join Pinglist')
 					.setEmoji('✅')
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder()
-					.setCustomId(`pinglist_leave_${name}`)
+					.setCustomId(`pinglist_leave_${name}_${serverID}`)
 					.setLabel('Leave Pinglist')
 					.setEmoji('👋')
 					.setStyle(ButtonStyle.Danger),
 			);
 		const pinglistMessageContents = [buttonRow];
 
-		query = `SELECT * FROM \`pinglist\` WHERE \`snowflake\` = '${user}' AND \`record\` = 'author' AND \`name\` = '${name}';`;
-		result = await fetchSQL(query);
+		query = 'SELECT * FROM `pinglist` WHERE `snowflake` = ? AND `record` = \'author\' AND `name` = ? AND `serverID` = ?;';
+		result = await fetchSQL(query, [user, name, serverID]);
 		if (!result.length) {
 			if (operation === 'create') {
-				query = 'SELECT * FROM `pinglist` WHERE `name` = ?';
-				const queryResult = await fetchSQL(query, [name]);
+				query = 'SELECT * FROM `pinglist` WHERE `name` = ? and `serverID` = ?';
+				const queryResult = await fetchSQL(query, [name, serverID]);
 				if (queryResult.length) {
-					await interaction.reply({ content: 'Sorry, a pinglist under that name already exists in the system. Please select another name.\n(If this presents a major inconvenience, ping Meme.)', ephemeral: true });
+					await interaction.reply({ content: 'Sorry, a pinglist under that name already exists on this server. Please select another name.\n(If this presents a major inconvenience, ping Meme.)', ephemeral: true });
 				} else {
-					query = 'INSERT INTO `pinglist` VALUES (?, \'author\', ?)';
-					await fetchSQL(query, [user, name]);
+					query = 'INSERT INTO `pinglist` VALUES (?, \'author\', ?, ?)';
+					await fetchSQL(query, [user, name, serverID]);
 					await interaction.reply({ embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` **created**!`)], components: pinglistMessageContents });
 				}
 			} else {
-				await interaction.reply({ content: `You don't seem to have a pinglist under the name '${name}'! Check your spelling and try again.`, ephemeral: true });
+				await interaction.reply({ content: `You don't seem to have a pinglist under the name '${name}' on this server! Check your spelling and try again.`, ephemeral: true });
 			}
 		} else if (operation === 'create') {
-			await interaction.reply({ content: `It seems like you already have a pinglist named '${name}'!`, ephemeral: true });
+			await interaction.reply({ content: `It seems like you already have a pinglist named '${name}' on this server!`, ephemeral: true });
 		} else if (operation === 'invoke') {
-			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
-			result = await fetchSQL(query, [name]);
+			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?; AND `serverID` = ?';
+			result = await fetchSQL(query, [name, serverID]);
 			const userList = result.map(x => `<@${x.snowflake}>`).join(' ');
 			const announcement = `Ping by ${interaction.member.displayName}!`;
 			await interaction.reply({ content: `${announcement}\n\n======\n\n${userList}`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!\n\nUsers pinged: \`${result.length}\``)], components: pinglistMessageContents });
 		} else if (operation === 'assess') {
-			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ?;';
-			result = await fetchSQL(query, [name]);
+			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ? AND `serverID` = ?;';
+			result = await fetchSQL(query, [name, serverID]);
 
 			const userList = [];
 			await interaction.guild.members.fetch();
@@ -83,12 +83,12 @@ module.exports = {
 			await interaction.reply({ content: `The following users are subscribed to the pinglist \`${name}\`:\n${userNames}`, ephemeral: true });
 		} else if (operation === 'rename') {
 			const modal = new ModalBuilder()
-				.setCustomId(`pinglist_rename_${name}_${user}`)
+				.setCustomId(`pinglist_rename_${name}_${user}_${serverID}`)
 				.setTitle(`Rename pinglist ${name}`);
 			modal.addComponents(
 				new ActionRowBuilder().addComponents(
 					new TextInputBuilder()
-						.setCustomId(`pinglist_rename_newName_${name}_${user}`)
+						.setCustomId(`pinglist_rename_newName_${name}_${user}_${serverID}`)
 						.setLabel('Specify a new name for the pinglist')
 						.setPlaceholder(name)
 						.setStyle(TextInputStyle.Short)
@@ -98,12 +98,12 @@ module.exports = {
 			await interaction.showModal(modal);
 		} else {
 			const modal = new ModalBuilder()
-				.setCustomId(`pinglist_delete_${name}_${user}`)
+				.setCustomId(`pinglist_delete_${name}_${user}_${serverID}`)
 				.setTitle(`Delete pinglist '${name}'`);
 			modal.addComponents(
 				new ActionRowBuilder().addComponents(
 					new TextInputBuilder()
-						.setCustomId(`pinglist_delete_confirm_${name}_${user}`)
+						.setCustomId(`pinglist_delete_confirm_${name}_${user}_${serverID}`)
 						.setLabel('WARNING: IRREVOCABLE ACTION')
 						.setPlaceholder(`Type '${name}' verbatim to confirm deletion`)
 						.setStyle(TextInputStyle.Short)
