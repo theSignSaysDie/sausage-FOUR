@@ -28,7 +28,7 @@ function titleCase(str) {
  */
 function camelize(str) {
 	return titleCase(str)
-		.replace(/[^ a-zA-Z]/g, '')
+		.replace(/[^ a-zA-Z0-9]/g, '')
 		.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
 			return index === 0 ? word.toLowerCase() : word.toUpperCase();
 		})
