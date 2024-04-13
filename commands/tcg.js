@@ -155,9 +155,14 @@ module.exports = {
 			} else if (interaction.options.getSubcommand() === 'card') {
 				await interaction.deferReply();
 				const name = interaction.options.getString('name');
-				const desc = await getCardData(cardSet).card_info.cards[name].description;
-				const spoiler = await getCardData(cardSet).card_info.cards[name].spoiler;
-				await interaction.editReply(await postCard({ set: cardSet, name: name, desc: desc, spoiler: spoiler }));
+				try {
+					const desc = await getCardData(cardSet).card_info.cards[name].description;
+					const spoiler = await getCardData(cardSet).card_info.cards[name].spoiler;
+					await interaction.editReply(await postCard({ set: cardSet, name: name, desc: desc, spoiler: spoiler }));
+				} catch (err) {
+					const reply = getDefaultEmbed().setDescription(`Sorry, I can't seem to find the card \`${cardSet}:${name}\`. Check your spelling and try again.`);
+					await interaction.editReply({ embeds: [reply] });
+				}
 				// Player wants to trade with someone else
 			} else if (interaction.options.getSubcommand() === 'trade') {
 				if (!tradingOn) {
