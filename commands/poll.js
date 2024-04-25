@@ -76,30 +76,34 @@ module.exports = {
 			});
 		}
 		emojiCollector.on('end', async () => {
-			const reactCounts = {};
-			let maxVotes = -1;
-			if (multipleResponses) {
-				for (const e of emoji) {
-					reactCounts[e] = message.reactions.cache.get(e).count - 1;
-					if (reactCounts[e] > maxVotes) {
-						maxVotes = reactCounts[e];
+			try {
+				const reactCounts = {};
+				let maxVotes = -1;
+				if (multipleResponses) {
+					for (const e of emoji) {
+						reactCounts[e] = message.reactions.cache.get(e).count - 1;
+						if (reactCounts[e] > maxVotes) {
+							maxVotes = reactCounts[e];
+						}
+					}
+				} else {
+					for (const e of Object.values(whoReacted)) {
+						reactCounts[e] = reactCounts[e] ? reactCounts[e] + 1 : 1;
+						if (reactCounts[e] > maxVotes) {
+							maxVotes = reactCounts[e];
+						}
 					}
 				}
-			} else {
-				for (const e of Object.values(whoReacted)) {
-					reactCounts[e] = reactCounts[e] ? reactCounts[e] + 1 : 1;
-					if (reactCounts[e] > maxVotes) {
-						maxVotes = reactCounts[e];
-					}
-				}
-			}
 
-			message.reactions.removeAll()
-				.catch(error => console.error('Failed to clear reactions:', error));
-			const resultEmbed = getDefaultEmbed()
-				.setDescription(`# ${title}\nPoll closed!\n\n${description}\n\n${choices.map(x => `${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}${x[0]} ${x[1]} (${reactCounts[x[0]] ?? 0} vote${(reactCounts[x[0]] ?? 0) === 1 ? '' : 's'})${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}`).join('\n')}`);
-			await message.delete();
-			await channel.send({ embeds: [resultEmbed] });
+				message.reactions.removeAll()
+					.catch(error => console.error('Failed to clear reactions:', error));
+				const resultEmbed = getDefaultEmbed()
+					.setDescription(`# ${title}\nPoll closed!\n\n${description}\n\n${choices.map(x => `${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}${x[0]} ${x[1]} (${reactCounts[x[0]] ?? 0} vote${(reactCounts[x[0]] ?? 0) === 1 ? '' : 's'})${(reactCounts[x[0]] ?? 0) === maxVotes ? '**' : ''}`).join('\n')}`);
+				await message.delete();
+				await channel.send({ embeds: [resultEmbed] });
+			} catch (DiscordjsError) {
+				console.log(`Something went wrong attempting to close the poll ${title}. Does the original message still exist?`);
+			}
 		});
 
 
