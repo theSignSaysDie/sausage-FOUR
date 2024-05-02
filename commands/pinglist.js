@@ -14,9 +14,11 @@ module.exports = {
 				.addChoices(
 					{ name: 'create', value: 'create' },
 					{ name: 'invoke', value: 'invoke' },
+					{ name: 'bestow', value: 'bestow' },
 					{ name: 'assess', value: 'assess' },
 					{ name: 'rename', value: 'rename' },
 					{ name: 'delete', value: 'delete' },
+
 				),
 		).addStringOption(option =>
 			option
@@ -96,6 +98,11 @@ module.exports = {
 				),
 			);
 			await interaction.showModal(modal);
+		} else if (operation === 'bestow') {
+			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ? AND `serverID` = ?';
+			result = await fetchSQL(query, [name, serverID]);
+			const announcement = `Ping by ${interaction.member.displayName}!`;
+			await interaction.reply({ content: `${announcement}\n\n======`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!`)], components: pinglistMessageContents });
 		} else {
 			const modal = new ModalBuilder()
 				.setCustomId(`pinglist_delete_${name}_${user}_${serverID}`)
