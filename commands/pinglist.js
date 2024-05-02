@@ -102,7 +102,7 @@ module.exports = {
 			query = 'SELECT `snowflake` FROM `pinglist` WHERE `record` = \'subscriber\' AND `name` = ? AND `serverID` = ?';
 			result = await fetchSQL(query, [name, serverID]);
 			const announcement = `Ping by ${interaction.member.displayName}!`;
-			await interaction.reply({ content: `${announcement}\n\n======`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` invoked!`)], components: pinglistMessageContents });
+			await interaction.reply({ content: `${announcement}\n\n======`, embeds: [getDefaultEmbed().setDescription(`Pinglist \`${name}\` bestowed!`)], components: pinglistMessageContents });
 		} else {
 			const modal = new ModalBuilder()
 				.setCustomId(`pinglist_delete_${name}_${user}_${serverID}`)
