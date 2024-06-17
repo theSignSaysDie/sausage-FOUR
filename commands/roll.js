@@ -87,9 +87,13 @@ module.exports = {
 				const mod = m[5] ? eval(`${m[5]}${m[6]}`) : 0;
 				const rollInfo = formatRawRoll(amt, size, keeps, mod);
 				const embed = getDefaultEmbed()
-					.setTitle(`**${description}**`)
-					.setDescription(`${m[0]}\n\n🎲 ${rollInfo.text}`)
-					.setColor(colorDict.GREY);
+					.setTitle(`🎲 **${description}**`)
+					.addFields(
+						{ name: 'Dice', value: raw, inline: true },
+						{ name: 'Result', value: rollInfo.text, inline: true },
+						{ name: 'Total', value: rollInfo.sum.toString(), inline: true },
+					)
+					.setColor(getRollColor(rollInfo));
 				await interaction.reply({ embeds: [embed] });
 			} else {
 				await interaction.reply({ content: `I'm sorry! I couldn't parse the roll \`${raw}\`. Please double-check your spelling and try again.`, ephemeral: true });
@@ -100,11 +104,16 @@ module.exports = {
 			const talent = interaction.options.getInteger('talent') || 0;
 			const talentName = ['godawful', 'inept', '', 'talented', 'legendary'];
 			const metagamerModifier = (dice === 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
-			const diceString = (talent === 0 && modifier === 0 && dice === 8) ? '' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
+			const diceString = (talent === 0 && modifier === 0 && dice === 8) ? 'Flat 2d8' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
 			const rollInfo = formatRoll(dice, talent, modifier);
 			const embed = getDefaultEmbed()
-				.setTitle(`**${description}**`)
-				.setDescription(`${diceString}\n\n🎲 ${rollInfo.text}`)
+				.setTitle(`🎲 **${description}**`)
+				// .setDescription(`${diceString}\n\n🎲 ${rollInfo.text}`)
+				.addFields(
+					{ name: 'Dice', value: diceString, inline: true },
+					{ name: 'Result', value: rollInfo.text, inline: true },
+					{ name: 'Total', value: rollInfo.sum.toString(), inline: true },
+				)
 				.setColor(getRollColor(rollInfo));
 			await interaction.reply({ embeds: [embed] });
 		}
