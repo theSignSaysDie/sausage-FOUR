@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { versionNum, lastUpdated } = require('../utils/info');
+const { versionNum } = require('../utils/info');
 
 /**
  * @desc Capitalizes a string (ex. `"test" => "Test"`)
