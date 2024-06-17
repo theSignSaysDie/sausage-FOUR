@@ -40,7 +40,12 @@ function camelize(str) {
  * @returns the default embed
  */
 function getDefaultEmbed() {
-	return new EmbedBuilder().setFooter({ text: `Sausage ${versionNum}   |   Last update -> ${lastUpdated.toLocaleString('en-US', { dateStyle: 'short' })}  |   Do /help for more commands` });
+	return new EmbedBuilder()
+		.setFooter(
+			{
+				text: `Sausage ${versionNum} - Do /help for more commands`,
+				iconURL: 'https://cdn.discordapp.com/avatars/815669451658887209/e33ccdcfb43ac9bde63a1d86c63e5de2.webp',
+			});
 }
 
 /**
