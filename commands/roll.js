@@ -93,7 +93,7 @@ module.exports = {
 						{ name: 'Result', value: rollInfo.text, inline: true },
 						{ name: 'Total', value: rollInfo.sum.toString(), inline: true },
 					)
-					.setColor(getRollColor(rollInfo));
+					.setColor(colorDict.GREY);
 				await interaction.reply({ embeds: [embed] });
 			} else {
 				await interaction.reply({ content: `I'm sorry! I couldn't parse the roll \`${raw}\`. Please double-check your spelling and try again.`, ephemeral: true });
