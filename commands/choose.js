@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { roll1ToX, rollWeighted } = require('../utils/dice');
+const { rollWeighted } = require('../utils/dice');
 
 const delimiters = ';/, ';
 module.exports = {
