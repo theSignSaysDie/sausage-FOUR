@@ -5,6 +5,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rules')
 		.setDescription('Review the server rules'),
+	category: 'Misc.',
 	async execute(interaction) {
 		const embed = getDefaultEmbed()
 			.setColor(colorDict.SAUSAGE_UPDATE)

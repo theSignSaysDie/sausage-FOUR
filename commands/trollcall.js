@@ -16,6 +16,7 @@ module.exports = {
 			option
 				.setName('public')
 				.setDescription('Post for everyone else (default: false)')),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const username = interaction.options.getUser('username');
 		if (username) {

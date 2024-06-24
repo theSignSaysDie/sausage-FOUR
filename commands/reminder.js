@@ -5,6 +5,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('reminder')
 		.setDescription('Remember the important things'),
+	category: 'Fun',
 	async execute(interaction) {
 		const embed = getDefaultEmbed()
 			.setColor(colorDict.SAUSAGE_UPDATE)

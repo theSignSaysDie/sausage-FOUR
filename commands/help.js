@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Read the command documentation!'),
+	category: 'Misc.',
 	async execute(interaction) {
 		const helpTextArr = [];
 		const categoryDict = {};

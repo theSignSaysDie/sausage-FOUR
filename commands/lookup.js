@@ -35,6 +35,7 @@ const lookupSlashCommand =
 
 module.exports = {
 	data: lookupSlashCommand,
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const key = interaction.options.getString('key');
 		const targetTable = interaction.options.getString('category');

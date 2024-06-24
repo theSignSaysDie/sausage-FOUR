@@ -19,6 +19,7 @@ module.exports = {
 				.setDescription('The name of the troll/kid/alias you want to retrieve')
 				.setRequired(true),
 		),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const op = interaction.options.getString('option').replace(/[^ a-zA-Z?]/, '').toLowerCase();
 		const name = interaction.options.getString('name').replace(/[^ a-zA-Z?]/, '').toLowerCase();

@@ -71,6 +71,7 @@ module.exports = {
 						.setRequired(true),
 				),
 		),
+	category: 'Fun',
 	async execute(interaction) {
 		// Rejects attempt if user isn't in guild
 		if (interaction.guildId !== process.env.GUILD_ID) {

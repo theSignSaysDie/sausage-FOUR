@@ -25,6 +25,7 @@ module.exports = {
 					.setDescription('How many choices?')
 					.setRequired(false),
 		),
+	category: 'Utilities',
 	async execute(interaction) {
 		const choiceString = interaction.options.getString('choices');
 		const secrecy = interaction.options.getBoolean('secret') ?? false;

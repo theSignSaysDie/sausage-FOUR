@@ -12,6 +12,7 @@ module.exports = {
 				.setDescription('The name of the document to retrieve')
 				.setRequired(false),
 		),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const choice = (interaction.options.getString('document') ?? '').replace(' ', '_').toUpperCase();
 		const embed = getDefaultEmbed();

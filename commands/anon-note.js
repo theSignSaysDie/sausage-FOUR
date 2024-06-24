@@ -3,6 +3,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('anon-note')
 		.setDescription('Report an issue anonymously'),
+	category: 'Moderation',
 	async execute(interaction) {
 		try {
 			const guild = await interaction.client.guilds.cache.get(process.env.GUILD_ID);

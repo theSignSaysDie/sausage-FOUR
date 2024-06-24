@@ -26,6 +26,7 @@ module.exports = {
 				.setDescription('Pinglist name')
 				.setRequired(true),
 		),
+	category: 'Utilities',
 	async execute(interaction) {
 		const name = interaction.options.getString('name').replace(/[^ a-zA-Z0-9?]/g, '').toLowerCase();
 		const operation = interaction.options.getString('operation');

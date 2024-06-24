@@ -11,6 +11,7 @@ module.exports = {
 				.setName('target')
 				.setDescription('Who\'s it gonna be?'),
 		),
+	category: 'Fun',
 	async execute(interaction) {
 		const nowMS = Date.now();
 		const query = await fetchSQL(

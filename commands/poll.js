@@ -39,6 +39,7 @@ module.exports = {
 				.setDescription('Are users allowed to vote for multiple options? Default: False')
 				.setRequired(false),
 		),
+	category: 'Utilities',
 	async execute(interaction) {
 		// Setup
 		// Time conversion from seconds to milliseconds

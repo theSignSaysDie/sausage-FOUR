@@ -4,6 +4,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('invite')
 		.setDescription('Generate an invite link'),
+	category: 'Misc.',
 	async execute(interaction) {
 		const row = new ActionRowBuilder()
 			.addComponents(

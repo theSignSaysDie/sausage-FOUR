@@ -10,6 +10,7 @@ module.exports = {
 				.setDescription('The name of the troll to retrieve')
 				.setRequired(true),
 		),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		let name = interaction.options.getString('name').replace(/[^-'. 0-9a-zA-ZÀ-ÿ?]/, '').toLowerCase();
 		if (name.indexOf('the ') === 0) {

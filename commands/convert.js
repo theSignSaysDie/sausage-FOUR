@@ -18,6 +18,7 @@ module.exports = {
 					{ name: 'sweeps', value: 'sweeps' },
 					{ name: 'years', value: 'years' },
 				).setRequired(true)),
+	category: 'Utilities',
 	async execute(interaction) {
 		const amount = interaction.options.getNumber('amount');
 		const units = interaction.options.getString('units');

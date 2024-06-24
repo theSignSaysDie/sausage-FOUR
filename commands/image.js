@@ -17,6 +17,7 @@ module.exports = {
 						...dictList(fs.readdirSync('./img/')),
 					),
 		),
+	category: 'Fun',
 	async execute(interaction) {
 		const category = interaction.options.getString('category');
 		const files = fs.readdirSync(`./img/${category}/`);

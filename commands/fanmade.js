@@ -14,6 +14,7 @@ module.exports = {
 					...easyListItems(Object.keys(fanmadeLinks)),
 				),
 		),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const choice = fanmadeLinks[interaction.options.getString('document')];
 		await interaction.reply({ content: choice, ephemeral: true });

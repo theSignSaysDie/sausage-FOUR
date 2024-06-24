@@ -34,6 +34,7 @@ module.exports = {
 					{ name: '1d6+1d10',	value: 10 },
 					{ name: '8d2', value: 2 }),
 		),
+	category: 'Game Stuff',
 	async execute(interaction) {
 		const raw = interaction.options.getString('raw');
 		const description = interaction.options.getString('description') || 'Roll result';

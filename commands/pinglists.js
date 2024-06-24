@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('pinglists')
 		.setDescription('View all your pinglists in this server'),
+	category: 'Utilities',
 	async execute(interaction) {
 		const user = interaction.user.id;
 		const serverID = interaction.guild.id;
