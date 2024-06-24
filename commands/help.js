@@ -1,23 +1,43 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { helpText } = require('../utils/info');
-const { easyListItems } = require('../utils/math');
+// Const { helpText } = require('../utils/info');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
-		.setDescription('Read the command documentation!')
-		.addStringOption(option =>
-			option
-				.setName('command')
-				.setDescription('Fetch specific command documentation')
-				.addChoices(
-					...easyListItems(['anon-note', 'choose', 'doc', 'help', 'lookup', 'pinglist', 'poll', 'roll', 'starter']),
-				).setRequired(false),
-		),
+		.setDescription('Read the command documentation!'),
 	async execute(interaction) {
-		const page = interaction.options.getString('command') ?? 'default';
-		const returnEmbed = getDefaultEmbed().setDescription(helpText[page]).setTitle('Command Help' + (page === 'default' ? '' : ` [${page}]`));
+		const helpTextArr = [];
+		const categoryDict = {};
+		interaction.client.commands.forEach(element => {
+			const category = element.category;
+			if (category) {
+				if (!(category in categoryDict)) {
+					categoryDict[category] = [];
+				}
+				categoryDict[category].push(element);
+			}
+		});
+		const commandDict = {};
+		const commands = await interaction.client.application.commands.fetch();
+		commands.forEach(element => {
+			commandDict[element.name] = { id: element.id, desc: element.description };
+		});
+		const helpList = Object.keys(categoryDict);
+		helpList.sort();
+		helpList.forEach(element => {
+			helpTextArr.push(`### ${element}`);
+			const commandList = categoryDict[element];
+			commandList.forEach(cmd => {
+				const name = cmd.data.name;
+				helpTextArr.push(`- </${name}:${commandDict[name].id}> : ${commandDict[name].desc}`);
+				commandDict[cmd.data.name];
+			});
+		});
+
+		const returnEmbed = getDefaultEmbed()
+			.setDescription(helpTextArr.join('\n'))
+			.setTitle('Command Help');
 		await interaction.reply({ embeds: [returnEmbed], ephemeral: true });
 	},
 };
