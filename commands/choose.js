@@ -44,7 +44,7 @@ module.exports = {
 			if (choiceString.indexOf(delimiters[s]) !== -1) {
 				choices = choiceString.split(delimiters[s]).map(x => x.trim());
 				for (let i = 0; i < choices.length; i++) {
-					const match = /:(\d+)/.exec(choices[i]);
+					const match = /: ?(\d+)/.exec(choices[i]);
 					if (match) {
 						const processedString = choices[i].substring(0, choices[i].length - match[0].length);
 						displayList.push(`- \`${processedString}\` (${match[1]})`);
