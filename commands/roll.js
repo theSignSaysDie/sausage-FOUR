@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { getDefaultEmbed } = require('../utils/stringy');
-const { formatRoll, modStr, getRollColor, formatRawRoll } = require('../utils/dice');
+const { formatRoll, modStr, getRollColor, formatRawRoll, getRollResultName } = require('../utils/dice');
 const { colorDict } = require('../utils/info');
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -116,6 +116,11 @@ module.exports = {
 					{ name: 'Total', value: rollInfo.sum.toString(), inline: true },
 				)
 				.setColor(getRollColor(rollInfo));
+			if (dice === 8) {
+				embed.addFields(
+					{ name: 'Base Result', value: getRollResultName(rollInfo), inline: true },
+				);
+			}
 			await interaction.reply({ embeds: [embed] });
 		}
 	},
