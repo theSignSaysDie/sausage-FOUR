@@ -9,7 +9,8 @@ module.exports = {
 		.addUserOption(option =>
 			option
 				.setName('target')
-				.setDescription('Who\'s it gonna be?'),
+				.setDescription('Who\'s it gonna be?')
+				.setRequired(true),
 		),
 	category: 'Fun',
 	async execute(interaction) {
