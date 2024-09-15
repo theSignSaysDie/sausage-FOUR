@@ -20,7 +20,8 @@
     "heapdump": "^0.3.15",
     "minimist": "^1.2.8",
     "mysql": "^2.18.1",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "sausage-four": "file:"
   },
   "devDependencies": {
     "eslint": "^8.31.0"
