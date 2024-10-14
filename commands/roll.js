@@ -31,6 +31,7 @@ module.exports = {
 				.addChoices(
 					{ name: '2d8', value: 8 },
 					{ name: '4d4', value: 4 },
+					{ name: '1d16', value: 16 }
 					{ name: '1d6+1d10',	value: 10 },
 					{ name: '8d2', value: 2 }),
 		),

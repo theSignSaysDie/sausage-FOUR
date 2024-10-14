@@ -41,8 +41,8 @@ function rollWeighted() {
 }
 
 /**
- * @desc Rolls a random float over `[0, 1)`. Basic utility random roll.
- * @returns a random integer from `1` to `N`.
+ * @desc Basic utility random roll.
+ * @returns a random float over `[0, 1)`
  */
 function rollFloat() {
 	return random();
@@ -122,8 +122,8 @@ function modStr(num, spacey = false) {
  * - `text`: text to display in an embed when invoked
  */
 function formatRoll(diceType, talent, modifier) {
-	const baseDice = { 2: 8, 4: 4, 10: 1, 8: 2 };
-	const addlDice = { 2: 0, 4: 2 * talent, 10: talent, 8: talent };
+	const baseDice = { 2: 8, 4: 4, 10: 1, 8: 2, 16:1 };
+	const addlDice = { 2: 0, 4: 2 * talent, 10: talent, 8: talent, 16: talent };
 	const numArr = rollDice(diceType, baseDice[diceType], addlDice[diceType]);
 	const indices = markForSum(numArr, baseDice[diceType], talent);
 	let totalSum = 0;
