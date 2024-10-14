@@ -105,7 +105,7 @@ module.exports = {
 			const modifier = interaction.options.getInteger('modifier') || 0;
 			const talent = interaction.options.getInteger('talent') || 0;
 			const talentName = ['godawful', 'inept', '', 'talented', 'legendary'];
-			const metagamerModifier = (dice === 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2' }[dice]}\`]`;
+			const metagamerModifier = (dice === 8) ? '' : ` [\`${{ 10: '1d6+1d10', 4: '4d4', 2: '8d2', 16: '1d16' }[dice]}\`]`;
 			const diceString = (talent === 0 && modifier === 0 && dice === 8) ? 'Flat 2d8' : ` (${dice === 2 ? '' : talentName[talent + 2]}${(talent !== 0 && modifier !== 0) ? ' ' : ''}${dice === 2 ? '' : modStr(modifier)}${metagamerModifier})`;
 			const rollInfo = formatRoll(dice, talent, modifier);
 			const embed = getDefaultEmbed()
