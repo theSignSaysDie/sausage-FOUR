@@ -29,7 +29,7 @@
 			"eldritch": {
 				"card_name": "Eldritch",
 				"art_path": "eldritch.png",
-				"description": "🎨 Art by Honey",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
 				"card_border_color": "hsl(265, 20%, 5%)",
 				"bg_grd_start": "hsl(256, 22%, 27%)", 
 				"bg_grd_end": "hsl(256, 22%, 27%)",
@@ -46,7 +46,7 @@
 			"aquatic": {
 				"card_name": "Aquatic",
 				"art_path": "aquatic.png",
-				"description": "🎨 Art by Honey",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
 				"card_border_color": "hsl(265, 20%, 5%)",
 				"bg_grd_start": "hsl(0, 22%, 27%)", 
 				"bg_grd_end": "hsl(0, 22%, 27%)",
@@ -63,7 +63,7 @@
 			"bug": {
 				"card_name": "Bug",
 				"art_path": "bug.png",
-				"description": "🎨 Art by Honey",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
 				"card_border_color": "hsl(265, 20%, 5%)",
 				"bg_grd_start": "hsl(35, 100%, 15%)", 
 				"bg_grd_end": "hsl(35, 100%, 15%)",
