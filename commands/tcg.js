@@ -161,6 +161,7 @@ module.exports = {
 					const spoiler = await getCardData(cardSet).card_info.cards[name].spoiler;
 					await interaction.editReply(await postCard({ set: cardSet, name: name, desc: desc, spoiler: spoiler }));
 				} catch (err) {
+					console.log(err);
 					const reply = getDefaultEmbed().setDescription(`Sorry, I can't seem to find the card \`${cardSet}:${name}\`. Check your spelling and try again.`);
 					await interaction.editReply({ embeds: [reply] });
 				}

@@ -1,0 +1,78 @@
+{
+	"style": "classic",
+	"set_name": "Heinous Horrors",
+	"card_info": {
+		"card_names": [
+			"bug"
+		],
+		"drop_table": [
+			"bug"
+		],
+		"cards": {
+			"samplecard": {
+				"card_name": "Horrendous Fucking Thing",
+				"art_path": "gougie.png",
+				"description": "📷🔥 Photo from __**Hell**__",
+				"card_border_color": "#211a2b",
+				"bg_grd_start": "#b2a7d2", 
+				"bg_grd_end": "#b2a7d2",
+				"bg_hex_start": "#7656a8", 
+				"bg_hex_end": "#7656a8",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 0.25,
+				"text_color": "hsl(0, 0%, 100%)",
+				"card_art_border_color": "#211a2b",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"eldritch": {
+				"card_name": "Eldritch",
+				"art_path": "eldritch.png",
+				"description": "🎨 Art by Honey",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(256, 22%, 27%)", 
+				"bg_grd_end": "hsl(256, 22%, 27%)",
+				"bg_hex_start":"hsl(263, 48%, 18%)", 
+				"bg_hex_end": "hsl(0, 5%, 14%)",
+				"art_offset_x": 10,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(263, 50%, 70%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"aquatic": {
+				"card_name": "Aquatic",
+				"art_path": "aquatic.png",
+				"description": "🎨 Art by Honey",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(0, 22%, 27%)", 
+				"bg_grd_end": "hsl(0, 22%, 27%)",
+				"bg_hex_start":"hsl(0, 48%, 18%)", 
+				"bg_hex_end": "hsl(0, 5%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 90%, 50%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			},
+			"bug": {
+				"card_name": "Bug",
+				"art_path": "bug.png",
+				"description": "🎨 Art by Honey",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(35, 100%, 15%)", 
+				"bg_grd_end": "hsl(35, 100%, 15%)",
+				"bg_hex_start":"hsl(35, 90%, 10%)", 
+				"bg_hex_end": "hsl(0, 5%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1.1,
+				"text_color": "hsl(35, 50%, 60%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)"
+			}
+		}
+	}
+}
