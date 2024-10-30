@@ -23,7 +23,8 @@
 				"art_scale": 0.25,
 				"text_color": "hsl(0, 0%, 100%)",
 				"card_art_border_color": "#211a2b",
-				"drop_shadow_color": "hsl(0, 0%, 0%)"
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
 			},
 			"eldritch": {
 				"card_name": "Eldritch",
@@ -39,7 +40,8 @@
 				"art_scale": 1,
 				"text_color": "hsl(263, 50%, 70%)",
 				"card_art_border_color": "hsl(265, 20%, 5%)",
-				"drop_shadow_color": "hsl(0, 0%, 0%)"
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
 			},
 			"aquatic": {
 				"card_name": "Aquatic",
@@ -55,7 +57,8 @@
 				"art_scale": 1,
 				"text_color": "hsl(0, 90%, 50%)",
 				"card_art_border_color": "hsl(265, 20%, 5%)",
-				"drop_shadow_color": "hsl(0, 0%, 0%)"
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
 			},
 			"bug": {
 				"card_name": "Bug",
@@ -71,7 +74,8 @@
 				"art_scale": 1.1,
 				"text_color": "hsl(35, 50%, 60%)",
 				"card_art_border_color": "hsl(265, 20%, 5%)",
-				"drop_shadow_color": "hsl(0, 0%, 0%)"
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
 			}
 		}
 	}
