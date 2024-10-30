@@ -128,17 +128,23 @@ module.exports = {
 				if (target.bot) {
 					await interaction.reply({ content: 'Bots don\'t trade cards! There\'s nothing here for you.', ephemeral: true });
 				} else {
-					const isBinderViewable = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [target.id]);
-					if (target === interaction.user || isBinderViewable[0].binderViewable) {
-						const binder = await fetchBinder(target.id);
-						const set = interaction.options.getString('set') ?? 'all';
-						const summary = await getPrettyBinderSummary(binder, set);
-						const embed = getDefaultEmbed()
-							.setTitle(`\`${target.username}\`'s Binder Contents`)
-							.setDescription(summary);
-						await interaction.reply({ embeds: [embed], ephemeral: true });
+					const queryResult = await fetchSQL('SELECT `binder` FROM `player` WHERE `snowflake` = ?', [target.id]);
+					if (!queryResult.length) {
+						await interaction.reply({ content: 'You don\'t have a binder yet! Please wait while I set one up for you.', ephemeral: true });
+						await pushBinder(target.id);
 					} else {
-						await interaction.reply({ content: 'Sorry, this user\'s binder is private!', ephemeral: true });
+						const isBinderViewable = await fetchSQL('SELECT `binderViewable` FROM `player` WHERE `snowflake` = ?', [target.id]);
+						if (target === interaction.user || isBinderViewable[0].binderViewable) {
+							const binder = await fetchBinder(target.id);
+							const set = interaction.options.getString('set') ?? 'all';
+							const summary = await getPrettyBinderSummary(binder, set);
+							const embed = getDefaultEmbed()
+								.setTitle(`\`${target.username}\`'s Binder Contents`)
+								.setDescription(summary);
+							await interaction.reply({ embeds: [embed], ephemeral: true });
+						} else {
+							await interaction.reply({ content: 'Sorry, this user\'s binder is private!', ephemeral: true });
+						}
 					}
 				}
 			} else if (interaction.options.getSubcommand() === 'visibility') {

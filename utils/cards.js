@@ -170,7 +170,7 @@ async function removeCard(binder, set, name, quantity = 1) {
  * @param {Object} binder the binder
  */
 async function pushBinder(snowflake, binder = null) {
-	const blob = JSON.stringify(binder === null ? makeNewBinder() : binder);
+	const blob = JSON.stringify(binder === null ? await makeNewBinder() : binder);
 	await fetchSQL('INSERT INTO `player` (`snowflake`, `binder`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `binder` = ?', [snowflake, blob, blob]);
 }
 
