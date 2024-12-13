@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-
+const { cleanDiacritics } = require('./stringy');
 const doc = new GoogleSpreadsheet(process.env.TROLL_CALL_DOC_ID);
 
 const trollFullNameDict = {};
@@ -65,7 +65,7 @@ async function loadTrollCall() {
 			for (let row = 1; row < alterniaSheet.rowCount; row++) {
 				const cell = alterniaSheet.getCell(row, col);
 				if (typeof cell.hyperlink !== 'undefined') {
-					const cellName = cell.value.toString().toLowerCase();
+					const cellName = cleanDiacritics(cell.value.toString().toLowerCase());
 					trollFullNameDict[cellName] = cell.hyperlink;
 					if (cellName.includes('??????') && (cellName !== '?????? ??????')) {
 						const name = cellName.replace('??????', '').trim();
@@ -86,7 +86,7 @@ async function loadTrollCall() {
 			for (let row = 1; row < spaceSheet.rowCount; row++) {
 				const cell = spaceSheet.getCell(row, col);
 				if (typeof cell.hyperlink !== 'undefined') {
-					const cellName = cell.value.toString().toLowerCase();
+					const cellName = cleanDiacritics(cell.value.toString().toLowerCase());
 					const title = cellName.substring(4);
 					trollTitleDict[title] = cell.hyperlink;
 				}

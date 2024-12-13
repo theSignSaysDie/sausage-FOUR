@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { trollFirstNameDict, trollFullNameDict, trollTitleDict } = require('../utils/db');
+const { cleanDiacritics } = require('../utils/stringy');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,7 +13,8 @@ module.exports = {
 		),
 	category: 'Game Stuff',
 	async execute(interaction) {
-		let name = interaction.options.getString('name').replace(/[^-'. 0-9a-zA-ZÀ-ÿ?]/, '').toLowerCase();
+		let name = cleanDiacritics(interaction.options.getString('name')).replace(/[^-'. 0-9a-zA-Z?]/, '').toLowerCase();
+		console.log(name);
 		if (name.indexOf('the ') === 0) {
 			name = name.substring(4);
 		}
