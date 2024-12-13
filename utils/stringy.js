@@ -105,7 +105,7 @@ function cutoffWithEllipsis(text, maxLen) {
 }
 
 /**
- * @desc Helper method. returns
+ * @desc Helper method.
  * @param {int} num the number of items
  * @param {String} pluralSuffix the suffix to use for the plural form
  * @param {String} singleSuffix the suffix to use for the singular form
@@ -113,6 +113,18 @@ function cutoffWithEllipsis(text, maxLen) {
  */
 function pluralS(num, pluralSuffix, singleSuffix) {
 	return num > 1 ? pluralSuffix : singleSuffix;
+}
+
+/**
+ * @desc Helper method. Removes diacritics from a string
+ * @param {String} str the string to clean
+ * @returns the cleaned string
+ * @see https://stackoverflow.com/a/37511463
+ */
+
+function cleanDiacritics(str) {
+	console.log(str, str.normalize('NFD'), str.normalize('NFD').replace(/[\u0300-\u036f]/g));
+	return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 module.exports = {
@@ -126,4 +138,5 @@ module.exports = {
 	titleCase: titleCase,
 	dictList : dictList,
 	pluralS : pluralS,
+	cleanDiacritics : cleanDiacritics,
 };
