@@ -123,7 +123,6 @@ function pluralS(num, pluralSuffix, singleSuffix) {
  */
 
 function cleanDiacritics(str) {
-	console.log(str, str.normalize('NFD'), str.normalize('NFD').replace(/[\u0300-\u036f]/g));
 	return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
