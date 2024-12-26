@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { birthdayBeamTime } = require('../utils/info');
+const { birthdays, birthdayBeamTime } = require('../utils/info');
 const { fetchSQL } = require('../utils/db');
 
 module.exports = {
@@ -23,6 +23,11 @@ module.exports = {
 			await interaction.reply('You\'ve already beamed somebody in the past 8 hours! Try again later.');
 		} else {
 			const target = interaction.options.getUser('target');
+			birthdays.push(target.id);
+			setTimeout(() => {
+				const index = birthdays.indexOf(target.id);
+				if (index > -1) { birthdays.splice(index, 1); }
+			}, birthdayBeamTime);
 			query = await fetchSQL(
 				'SELECT `lastBirthdayBeamed` FROM `player` WHERE `snowflake` = ?', [target.id],
 			);
