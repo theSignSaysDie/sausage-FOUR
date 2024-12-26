@@ -4,11 +4,17 @@
 	"card_info": {
 		"card_names": [
 			"bug",
-			"flora"
+			"flora",
+			"eldritch",
+			"aquatic",
+			"avian"
 		],
 		"drop_table": [
 			"bug",
-			"flora"
+			"flora",
+			"eldritch",
+			"aquatic",
+			"avian"
 		],
 		"cards": {
 			"bug": {
@@ -41,6 +47,57 @@
 				"art_offset_y": 0,
 				"art_scale": 1,
 				"text_color": "hsl(60, 50%, 40%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
+			}, 
+			"eldritch": {
+				"card_name": "Eldritch",
+				"art_path": "eldritch.png",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(256, 22%, 27%)", 
+				"bg_grd_end": "hsl(256, 22%, 27%)",
+				"bg_hex_start":"hsl(263, 48%, 18%)", 
+				"bg_hex_end": "hsl(0, 5%, 14%)",
+				"art_offset_x": 10,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(263, 50%, 70%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
+			},
+			"aquatic": {
+				"card_name": "Aquatic",
+				"art_path": "aquatic.png",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(0, 22%, 27%)", 
+				"bg_grd_end": "hsl(0, 22%, 27%)",
+				"bg_hex_start":"hsl(0, 48%, 18%)", 
+				"bg_hex_end": "hsl(0, 5%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(0, 90%, 50%)",
+				"card_art_border_color": "hsl(265, 20%, 5%)",
+				"drop_shadow_color": "hsl(0, 0%, 0%)",
+				"spoiler": true
+			},
+			"avian": {
+				"card_name": "Avian",
+				"art_path": "avian.png",
+				"description": "🎨 Art by Honey\n(🔥 Body Horror)",
+				"card_border_color": "hsl(265, 20%, 5%)",
+				"bg_grd_start": "hsl(15, 22%, 27%)", 
+				"bg_grd_end": "hsl(15, 22%, 27%)",
+				"bg_hex_start":"hsl(15, 48%, 18%)", 
+				"bg_hex_end": "hsl(15, 5%, 14%)",
+				"art_offset_x": 0,
+				"art_offset_y": 0,
+				"art_scale": 1,
+				"text_color": "hsl(15, 50%, 50%)",
 				"card_art_border_color": "hsl(265, 20%, 5%)",
 				"drop_shadow_color": "hsl(0, 0%, 0%)",
 				"spoiler": true
