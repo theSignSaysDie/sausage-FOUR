@@ -54,7 +54,6 @@ module.exports = {
 					.setTextInputComponent(descBox);
 				const truthBox = new TextInputBuilder()
 					.setCustomId('limeLieRoll_truth')
-					.setLabel('Truth')
 					.setPlaceholder('What\'d you roll?')
 					.setStyle(TextInputStyle.Short)
 					.setMaxLength(8)
